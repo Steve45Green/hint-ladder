@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference · HTTP</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Redes de Computadores 1 · Reference</p>
+  <h1>HTTP cheat sheet</h1>
+</header>
+
+<section>
+  <h2>Message shape</h2>
+<pre><code>Request line / Status line
+Header: value
+Header: value
+&lt;blank line&gt;
+Body (optional)</code></pre>
+</section>
+
+<section>
+  <h2>Common methods</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Use</th><th>Has a body?</th></tr></thead>
+    <tbody>
+      <tr><td>GET</td><td>Retrieve a resource</td><td>No</td></tr>
+      <tr><td>POST</td><td>Submit data, often creating something</td><td>Yes</td></tr>
+      <tr><td>PUT</td><td>Replace a resource entirely</td><td>Yes</td></tr>
+      <tr><td>DELETE</td><td>Remove a resource</td><td>No</td></tr>
+      <tr><td>HEAD</td><td>Like GET, headers only, no body back</td><td>No</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Status code classes</h2>
+  <table>
+    <thead><tr><th>Class</th><th>Meaning</th><th>Common codes</th></tr></thead>
+    <tbody>
+      <tr><td>1xx</td><td>Informational</td><td>100 Continue</td></tr>
+      <tr><td>2xx</td><td>Success</td><td>200 OK, 201 Created, 204 No Content</td></tr>
+      <tr><td>3xx</td><td>Redirection</td><td>301 Moved Permanently, 304 Not Modified</td></tr>
+      <tr><td>4xx</td><td>Client error</td><td>400 Bad Request, 401 Unauthorized, 404 Not Found</td></tr>
+      <tr><td>5xx</td><td>Server error</td><td>500 Internal Server Error, 503 Service Unavailable</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Key facts</h2>
+  <ul>
+    <li>HTTP is <strong>stateless</strong>: no request is linked to any other unless the application adds cookies or a token.</li>
+    <li>HTTP runs <strong>inside</strong> a TCP connection — TCP carries the bytes; HTTP is the text format.</li>
+    <li>Since HTTP/1.1, a single TCP connection can carry several requests in sequence (persistent connections).</li>
+  </ul>
+</section>
+
+<footer>
+  <p><strong>Main source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc9110">RFC 9110 — HTTP Semantics</a></p>
+  <p><a href="../lessons/0001-http-request-response.html">Lesson: HTTP request/response structure</a></p>
+</footer>
+
+</main>
+</body>
+</html>

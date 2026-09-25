@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0001 · Arrays and for loops</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Introdução à Programação · Lesson 1 · ~10 min</p>
+  <h1>Arrays and for loops</h1>
+  <p class="goal"><strong>By the end of this lesson you can</strong> create a Java array,
+  fill and read it with a <code>for</code> loop, and avoid the two bugs that crashed Lab 1:
+  an array that was declared but never created, and a loop that runs one step too far.</p>
+</header>
+
+<section>
+  <h2>The idea</h2>
+  <p>An array is a <strong>fixed-size, ordered block of variables of the same type</strong>.
+  Declaring an array variable and creating the array are two different steps — this is exactly
+  where Lab 1's crash came from.</p>
+
+  <figure>
+    <svg viewBox="0 0 760 230" role="img" aria-labelledby="arrfig-title arrfig-desc">
+      <title id="arrfig-title">Declaring an array variable versus creating the array</title>
+      <desc id="arrfig-desc">Left: after "int[] scores;" the variable scores holds null and
+      points nowhere. Right: after "scores = new int[4];" the variable scores holds a reference
+      that points to a block of 4 int slots on the heap, indices 0 to 3, each holding the
+      default value 0.</desc>
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+        </marker>
+      </defs>
+
+      <text x="140" y="24" text-anchor="middle" font-size="14" fill="currentColor" font-family="ui-monospace, monospace">int[] scores;</text>
+      <rect x="80" y="90" width="120" height="40" rx="6" fill="none" stroke="currentColor"></rect>
+      <text x="60" y="115" text-anchor="end" font-size="13" fill="currentColor">scores</text>
+      <text x="140" y="115" text-anchor="middle" font-size="14" fill="currentColor" font-family="ui-monospace, monospace">null</text>
+      <text x="140" y="170" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.65">no array exists yet</text>
+
+      <line x1="280" y1="20" x2="280" y2="210" stroke="currentColor" stroke-opacity="0.2"></line>
+
+      <text x="490" y="24" text-anchor="middle" font-size="14" fill="currentColor" font-family="ui-monospace, monospace">scores = new int[4];</text>
+      <rect x="380" y="90" width="120" height="40" rx="6" fill="none" stroke="currentColor"></rect>
+      <text x="360" y="115" text-anchor="end" font-size="13" fill="currentColor">scores</text>
+      <text x="440" y="115" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.65">ref</text>
+
+      <line x1="500" y1="110" x2="546" y2="110" stroke="currentColor" marker-end="url(#arrow)"></line>
+
+      <g font-family="ui-monospace, monospace" font-size="13">
+        <rect x="550" y="90" width="42" height="40" fill="none" stroke="currentColor"></rect>
+        <text x="571" y="115" text-anchor="middle">0</text>
+        <text x="571" y="150" text-anchor="middle" font-size="11" opacity="0.65">0</text>
+
+        <rect x="592" y="90" width="42" height="40" fill="none" stroke="currentColor"></rect>
+        <text x="613" y="115" text-anchor="middle">0</text>
+        <text x="613" y="150" text-anchor="middle" font-size="11" opacity="0.65">1</text>
+
+        <rect x="634" y="90" width="42" height="40" fill="none" stroke="currentColor"></rect>
+        <text x="655" y="115" text-anchor="middle">0</text>
+        <text x="655" y="150" text-anchor="middle" font-size="11" opacity="0.65">2</text>
+
+        <rect x="676" y="90" width="42" height="40" fill="none" stroke="currentColor"></rect>
+        <text x="697" y="115" text-anchor="middle">0</text>
+        <text x="697" y="150" text-anchor="middle" font-size="11" opacity="0.65">3</text>
+      </g>
+      <text x="634" y="170" text-anchor="middle" font-size="12" fill="currentColor" opacity="0.65">4 slots, index 0–3</text>
+    </svg>
+    <figcaption>Left: <code>scores</code> declared but no array created — the variable is
+    <code>null</code>. Right: <code>new int[4]</code> creates 4 slots on the heap and
+    <code>scores</code> now holds a reference (an arrow) to them. Indexing a <code>null</code>
+    array — reading or writing <code>scores[0]</code> on the left side — is exactly the
+    <code>NullPointerException</code> Lab 1 hit.</figcaption>
+  </figure>
+
+  <p>Two consequences follow directly from that picture:</p>
+  <ul>
+    <li><strong>Valid indices run from <code>0</code> to <code>length - 1</code></strong>, never
+    up to <code>length</code>. A 4-slot array has indices 0, 1, 2, 3 — <code>scores[4]</code>
+    does not exist.</li>
+    <li><strong>A freshly created array is not empty — it is full of default values</strong>:
+    <code>0</code> for numeric types, <code>false</code> for <code>boolean</code>, and
+    <code>null</code> for object types such as <code>String</code>.</li>
+  </ul>
+
+  <p>To get the size of an array, read its <code>length</code> field — no parentheses, because
+  it is a field, not a method (unlike <code>String</code>'s <code>.length()</code>):</p>
+<pre><code>int size = scores.length;</code></pre>
+
+  <p>A <code>for</code> loop has three parts, each doing one job:</p>
+<pre><code>for (int i = 0; i &lt; scores.length; i++) {
+    // body runs once per value of i
+}</code></pre>
+  <p><code>int i = 0</code> runs once, before the loop starts. <code>i &lt; scores.length</code>
+  is checked before every iteration; the loop stops the moment it is false. <code>i++</code>
+  runs after every iteration. Using <code>scores.length</code> as the bound — instead of a
+  hard-coded number — is what keeps the loop correct even if the array's size changes.</p>
+</section>
+
+<section>
+  <h2>Worked example</h2>
+  <p>Fill a 4-slot array of temperatures, then sum it with a second loop:</p>
+<pre><code>double[] temps = new double[4];
+temps[0] = 21.5;
+temps[1] = 19.0;
+temps[2] = 23.5;
+temps[3] = 20.0;
+
+double total = 0;
+for (int i = 0; i &lt; temps.length; i++) {
+    total += temps[i];
+}</code></pre>
+  <p>Tracing the second loop, one row per iteration:</p>
+  <table class="trace">
+    <thead><tr><th>step</th><th>i</th><th>i &lt; temps.length?</th><th>temps[i]</th><th>total after</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>0</td><td>0 &lt; 4 → yes</td><td>21.5</td><td>21.5</td></tr>
+      <tr><td>2</td><td>1</td><td>1 &lt; 4 → yes</td><td>19.0</td><td>40.5</td></tr>
+      <tr><td>3</td><td>2</td><td>2 &lt; 4 → yes</td><td>23.5</td><td>64.0</td></tr>
+      <tr><td>4</td><td>3</td><td>3 &lt; 4 → yes</td><td>20.0</td><td>84.0</td></tr>
+      <tr><td>5</td><td>4</td><td>4 &lt; 4 → <strong>no, stop</strong></td><td>—</td><td>84.0</td></tr>
+    </tbody>
+  </table>
+  <p>Step 5 never touches <code>temps[4]</code> — that index does not exist. That is the whole
+  purpose of <code>&lt;</code> instead of <code>&lt;=</code> in the condition.</p>
+</section>
+
+<section>
+  <h2>Practice</h2>
+
+  <div class="predict" data-answer="6">
+    <p><strong>1.</strong> What does this print?</p>
+<pre><code>int[] arr = new int[4];
+for (int i = 0; i &lt; arr.length; i++) {
+    arr[i] = i * 2;
+}
+System.out.println(arr[3]);</code></pre>
+    <input aria-label="Your answer" autocomplete="off"> <button>Check</button>
+    <p class="explain" hidden><code>arr[3]</code> was set when <code>i == 3</code>, so it holds
+    <code>3 * 2 = 6</code>. <code>arr</code> has indices 0–3, so <code>i</code> stops at 3.</p>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <p><strong>2.</strong> Right after <code>int[] arr = new int[5];</code>, before any
+    assignment, what is <code>arr[2]</code>?</p>
+    <button>an error — reading before assigning is not allowed</button>
+    <button>0</button>
+    <button>whatever value happened to be in memory</button>
+    <p class="explain" hidden><code>new int[5]</code> creates 5 slots and fills every one with
+    the default value for <code>int</code>, which is <code>0</code>. Java always initialises a
+    new array; it never leaves slots with leftover memory.</p>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <p><strong>3.</strong> <code>int[] arr = new int[n];</code> — which loop header visits every
+    valid index and never goes out of bounds?</p>
+    <button><code>for (int i = 0; i &lt;= n; i++)</code></button>
+    <button><code>for (int i = 0; i &lt; n; i++)</code></button>
+    <button><code>for (int i = 1; i &lt; n; i++)</code></button>
+    <p class="explain" hidden>Valid indices are <code>0</code> to <code>n - 1</code>. Option 1
+    reaches <code>i == n</code>, one past the last valid index — this is the exact bug that
+    crashed Lab 1. Option 3 skips index 0.</p>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <p><strong>4.</strong> What happens when this runs?</p>
+<pre><code>static String[] names;
+
+public static void main(String[] args) {
+    names[0] = "Ana";
+}</code></pre>
+    <button>Compiles and prints "Ana"</button>
+    <button>Compiles, then throws NullPointerException at run time</button>
+    <button>Fails to compile</button>
+    <p class="explain" hidden><code>names</code> is a field that is never assigned with
+    <code>new</code>, so it holds <code>null</code> — the compiler cannot catch this, only the
+    JVM can, at run time, the moment you try to index into it. This is exactly Lab 1's row-1
+    bug: allocate the array with <code>new</code> before indexing into it.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Main source:</strong> <a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/arrays.html">Oracle Java Tutorials — Arrays</a>,
+  plus <a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/for.html">the for Statement</a></p>
+  <p>Questions? Ask your tutor. · <a href="../reference/arrays-and-for-loops.html">Reference: Arrays and for loops</a></p>
+</footer>
+
+</main>
+</body>
+</html>

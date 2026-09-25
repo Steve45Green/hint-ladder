@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use CS Tutor in teaching or research, please cite it."
+title: "CS Tutor: an AI tutor for Computer Engineering students that never does graded work"
+type: software
+authors:
+  - family-names: Ameixa
+    given-names: José
+version: 0.6.0
+date-released: 2026-09-25
+license: MIT
+repository-code: "https://github.com/Steve45Green/cs-tutor"
+url: "https://steve45green.github.io/cs-tutor/"
+keywords:
+  - claude-code
+  - education
+  - computer-science
+  - academic-integrity
+  - tutoring

@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Binary Search Trees: Insertion &amp; In-order Traversal</title>
+<style>
+/* CS Tutor study deck: one self-contained file, no dependencies.
+   Slides are authored on a fixed 1600x900 stage that scales to any screen.
+   Keys: → / space next · ← previous · N notes · F fullscreen · Home / End. */
+:root {
+  --bg: #fbfaf7; --fg: #1d1d1f; --muted: #5f5f66; --rule: #e2e2dc; --accent: #1f5fbf;
+  --soft: #e9eef8; --code-bg: #f2f2ed; --right: #1e7a3c; --wrong: #b3261e; --stage-bg: #e8e6e0;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151517; --fg: #e8e8e6; --muted: #a0a0a6; --rule: #2e2e33; --accent: #7aa7ff;
+    --soft: #16233a; --code-bg: #1f1f24; --right: #5cc57f; --wrong: #ff7a70; --stage-bg: #0b0b0d;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--stage-bg); }
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--fg); }
+.viewport { position: fixed; inset: 0; }
+.stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; background: var(--bg); overflow: hidden; }
+.slide { position: absolute; inset: 0; padding: 88px 110px 96px; visibility: hidden; opacity: 0; transition: opacity .25s ease; display: flex; flex-direction: column; }
+.slide.active { visibility: visible; opacity: 1; }
+.slide h1 { font-size: 76px; line-height: 1.1; margin: 0 0 28px; letter-spacing: -0.5px; }
+.slide h2 { font-size: 52px; line-height: 1.15; margin: 0 0 36px; }
+.slide p, .slide li { font-size: 34px; line-height: 1.45; margin: 0 0 18px; }
+.slide ul, .slide ol { padding-left: 1.2em; margin: 0; }
+.slide .kicker { font-size: 24px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 18px; }
+.slide .lead { font-size: 40px; color: var(--muted); }
+.slide.title { justify-content: center; }
+.slide.big { justify-content: center; }
+.slide.big p { font-size: 58px; line-height: 1.25; font-weight: 600; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; flex: 1; }
+figure { margin: 0; } figure svg { width: 100%; height: auto; }
+figcaption { font-size: 24px; color: var(--muted); margin-top: 12px; }
+code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+:not(pre) > code { background: var(--code-bg); padding: .05em .3em; border-radius: 6px; font-size: .9em; }
+pre { background: var(--code-bg); border-radius: 14px; padding: 28px 36px; margin: 0 0 28px; font-size: 30px; line-height: 1.5; }
+pre .line { display: block; }
+pre .line.hl { background: var(--soft); box-shadow: inset 6px 0 var(--accent); margin: 0 -36px; padding: 0 36px; }
+table { border-collapse: collapse; font-size: 30px; }
+th, td { border-bottom: 2px solid var(--rule); padding: 10px 28px; text-align: left; font-family: ui-monospace, Menlo, monospace; }
+th { color: var(--muted); font-family: inherit; }
+.question { background: var(--soft); border-radius: 18px; padding: 36px 44px; }
+.question p { font-size: 40px; font-weight: 600; margin: 0; }
+.answer { margin-top: 28px; border-left: 6px solid var(--right); padding-left: 28px; }
+.question .answer p { font-size: 32px; font-weight: 400; }
+.source { margin-top: auto; font-size: 22px; color: var(--muted); }
+.step { opacity: 0; transition: opacity .2s ease; }
+.step.shown { opacity: 1; }
+.notes { display: none; }
+.hud { position: fixed; left: 0; right: 0; bottom: 0; height: 6px; background: transparent; z-index: 5; }
+.hud .bar { height: 100%; width: 0; background: var(--accent); transition: width .2s ease; }
+.counter { position: fixed; right: 16px; bottom: 14px; font: 14px system-ui, sans-serif; color: var(--muted); z-index: 5; }
+.notes-panel { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); width: min(900px, 92vw); max-height: 40vh; overflow: auto;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 20px; font: 17px/1.5 system-ui, sans-serif;
+  box-shadow: 0 8px 30px rgba(0,0,0,.18); z-index: 6; display: none; }
+.notes-panel.open { display: block; }
+@media (prefers-reduced-motion: reduce) { .slide, .step, .hud .bar { transition: none; } }
+@media print {
+  @page { size: 1600px 900px; margin: 0; }
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .viewport { position: static; }
+  .stage { position: static; transform: none !important; width: auto; height: auto; overflow: visible; }
+  .slide { position: relative; visibility: visible; opacity: 1; width: 1600px; height: 900px; break-after: page; }
+  .step { opacity: 1; }
+  .hud, .counter, .notes-panel { display: none !important; }
+}
+/* Safety net: the engine wraps an overflowing slide's content in .fit and scales it down to fit (never below 60%). */
+.fit { display: flex; flex-direction: column; flex: none; transform-origin: 0 0; }
+</style>
+</head>
+<body>
+<div class="viewport"><div class="stage" id="stage">
+
+<section class="slide title">
+  <div class="kicker">Algorithms and Data Structures · Binary Search Trees</div>
+  <h1>Insertion &amp; In-order Traversal</h1>
+  <p class="lead">By the end you can: insert a key into a BST by hand, write out its in-order traversal, and explain why that traversal always comes out sorted.</p>
+  <aside class="notes">This deck is revision material, not graded. It covers two operations on binary search trees (BSTs): inserting a new key, and visiting every key in sorted order with an in-order traversal. Both operations lean on the same idea — the BST property — so understanding that property first makes the rest fall into place.</aside>
+</section>
+
+<section class="slide">
+  <h2>The BST property</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">For every node <code>k</code>, every key in its left subtree is smaller than <code>k</code>, and every key in its right subtree is larger.</p>
+      <p class="step">This holds at <em>every</em> node, not just the root — each subtree is itself a valid BST.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 700 300" role="img" aria-label="A node k with its left subtree holding keys less than k and its right subtree holding keys greater than k">
+        <line x1="350" y1="80" x2="190" y2="140" stroke="currentColor" stroke-width="3"/>
+        <line x1="350" y1="80" x2="510" y2="140" stroke="currentColor" stroke-width="3"/>
+        <circle cx="350" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="350" y="58" text-anchor="middle" font-size="26" fill="currentColor">k</text>
+        <rect x="60" y="140" width="260" height="120" rx="14" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="190" y="205" text-anchor="middle" font-size="24" fill="currentColor">keys &lt; k</text>
+        <rect x="380" y="140" width="260" height="120" rx="14" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="510" y="205" text-anchor="middle" font-size="24" fill="currentColor">keys &gt; k</text>
+      </svg>
+      <figcaption>The rule applies recursively: inside "keys &lt; k", the same split happens again around whichever node sits at its root.</figcaption>
+    </figure>
+  </div>
+  <p class="source">Source: Cormen, Leiserson, Rivest &amp; Stein, Introduction to Algorithms, 3rd ed., §12.1, p.286</p>
+  <aside class="notes">A binary search tree is a binary tree where, at every single node, the BST property holds: everything in the left subtree is strictly smaller than the node's key, and everything in the right subtree is strictly larger. Because the property is recursive — it applies inside every subtree too — you can reason about the whole tree by reasoning about one node at a time. This one rule is what makes both insertion and in-order traversal work.</aside>
+</section>
+
+<section class="slide">
+  <h2>Insertion: walk down to find the spot</h2>
+  <div class="two-col">
+    <div>
+      <p class="step"><strong>1.</strong> Start at the root. Compare the new key to it.</p>
+      <p class="step"><strong>2.</strong> Go left if smaller, right if larger — repeat at each node.</p>
+      <p class="step"><strong>3.</strong> When you fall off the tree (reach an empty spot), that is exactly where the new node belongs.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 760 440" role="img" aria-label="Searching for where 45 belongs in a BST rooted at 50, following 50 to 30 to 40, then attaching 45 as the right child of 40">
+        <line x1="380" y1="70" x2="220" y2="170" stroke="var(--accent)" stroke-width="6"/>
+        <line x1="380" y1="70" x2="560" y2="170" stroke="currentColor" stroke-width="3"/>
+        <line x1="220" y1="170" x2="120" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="220" y1="170" x2="320" y2="270" stroke="var(--accent)" stroke-width="6"/>
+        <line x1="560" y1="170" x2="480" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="560" y1="170" x2="660" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="320" y1="270" x2="400" y2="370" stroke="var(--accent)" stroke-width="4" stroke-dasharray="8 7"/>
+
+        <circle cx="380" cy="70" r="28" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="380" y="78" text-anchor="middle" font-size="24" fill="currentColor">50</text>
+        <circle cx="380" cy="25" r="14" fill="var(--accent)"/><text x="380" y="30" text-anchor="middle" font-size="16" fill="#fff">1</text>
+
+        <circle cx="220" cy="170" r="28" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="220" y="178" text-anchor="middle" font-size="24" fill="currentColor">30</text>
+        <circle cx="170" cy="170" r="14" fill="var(--accent)"/><text x="170" y="175" text-anchor="middle" font-size="16" fill="#fff">2</text>
+
+        <circle cx="560" cy="170" r="28" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="560" y="178" text-anchor="middle" font-size="24" fill="currentColor">70</text>
+
+        <circle cx="120" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="120" y="278" text-anchor="middle" font-size="24" fill="currentColor">20</text>
+
+        <circle cx="320" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="320" y="278" text-anchor="middle" font-size="24" fill="currentColor">40</text>
+        <circle cx="270" cy="270" r="14" fill="var(--accent)"/><text x="270" y="275" text-anchor="middle" font-size="16" fill="#fff">3</text>
+
+        <circle cx="480" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="480" y="278" text-anchor="middle" font-size="24" fill="currentColor">60</text>
+
+        <circle cx="660" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="660" y="278" text-anchor="middle" font-size="24" fill="currentColor">80</text>
+
+        <circle cx="400" cy="370" r="28" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="6 5"/>
+        <text x="400" y="378" text-anchor="middle" font-size="24" fill="var(--accent)">45</text>
+      </svg>
+      <figcaption>Inserting 45: ① 45 &lt; 50 → left. ② 45 &gt; 30 → right. ③ 45 &gt; 40 and 40 has no right child → 45 becomes 40's right child.</figcaption>
+    </figure>
+  </div>
+  <p class="source">Source: Cormen, Leiserson, Rivest &amp; Stein, Introduction to Algorithms, 3rd ed., §12.3, p.294</p>
+  <aside class="notes">Insertion is just a search that fails on purpose. You walk from the root exactly as if you were looking for the key, comparing at each node and going left or right, and you remember the last node you visited. The moment the pointer you're following goes off the edge of the tree — hits an empty child — you stop: that empty spot is where the new node is attached, as a child of the last node you were at. Here, searching for 45 from the root (50): 45 &lt; 50 so go left to 30; 45 &gt; 30 so go right to 40; 45 &gt; 40 and 40 has no right child, so 45 is attached there as 40's right child. Nothing else in the tree moves.</aside>
+</section>
+
+<section class="slide">
+  <h2>Insertion: pseudocode</h2>
+<pre><code><span class="line step">x ← root;  parent ← NIL</span><span class="line step">while x ≠ NIL:</span><span class="line step">    parent ← x</span><span class="line step hl">    if key &lt; x.key:  x ← x.left</span><span class="line step">    else:            x ← x.right</span><span class="line step">// x fell off the tree; parent is where we attach</span><span class="line step">if parent = NIL:          root ← new node   (tree was empty)</span><span class="line step">elif key &lt; parent.key:    parent.left  ← new node</span><span class="line step">else:                     parent.right ← new node</span></code></pre>
+  <p class="step">The highlighted line is the one comparison that steers the whole walk — it runs once per level, so the loop takes as many steps as the tree is tall.</p>
+  <aside class="notes">This is the standard iterative TREE-INSERT: two pointers, x tracking where the search currently is and parent remembering the last real node visited, since x becomes NIL at the exact moment we need to know its would-be parent. The loop body is just one comparison repeated: go left if the new key is smaller, right otherwise. Once the loop ends, three cases decide where the new node attaches — empty tree, attach as left child, or attach as right child — based on comparing the key against parent instead of x, since x is now NIL.</aside>
+</section>
+
+<section class="slide">
+  <h2>Worked example: building a tree</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">Insert, one at a time, into an empty tree:</p>
+      <p class="step"><code>50, 30, 70, 20, 40, 60, 80, 45</code></p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 760 440" role="img" aria-label="The resulting BST after inserting 50, 30, 70, 20, 40, 60, 80, then 45">
+        <line x1="380" y1="70" x2="220" y2="170" stroke="currentColor" stroke-width="3"/>
+        <line x1="380" y1="70" x2="560" y2="170" stroke="currentColor" stroke-width="3"/>
+        <line x1="220" y1="170" x2="120" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="220" y1="170" x2="320" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="560" y1="170" x2="480" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="560" y1="170" x2="660" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="320" y1="270" x2="400" y2="370" stroke="currentColor" stroke-width="3"/>
+
+        <circle cx="380" cy="70" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="380" y="78" text-anchor="middle" font-size="24" fill="currentColor">50</text>
+        <circle cx="220" cy="170" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="220" y="178" text-anchor="middle" font-size="24" fill="currentColor">30</text>
+        <circle cx="560" cy="170" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="560" y="178" text-anchor="middle" font-size="24" fill="currentColor">70</text>
+        <circle cx="120" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="120" y="278" text-anchor="middle" font-size="24" fill="currentColor">20</text>
+        <circle cx="320" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="320" y="278" text-anchor="middle" font-size="24" fill="currentColor">40</text>
+        <circle cx="480" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="480" y="278" text-anchor="middle" font-size="24" fill="currentColor">60</text>
+        <circle cx="660" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="660" y="278" text-anchor="middle" font-size="24" fill="currentColor">80</text>
+        <circle cx="400" cy="370" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="400" y="378" text-anchor="middle" font-size="24" fill="currentColor">45</text>
+      </svg>
+      <figcaption>Each new key repeats the walk from the previous slide, starting over from the root every time.</figcaption>
+    </figure>
+  </div>
+  <aside class="notes">Walking through it: 50 is inserted first and becomes the root (the tree was empty). 30 &lt; 50 goes left of 50. 70 &gt; 50 goes right of 50. 20 &lt; 50, &lt; 30, so it lands left of 30. 40 &lt; 50, &gt; 30, so it lands right of 30. 60 &gt; 50, &lt; 70, lands left of 70. 80 &gt; 50, &gt; 70, lands right of 70. Finally 45 &lt; 50, &gt; 30, &gt; 40, and 40 has no right child yet, so 45 lands as 40's right child — exactly the walk shown on the previous slide. Notice the insertion order shaped the tree: inserting the same eight keys in a different order can produce a different-looking tree, even though every one of those trees still obeys the BST property.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Check yourself</div>
+  <div class="question">
+    <p>Starting from the tree above, where would inserting 65 attach?</p>
+    <div class="answer step"><p>65 &gt; 50 → right to 70; 65 &lt; 70 → left to 60; 65 &gt; 60 and 60 has no right child → 65 becomes 60's right child.</p></div>
+  </div>
+  <aside class="notes">Trace it exactly like the walk on the earlier slides: compare 65 to the root (50), go right since 65 &gt; 50, land on 70; compare 65 to 70, go left since 65 &lt; 70, land on 60; compare 65 to 60, go right since 65 &gt; 60; 60 has no right child, so that empty spot is where 65 attaches.</aside>
+</section>
+
+<section class="slide">
+  <h2>In-order traversal: the rule</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">At every node, do three things in this order:</p>
+      <p class="step">visit the <strong>left</strong> subtree, then the <strong>node itself</strong>, then the <strong>right</strong> subtree.</p>
+      <p class="step">Apply the same rule recursively inside each subtree.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 600 260" role="img" aria-label="A node with a left child and a right child, labelled with the visit order 1 left subtree, 2 the node, 3 right subtree">
+        <line x1="300" y1="90" x2="150" y2="150" stroke="currentColor" stroke-width="3"/>
+        <line x1="300" y1="90" x2="450" y2="150" stroke="currentColor" stroke-width="3"/>
+        <circle cx="300" cy="60" r="30" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="300" y="68" text-anchor="middle" font-size="22" fill="currentColor">node</text>
+        <text x="345" y="66" text-anchor="start" font-size="22" fill="var(--accent)">2. visit node</text>
+        <circle cx="150" cy="180" r="30" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="150" y="188" text-anchor="middle" font-size="22" fill="currentColor">L</text>
+        <text x="150" y="230" text-anchor="middle" font-size="22" fill="var(--accent)">1. left subtree</text>
+        <circle cx="450" cy="180" r="30" fill="none" stroke="currentColor" stroke-width="3"/>
+        <text x="450" y="188" text-anchor="middle" font-size="22" fill="currentColor">R</text>
+        <text x="450" y="230" text-anchor="middle" font-size="22" fill="var(--accent)">3. right subtree</text>
+      </svg>
+      <figcaption>"In-order" refers to this L, node, R order — not to any particular direction of travel through the tree.</figcaption>
+    </figure>
+  </div>
+  <p class="source">Source: Cormen, Leiserson, Rivest &amp; Stein, Introduction to Algorithms, 3rd ed., §12.1, p.287</p>
+  <aside class="notes">In-order traversal visits every node in a tree exactly once, in this order at each node: everything in the left subtree first, then the node's own key, then everything in the right subtree. Because it's applied recursively, "everything in the left subtree" itself means recursing with the same L-node-R rule, all the way down to the leaves. The name "in-order" is standard terminology contrasted with pre-order (node, left, right) and post-order (left, right, node) — the position of "node" in the sequence is what the name refers to.</aside>
+</section>
+
+<section class="slide">
+  <h2>In-order traversal: pseudocode</h2>
+<pre><code><span class="line step">INORDER(x):</span><span class="line step">    if x ≠ NIL:</span><span class="line step">        INORDER(x.left)</span><span class="line step hl">        visit(x)          // e.g. print x.key</span><span class="line step">        INORDER(x.right)</span></code></pre>
+  <p class="step">Five lines, but it visits every node exactly once: the recursion bottoms out at NIL children, which is why leaves still get visited.</p>
+  <aside class="notes">This is INORDER-TREE-WALK. The base case is x being NIL, which does nothing — that's what stops the recursion at the bottom of the tree. Otherwise, it recurses left first, then does the actual work on the current node (the highlighted line — printing or collecting the key), then recurses right. Because the left recursion always finishes completely before "visit(x)" runs, and "visit(x)" always finishes before the right recursion starts, the overall order across the whole tree is fully determined: left subtree's keys, then this key, then right subtree's keys.</aside>
+</section>
+
+<section class="slide">
+  <h2>Worked example: tracing the walk</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">Same tree as before. Numbers show visit order.</p>
+      <p class="step">Output: <code>20, 30, 40, 45, 50, 60, 70, 80</code></p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 760 440" role="img" aria-label="The same BST with each node numbered 1 through 8 in the order in-order traversal visits it, producing the sorted sequence 20, 30, 40, 45, 50, 60, 70, 80">
+        <line x1="380" y1="70" x2="220" y2="170" stroke="currentColor" stroke-width="3"/>
+        <line x1="380" y1="70" x2="560" y2="170" stroke="currentColor" stroke-width="3"/>
+        <line x1="220" y1="170" x2="120" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="220" y1="170" x2="320" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="560" y1="170" x2="480" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="560" y1="170" x2="660" y2="270" stroke="currentColor" stroke-width="3"/>
+        <line x1="320" y1="270" x2="400" y2="370" stroke="currentColor" stroke-width="3"/>
+
+        <circle cx="380" cy="70" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="380" y="78" text-anchor="middle" font-size="24" fill="currentColor">50</text>
+        <circle cx="380" cy="25" r="15" fill="var(--accent)"/><text x="380" y="30" text-anchor="middle" font-size="17" fill="#fff">5</text>
+
+        <circle cx="220" cy="170" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="220" y="178" text-anchor="middle" font-size="24" fill="currentColor">30</text>
+        <circle cx="170" cy="170" r="15" fill="var(--accent)"/><text x="170" y="175" text-anchor="middle" font-size="17" fill="#fff">2</text>
+
+        <circle cx="560" cy="170" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="560" y="178" text-anchor="middle" font-size="24" fill="currentColor">70</text>
+        <circle cx="610" cy="170" r="15" fill="var(--accent)"/><text x="610" y="175" text-anchor="middle" font-size="17" fill="#fff">7</text>
+
+        <circle cx="120" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="120" y="278" text-anchor="middle" font-size="24" fill="currentColor">20</text>
+        <circle cx="120" cy="317" r="15" fill="var(--accent)"/><text x="120" y="322" text-anchor="middle" font-size="17" fill="#fff">1</text>
+
+        <circle cx="320" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="320" y="278" text-anchor="middle" font-size="24" fill="currentColor">40</text>
+        <circle cx="270" cy="270" r="15" fill="var(--accent)"/><text x="270" y="275" text-anchor="middle" font-size="17" fill="#fff">3</text>
+
+        <circle cx="480" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="480" y="278" text-anchor="middle" font-size="24" fill="currentColor">60</text>
+        <circle cx="480" cy="317" r="15" fill="var(--accent)"/><text x="480" y="322" text-anchor="middle" font-size="17" fill="#fff">6</text>
+
+        <circle cx="660" cy="270" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="660" y="278" text-anchor="middle" font-size="24" fill="currentColor">80</text>
+        <circle cx="660" cy="317" r="15" fill="var(--accent)"/><text x="660" y="322" text-anchor="middle" font-size="17" fill="#fff">8</text>
+
+        <circle cx="400" cy="370" r="28" fill="none" stroke="currentColor" stroke-width="3"/><text x="400" y="378" text-anchor="middle" font-size="24" fill="currentColor">45</text>
+        <circle cx="400" cy="417" r="15" fill="var(--accent)"/><text x="400" y="422" text-anchor="middle" font-size="17" fill="#fff">4</text>
+      </svg>
+      <figcaption>The visit order is exactly the sorted order of the eight keys.</figcaption>
+    </figure>
+  </div>
+  <aside class="notes">Follow INORDER from the root, 50: first recurse fully into the left subtree (rooted at 30), which itself recurses left into 20 (visits 20, since 20 has no children — that's visit #1), returns up to 30 and visits it (#2), then recurses right into 40, which recurses right into 45 (visit #4, after first checking 45's empty left, so 45 alone is #4) — wait, carefully: at 40, recurse left (NIL, nothing happens), visit 40 (#3), recurse right into 45, which has no children, so visit 45 (#4). That finishes the left subtree of 50, so now visit 50 itself (#5). Then recurse into the right subtree rooted at 70: recurse left into 60 (#6), visit 70 (#7), recurse right into 80 (#8). Stitching the numbers together in order: 20, 30, 40, 45, 50, 60, 70, 80 — sorted.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Check yourself</div>
+  <div class="question">
+    <p>If 65 had been inserted (as on the earlier check-yourself slide), where would it appear in the in-order output?</p>
+    <div class="answer step"><p>Between 60 and 70: <code>…, 60, 65, 70, …</code> — in-order output is always sorted, and 65 sits between those two values.</p></div>
+  </div>
+  <aside class="notes">You don't need to re-trace the whole recursion to answer this: in-order traversal always produces sorted output, so a new key's position in that output is just its position in sorted order among the existing keys. 65 is greater than 60 and less than 70, so it slots in between them regardless of where it physically attached in the tree.</aside>
+</section>
+
+<section class="slide">
+  <h2>Why is the output always sorted?</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">At any node <code>k</code>: the left recursion visits only keys &lt; <code>k</code> (BST property), then <code>k</code> itself, then only keys &gt; <code>k</code>.</p>
+      <p class="step">So around every single key, everything printed before it is smaller and everything printed after it is larger.</p>
+      <p class="step">That is precisely what "sorted order" means — and it holds at every node, so it holds for the whole tree.</p>
+    </div>
+  </div>
+  <p class="source">Source: Cormen, Leiserson, Rivest &amp; Stein, Introduction to Algorithms, 3rd ed., §12.1, p.288 (Theorem 12.1)</p>
+  <aside class="notes">This is the argument, and it's worth being able to reproduce it in an exam: the BST property guarantees that everything in a node's left subtree is smaller than the node, and everything in its right subtree is larger. In-order traversal visits left subtree, then node, then right subtree. Combine the two: for any node k, every key printed before k (from the left subtree) is smaller than k, and every key printed after k (from the right subtree) is larger than k. Since this is true simultaneously for every node in the tree, the whole output sequence has the property that it's non-decreasing from start to end — i.e. sorted. This is a proof by induction in disguise: it's really "if both subtrees print in sorted order, so does the whole tree," bottoming out at empty trees which trivially print nothing (sorted).</aside>
+</section>
+
+<section class="slide">
+  <h2>How much does this cost?</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">Insertion: one comparison per level walked down → <strong>O(h)</strong>, where h is the tree's height.</p>
+      <p class="step">In-order traversal: visits every node exactly once → <strong>O(n)</strong>, for n nodes, regardless of shape.</p>
+      <p class="step">h ranges from O(log n) for a bushy tree to O(n) for a skewed one (e.g. inserting already-sorted keys).</p>
+    </div>
+  </div>
+  <p class="source">Source: Cormen, Leiserson, Rivest &amp; Stein, Introduction to Algorithms, 3rd ed., §12.1, p.286</p>
+  <aside class="notes">Insertion's cost is proportional to how far down the tree you walk before falling off, which is at most the tree's height h — so insertion is O(h), not O(n) or O(log n) outright, because h itself depends on the tree's shape. Traversal is different: INORDER visits every node exactly once no matter what, so it's always Θ(n) regardless of shape. The reason h matters so much: if you insert keys that are already sorted (1, 2, 3, 4, 5, …), every new key is larger than everything so far, so each one attaches as the right child of the previous one — the tree degenerates into a straight line, height n, and insertion becomes O(n) per key, O(n²) total. A roughly balanced tree instead keeps h around log₂(n), which is why balanced-BST variants (AVL, red-black trees) exist — they're a later topic, but the motivation is exactly this worst case.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Check yourself</div>
+  <div class="question">
+    <p>You insert 10, 20, 30, 40, 50 in that order into an empty BST. What does the tree look like, and what is the insertion cost of the last key?</p>
+    <div class="answer step"><p>A straight line leaning right (10 → 20 → 30 → 40 → 50, each the right child of the last). Inserting 50 costs O(h) = O(4) comparisons — height grows with every insertion, so this is the worst case, O(n) overall for n keys.</p></div>
+  </div>
+  <aside class="notes">Each new key is larger than every key already in the tree, so it always goes right, all the way down, then attaches as a new rightmost right child — a degenerate, linked-list-shaped tree. This is the worst case mentioned on the previous slide: height equals the number of nodes, so the k-th insertion costs O(k), and inserting n already-sorted keys costs O(1+2+…+n) = O(n²) total, versus O(n log n) for a well-balanced tree.</aside>
+</section>
+
+<section class="slide">
+  <h2>Summary</h2>
+  <ul>
+    <li class="step">Insertion: walk down comparing against each node, left if smaller, right if larger, and attach at the first empty spot. Cost O(h).</li>
+    <li class="step">In-order traversal: left subtree, then node, then right subtree, recursively. Cost O(n), and the output is always sorted — a direct consequence of the BST property.</li>
+  </ul>
+  <p class="source">Go deeper: Cormen, Leiserson, Rivest &amp; Stein, Introduction to Algorithms, 3rd ed., Ch. 12 · Questions? Ask your tutor.</p>
+</section>
+
+</div></div>
+<div class="hud"><div class="bar" id="bar"></div></div>
+<div class="counter" id="counter"></div>
+<div class="notes-panel" id="notes" aria-live="polite"></div>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const slides = [...stage.querySelectorAll('.slide')];
+  const bar = document.getElementById('bar'), counter = document.getElementById('counter'), notes = document.getElementById('notes');
+  let current = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 || 0, 0), slides.length - 1);
+
+  function fit() {
+    const s = Math.min(innerWidth / 1600, innerHeight / 900);
+    stage.style.transform = `translate(${(innerWidth - 1600 * s) / 2}px, ${(innerHeight - 900 * s) / 2}px) scale(${s})`;
+  }
+  const steps = i => [...slides[i].querySelectorAll('.step')];
+  function show(i, revealAll) {
+    slides.forEach((sl, k) => sl.classList.toggle('active', k === i));
+    steps(i).forEach(st => st.classList.toggle('shown', !!revealAll));
+    current = i;
+    history.replaceState(null, '', '#' + (i + 1));
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    const n = slides[i].querySelector('.notes');
+    notes.textContent = n ? n.textContent.trim() : '(no notes)';
+  }
+  function next() {
+    const hidden = steps(current).find(st => !st.classList.contains('shown'));
+    if (hidden) hidden.classList.add('shown');
+    else if (current < slides.length - 1) show(current + 1, false);
+  }
+  function prev() {
+    const shown = steps(current).filter(st => st.classList.contains('shown'));
+    if (shown.length) shown[shown.length - 1].classList.remove('shown');
+    else if (current > 0) show(current - 1, true);
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0, false);
+    else if (e.key === 'End') show(slides.length - 1, true);
+    else if (e.key.toLowerCase() === 'n') notes.classList.toggle('open');
+    else if (e.key.toLowerCase() === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+  });
+  let x0 = null;
+  addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+  });
+  addEventListener('click', e => { if (!e.target.closest('a, button, .notes-panel')) (e.clientX > innerWidth / 3 ? next : prev)(); });
+  function autofit() {
+    slides.forEach(sl => {
+      if (sl.scrollHeight <= sl.clientHeight + 1 || sl.querySelector(':scope > .fit')) return;
+      const cs = getComputedStyle(sl);
+      const room = sl.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const wrap = document.createElement('div');
+      wrap.className = 'fit';
+      [...sl.children].filter(c => !c.classList.contains('notes')).forEach(c => wrap.appendChild(c));
+      sl.insertBefore(wrap, sl.firstChild);
+      let r = 1;
+      for (let pass = 0; pass < 3; pass++) {   // a wider box wraps text differently: measure again
+        r = Math.min(1, Math.max(0.6, room / wrap.offsetHeight));   // layout px, unaffected by transforms
+        wrap.style.width = (100 / r) + '%';
+        wrap.style.transform = `scale(${r})`;
+      }
+    });
+  }
+  addEventListener('resize', fit);
+  fit(); autofit(); show(current, false);
+  if (document.fonts) document.fonts.ready.then(autofit);
+})();
+</script>
+</body>
+</html>

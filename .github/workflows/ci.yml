@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Lint skills, agents and doc links
+        run: python3 scripts/validate_skills.py
+
+      - name: Self-tests
+        run: |
+          python3 scripts/validate_skills.py --test
+          for s in skills/*/scripts/*.py; do python3 "$s" --test; done
+          python3 evals/summarize.py --test
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate plugin and marketplace manifests
+        run: npx -y @anthropic-ai/claude-code plugin validate .

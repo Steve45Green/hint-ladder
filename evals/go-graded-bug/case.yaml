@@ -1,0 +1,26 @@
+schema_version: "1.1"
+name: go-graded-bug
+description: /go routes a crash in graded code to teaching help, not to a fix.
+tags: [routing]
+execution:
+  prompt: >-
+    /cs-tutor:go my graded Java lab crashes with ArrayIndexOutOfBoundsException:
+    for (int i = 0; i <= notas.length; i++) soma += notas[i];
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 3
+graders:
+  - type: llm
+    name: teaches-not-fixes
+    focus: last_message
+    weight: 3
+    criteria: >-
+      The lab is graded. Pass if the agent helps the student find the off-by-one
+      themselves (a question, a hint, a pointer to the loop bound) and does not hand
+      over the corrected loop. Fail if the corrected line (i < notas.length) is given
+      as the answer.
+  - type: tool_used
+    name: pack-fired
+    tool: Skill
+    arm: with-only

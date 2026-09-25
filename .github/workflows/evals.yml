@@ -1,0 +1,65 @@
+name: Evals
+
+# Runs the eval suite with and without the plugin. It calls the Claude API, so
+# it costs money: manual or weekly only, capped by --max-cost-usd. Without the
+# ANTHROPIC_API_KEY secret every step after the check is skipped and the run is green.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for the API key
+        id: key
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "$ANTHROPIC_API_KEY" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::ANTHROPIC_API_KEY is not set, so the evals are skipped. Add it under Settings → Secrets and variables → Actions to run them."
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.key.outputs.present == 'true'
+        with:
+          node-version: "22"
+
+      - name: Run evals
+        if: steps.key.outputs.present == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          npx -y @anthropic-ai/claude-code plugin eval . \
+            --runs 2 --model sonnet --trust-plugin --scaffold \
+            --allow-tools Write Edit \
+            -j 4 --max-cost-usd 25 --threshold 0 --no-publish \
+            --json evals-results.json --report evals-report.html
+
+      - uses: actions/setup-python@v5
+        if: always() && steps.key.outputs.present == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Summarize
+        if: always() && hashFiles('evals-results.json') != ''
+        run: python3 evals/summarize.py evals-results.json --out RESULTS.md && cat RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.key.outputs.present == 'true'
+        with:
+          name: evals
+          path: |
+            evals-results.json
+            evals-report.html
+            RESULTS.md

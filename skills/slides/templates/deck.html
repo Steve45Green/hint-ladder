@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deck title</title>
+<style>
+/* CS Tutor study deck: one self-contained file, no dependencies.
+   Slides are authored on a fixed 1600x900 stage that scales to any screen.
+   Keys: → / space next · ← previous · N notes · F fullscreen · Home / End. */
+:root {
+  --bg: #fbfaf7; --fg: #1d1d1f; --muted: #5f5f66; --rule: #e2e2dc; --accent: #1f5fbf;
+  --soft: #e9eef8; --code-bg: #f2f2ed; --right: #1e7a3c; --wrong: #b3261e; --stage-bg: #e8e6e0;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151517; --fg: #e8e8e6; --muted: #a0a0a6; --rule: #2e2e33; --accent: #7aa7ff;
+    --soft: #16233a; --code-bg: #1f1f24; --right: #5cc57f; --wrong: #ff7a70; --stage-bg: #0b0b0d;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--stage-bg); }
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--fg); }
+.viewport { position: fixed; inset: 0; }
+.stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; background: var(--bg); overflow: hidden; }
+.slide { position: absolute; inset: 0; padding: 88px 110px 96px; visibility: hidden; opacity: 0; transition: opacity .25s ease; display: flex; flex-direction: column; }
+.slide.active { visibility: visible; opacity: 1; }
+.slide h1 { font-size: 76px; line-height: 1.1; margin: 0 0 28px; letter-spacing: -0.5px; }
+.slide h2 { font-size: 52px; line-height: 1.15; margin: 0 0 36px; }
+.slide p, .slide li { font-size: 34px; line-height: 1.45; margin: 0 0 18px; }
+.slide ul, .slide ol { padding-left: 1.2em; margin: 0; }
+.slide .kicker { font-size: 24px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 18px; }
+.slide .lead { font-size: 40px; color: var(--muted); }
+.slide.title { justify-content: center; }
+.slide.big { justify-content: center; }
+.slide.big p { font-size: 58px; line-height: 1.25; font-weight: 600; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; flex: 1; }
+figure { margin: 0; }
+/* A figure never grows past the stage: wide drawings shrink to fit (the SVG keeps its aspect ratio). */
+figure svg { display: block; width: 100%; height: auto; max-height: 520px; }
+.two-col figure svg { max-height: 600px; }
+/* Diagram parts: draw .edge lines first, then .node shapes, which are filled with the
+   background so they cover the edge ends; .hl marks the part being discussed. */
+.edge { stroke: currentColor; stroke-width: 3; fill: none; }
+.node { fill: var(--bg); stroke: currentColor; stroke-width: 3; }
+.label { fill: currentColor; font-size: 22px; }
+.edge.hl { stroke: var(--accent); stroke-width: 5; }
+.node.hl { fill: var(--soft); stroke: var(--accent); }
+.label.hl { fill: var(--accent); }
+figcaption { font-size: 24px; color: var(--muted); margin-top: 12px; }
+code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+:not(pre) > code { background: var(--code-bg); padding: .05em .3em; border-radius: 6px; font-size: .9em; }
+pre { background: var(--code-bg); border-radius: 14px; padding: 28px 36px; margin: 0 0 28px; font-size: 30px; line-height: 1.5; }
+pre .line { display: block; }
+pre .line.hl { background: var(--soft); box-shadow: inset 6px 0 var(--accent); margin: 0 -36px; padding: 0 36px; }
+table { border-collapse: collapse; font-size: 30px; }
+th, td { border-bottom: 2px solid var(--rule); padding: 10px 28px; text-align: left; font-family: ui-monospace, Menlo, monospace; }
+th { color: var(--muted); font-family: inherit; }
+.question { background: var(--soft); border-radius: 18px; padding: 36px 44px; }
+.question p { font-size: 40px; font-weight: 600; margin: 0; }
+.answer { margin-top: 28px; border-left: 6px solid var(--right); padding-left: 28px; }
+.question .answer p { font-size: 32px; font-weight: 400; }
+.source { margin-top: auto; font-size: 22px; color: var(--muted); }
+/* Safety net: the engine wraps an overflowing slide's content in .fit and scales it down to fit (never below 60%). */
+.fit { display: flex; flex-direction: column; flex: none; transform-origin: 0 0; }
+.step { opacity: 0; transition: opacity .2s ease; }
+.step.shown { opacity: 1; }
+.notes { display: none; }
+.hud { position: fixed; left: 0; right: 0; bottom: 0; height: 6px; background: transparent; z-index: 5; }
+.hud .bar { height: 100%; width: 0; background: var(--accent); transition: width .2s ease; }
+.counter { position: fixed; right: 16px; bottom: 14px; font: 14px system-ui, sans-serif; color: var(--muted); z-index: 5; }
+.notes-panel { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); width: min(900px, 92vw); max-height: 40vh; overflow: auto;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 20px; font: 17px/1.5 system-ui, sans-serif;
+  box-shadow: 0 8px 30px rgba(0,0,0,.18); z-index: 6; display: none; }
+.notes-panel.open { display: block; }
+@media (prefers-reduced-motion: reduce) { .slide, .step, .hud .bar { transition: none; } }
+@media print {
+  @page { size: 1600px 900px; margin: 0; }
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .viewport { position: static; }
+  .stage { position: static; transform: none !important; width: auto; height: auto; overflow: visible; }
+  .slide { position: relative; visibility: visible; opacity: 1; width: 1600px; height: 900px; break-after: page; }
+  .step { opacity: 1; }
+  .hud, .counter, .notes-panel { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="stage" id="stage">
+
+<section class="slide title">
+  <div class="kicker">Course unit · Topic</div>
+  <h1>Deck title</h1>
+  <p class="lead">By the end you can: one concrete action, tied to the mission.</p>
+  <aside class="notes">Notes are the explanation in full sentences, for studying alone. Press N to show them.</aside>
+</section>
+
+<section class="slide">
+  <h2>The idea</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">One idea per slide.</p>
+      <p class="step">Each point appears when you press → or space.</p>
+    </div>
+    <figure>
+      <!-- inline SVG diagram: memory, pointers, trees, stacks, pipelines -->
+      <svg viewBox="0 0 400 160" role="img" aria-label="A reference pointing to an object">
+        <line class="edge" x1="130" y1="75" x2="230" y2="75"/>
+        <rect class="node" x="10" y="40" width="120" height="70" rx="10"/>
+        <text class="label" x="70" y="82" text-anchor="middle">ref</text>
+        <rect class="node hl" x="230" y="40" width="160" height="70" rx="10"/>
+        <text class="label" x="310" y="82" text-anchor="middle">object</text>
+      </svg>
+      <figcaption>What the figure shows, in one sentence.</figcaption>
+    </figure>
+  </div>
+  <p class="source">Source: book, chapter, page</p>
+  <aside class="notes">Explain the figure here.</aside>
+</section>
+
+<section class="slide">
+  <h2>Worked example</h2>
+<pre><code><span class="line step">int[] a = new int[3];</span><span class="line step">for (int i = 0; i &lt; a.length; i++) {</span><span class="line step">    a[i] = i * 2;</span><span class="line step">}</span></code></pre>
+  <p class="step">Each line appears in order; <code>.hl</code> highlights the line being discussed.</p>
+  <aside class="notes">Walk through the example line by line.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Check yourself</div>
+  <div class="question">
+    <p>What does <code>a[2]</code> hold after the loop?</p>
+    <div class="answer step"><p>4 — the loop stores <code>i * 2</code>, and <code>i</code> is 2 on the last pass.</p></div>
+  </div>
+  <aside class="notes">Answer from memory before pressing → to reveal.</aside>
+</section>
+
+<section class="slide">
+  <h2>Summary</h2>
+  <ul>
+    <li class="step">Point one.</li>
+    <li class="step">Point two.</li>
+  </ul>
+  <p class="source">Go deeper: the single best source · Questions? Ask your tutor.</p>
+  <aside class="notes">Say the summary in your own words before reading it, then check.</aside>
+</section>
+
+</div></div>
+<div class="hud"><div class="bar" id="bar"></div></div>
+<div class="counter" id="counter"></div>
+<div class="notes-panel" id="notes" aria-live="polite"></div>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const slides = [...stage.querySelectorAll('.slide')];
+  const bar = document.getElementById('bar'), counter = document.getElementById('counter'), notes = document.getElementById('notes');
+  let current = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 || 0, 0), slides.length - 1);
+
+  function fit() {
+    const s = Math.min(innerWidth / 1600, innerHeight / 900);
+    stage.style.transform = `translate(${(innerWidth - 1600 * s) / 2}px, ${(innerHeight - 900 * s) / 2}px) scale(${s})`;
+  }
+  const steps = i => [...slides[i].querySelectorAll('.step')];
+  function show(i, revealAll) {
+    slides.forEach((sl, k) => sl.classList.toggle('active', k === i));
+    steps(i).forEach(st => st.classList.toggle('shown', !!revealAll));
+    current = i;
+    history.replaceState(null, '', '#' + (i + 1));
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    const n = slides[i].querySelector('.notes');
+    notes.textContent = n ? n.textContent.trim() : '(no notes)';
+  }
+  function next() {
+    const hidden = steps(current).find(st => !st.classList.contains('shown'));
+    if (hidden) hidden.classList.add('shown');
+    else if (current < slides.length - 1) show(current + 1, false);
+  }
+  function prev() {
+    const shown = steps(current).filter(st => st.classList.contains('shown'));
+    if (shown.length) shown[shown.length - 1].classList.remove('shown');
+    else if (current > 0) show(current - 1, true);
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0, false);
+    else if (e.key === 'End') show(slides.length - 1, true);
+    else if (e.key.toLowerCase() === 'n') notes.classList.toggle('open');
+    else if (e.key.toLowerCase() === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+  });
+  let x0 = null;
+  addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+  });
+  addEventListener('click', e => { if (!e.target.closest('a, button, .notes-panel')) (e.clientX > innerWidth / 3 ? next : prev)(); });
+  function autofit() {
+    slides.forEach(sl => {
+      if (sl.scrollHeight <= sl.clientHeight + 1 || sl.querySelector(':scope > .fit')) return;
+      const cs = getComputedStyle(sl);
+      const room = sl.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const wrap = document.createElement('div');
+      wrap.className = 'fit';
+      [...sl.children].filter(c => !c.classList.contains('notes')).forEach(c => wrap.appendChild(c));
+      sl.insertBefore(wrap, sl.firstChild);
+      let r = 1;
+      for (let pass = 0; pass < 3; pass++) {   // a wider box wraps text differently: measure again
+        r = Math.min(1, Math.max(0.6, room / wrap.offsetHeight));   // layout px, unaffected by transforms
+        wrap.style.width = (100 / r) + '%';
+        wrap.style.transform = `scale(${r})`;
+      }
+    });
+  }
+  addEventListener('resize', fit);
+  fit(); autofit(); show(current, false);
+  if (document.fonts) document.fonts.ready.then(autofit);
+})();
+</script>
+</body>
+</html>

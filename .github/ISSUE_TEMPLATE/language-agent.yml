@@ -1,0 +1,24 @@
+name: New language agent
+description: A language taught in your course that the agent library lacks
+labels: [agent]
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language or platform
+    validations:
+      required: true
+  - type: textarea
+    id: units
+    attributes:
+      label: Course units that use it
+      description: Unit names and the school.
+  - type: input
+    id: style
+    attributes:
+      label: Reference style guide
+  - type: textarea
+    id: toolchain
+    attributes:
+      label: Toolchain the course uses
+      description: Compiler or interpreter, versions, test framework, linter.

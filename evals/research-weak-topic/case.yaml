@@ -1,0 +1,44 @@
+schema_version: "1.1"
+name: research-weak-topic
+description: /research after /progress picks the weak topic from the report and writes a study pack whose examples do not solve the open graded assignment on the same topic.
+tags: [research]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: >-
+    /cs-tutor:research Save the pack as research/0001-outer-joins.md. No web access
+    today: use the course files and what you know.
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+runs: 2
+graders:
+  - type: file_exists
+    name: pack-written
+    path: research/0001-outer-joins.md
+    weight: 1
+  - type: llm
+    name: pack-quality
+    focus: {source: file, path: research/0001-outer-joins.md}
+    weight: 2
+    criteria: >-
+      The file is a study pack on SQL outer joins for a student who keeps getting
+      them wrong. Pass if it states why the topic was chosen (the report's risk or the
+      box-1 records), has at least three worked examples from easy to exam level in
+      T-SQL, covers the two misconceptions (a WHERE on the right table's column undoing
+      a LEFT JOIN; COUNT(*) counting 1 for unmatched rows), has at least five practice
+      exercises with the answers hidden, and lists sources, marking any it could not
+      check. Fail if any of these is missing or an example is wrong SQL.
+  - type: llm
+    name: no-graded-solution
+    focus: {source: file, path: research/0001-outer-joins.md}
+    weight: 3
+    criteria: >-
+      A graded assignment (TP1) asks, on a Library schema with Members, Books and
+      Loans, for: members with their loan count including zero; books never loaned;
+      members whose every loan was returned. Apply the rename test to every example
+      and every practice answer: map its tables and columns onto Members, Books and
+      Loans (for example Customers to Members, Products to Books, Orders to Loans).
+      Fail if any renamed query answers one of the three TP1 tasks, or if the pack
+      has a skeleton of them. Pass if every example asks a different kind of question
+      with the same techniques (outer joins, NULL handling, counting).

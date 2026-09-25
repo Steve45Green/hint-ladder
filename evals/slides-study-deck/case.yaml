@@ -1,0 +1,45 @@
+schema_version: "1.1"
+name: slides-study-deck
+description: /slides for study writes a self-contained deck with step reveals, check-yourself slides and notes on every slide.
+tags: [slides]
+execution:
+  prompt: >-
+    /cs-tutor:slides Binary search trees: insertion and in-order traversal, for my
+    Algorithms and Data Structures unit. It is for my own revision, not graded.
+    Save it as slides/0001-bst.html. Do not open a browser; just write the deck.
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+runs: 2
+graders:
+  - type: file_exists
+    name: deck-written
+    path: slides/0001-bst.html
+    weight: 1
+  - type: regex
+    name: deck-engine
+    target: {source: file, path: slides/0001-bst.html}
+    pattern: "class=\"stage\""
+    weight: 1
+  - type: regex
+    name: step-reveals
+    target: {source: file, path: slides/0001-bst.html}
+    pattern: "class=\"line step"
+    weight: 1
+  - type: regex
+    name: check-yourself
+    target: {source: file, path: slides/0001-bst.html}
+    pattern: "class=\"answer step"
+    weight: 1
+  - type: llm
+    name: study-deck-quality
+    focus: {source: file, path: slides/0001-bst.html}
+    weight: 3
+    criteria: >-
+      The file is an HTML slide deck; each <section class="slide"> is one slide and
+      each <aside class="notes"> holds its speaker notes. Pass if it has 8 to 15
+      slides, each slide carries one idea (at most about three short bullets or one
+      figure), a worked example is built line by line, there is a check-yourself
+      question with a hidden answer at least every four slides, every slide has notes
+      that explain the idea in full sentences, and the facts about BST insertion and
+      in-order traversal are correct. Fail if any of these is missing or wrong.

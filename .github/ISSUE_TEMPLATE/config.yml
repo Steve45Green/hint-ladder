@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Tutorials and troubleshooting
+    url: https://github.com/Steve45Green/cs-tutor/blob/main/docs/tutorials/README.md
+    about: Step-by-step guides, and fixes for the common problems.
+  - name: Questions and ideas (Discussions)
+    url: https://github.com/Steve45Green/cs-tutor/discussions
+    about: Ask how to use CS Tutor, or share how your course uses it.
+  - name: Security issue
+    url: https://github.com/Steve45Green/cs-tutor/security/advisories/new
+    about: Report privately; see SECURITY.md.

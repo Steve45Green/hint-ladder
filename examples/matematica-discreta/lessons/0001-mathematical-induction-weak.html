@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0001 · Mathematical induction (weak)</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Matemática Discreta · Lesson 0001 · ~10 min</p>
+  <h1>Mathematical induction: proving a formula for every n</h1>
+  <p class="goal"><strong>By the end of this lesson you can</strong> write a complete weak-induction proof — base case and inductive step, correctly labelled — for a sum formula, in the form a marker cannot fault.</p>
+</header>
+
+<section>
+  <h2>The idea</h2>
+  <p>Induction proves a statement <em>P(n)</em> for <em>every</em> natural number n from some starting point n₀ onward, without checking each n one by one. It has exactly two parts:</p>
+  <ul>
+    <li><strong>Base case</strong>: show P(n₀) is true (usually n₀ = 0 or 1).</li>
+    <li><strong>Inductive step</strong>: assume P(k) is true for some arbitrary k ≥ n₀ — this assumption is the <strong>inductive hypothesis (IH)</strong> — and use it to show P(k+1) is true.</li>
+  </ul>
+  <p>Checking a few values of n is not a proof: it only shows the first few dominoes are the right shape, not that each one topples the next. Source: Rosen, <em>Discrete Mathematics and Its Applications</em>, "Mathematical Induction" (see <a href="../RESOURCES.md">RESOURCES.md</a>).</p>
+  <figure>
+    <svg viewBox="0 0 460 150" role="img" aria-labelledby="dominoTitle" aria-describedby="dominoDesc">
+      <title id="dominoTitle">Five dominoes in a row</title>
+      <desc id="dominoDesc">The first domino has fallen and is tipping the second; the third, fourth and fifth are still standing but will fall in turn.</desc>
+      <line x1="0" y1="130" x2="460" y2="130" stroke="var(--rule)" stroke-width="2"/>
+      <rect x="-9" y="-70" width="18" height="70" rx="3" fill="var(--accent)" transform="translate(50,130) rotate(80)"/>
+      <rect x="-9" y="-70" width="18" height="70" rx="3" fill="var(--accent)" transform="translate(150,130) rotate(30)"/>
+      <rect x="-9" y="-70" width="18" height="70" rx="3" fill="var(--fg)" transform="translate(250,130) rotate(0)"/>
+      <rect x="-9" y="-70" width="18" height="70" rx="3" fill="var(--fg)" transform="translate(340,130) rotate(0)"/>
+      <rect x="-9" y="-70" width="18" height="70" rx="3" fill="var(--fg)" transform="translate(420,130) rotate(0)"/>
+      <text x="50" y="18" font-size="13" fill="var(--muted)" text-anchor="middle">P(1): base case</text>
+      <text x="200" y="18" font-size="13" fill="var(--muted)" text-anchor="middle">P(k) ⟹ P(k+1): inductive step</text>
+    </svg>
+    <figcaption>The base case falls on its own; the inductive step guarantees that whenever one domino falls, the next one does too — so all of them fall.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Worked example</h2>
+  <p>Claim: for every n ≥ 1, 1 + 2 + … + n = n(n+1)/2.</p>
+  <table class="trace">
+    <thead><tr><th>Part</th><th>What you write</th><th>Why it's needed</th></tr></thead>
+    <tbody>
+      <tr><td>Base case</td><td>n = 1: LHS = 1, RHS = 1·2/2 = 1. Equal.</td><td>Anchors the chain at n = 1.</td></tr>
+      <tr><td>IH</td><td>Assume 1 + 2 + … + k = k(k+1)/2 for some k ≥ 1.</td><td>Lets us build P(k+1) on top of P(k).</td></tr>
+      <tr><td>Inductive step</td><td>1+…+k+(k+1) = k(k+1)/2 + (k+1) [IH] = (k+1)(k+2)/2</td><td>Shows P(k) true ⟹ P(k+1) true.</td></tr>
+      <tr><td>Conclusion</td><td>By induction, the formula holds for all n ≥ 1.</td><td>Cites the principle — never skip this line.</td></tr>
+    </tbody>
+  </table>
+  <p>The algebra in the inductive step: start from the IH, add the next term (k+1), then factor.</p>
+  <pre><code>k(k+1)/2 + (k+1) = (k+1)(k/2 + 1) = (k+1)(k+2)/2</code></pre>
+  <p>That last expression is exactly n(n+1)/2 with n replaced by k+1 — which is precisely what P(k+1) claims.</p>
+</section>
+
+<section>
+  <h2>Practice</h2>
+
+  <div class="predict" data-answer="1">
+    <p><strong>1.</strong> For the claim "for every n ≥ 1, 1+2+…+n = n(n+1)/2", what is the value of the right-hand side n(n+1)/2 when n = 1?</p>
+    <input aria-label="Your answer" autocomplete="off"> <button>Check</button>
+    <p class="explain" hidden>1·2/2 = 1 — matches the left-hand side (just the number 1), so the base case holds.</p>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <p><strong>2.</strong> In the inductive step, what exactly do you assume?</p>
+    <button>That P holds for every k ≥ n₀</button>
+    <button>That P holds for some fixed k ≥ n₀</button>
+    <button>That P holds only for k = n₀</button>
+    <p class="explain" hidden>You fix one arbitrary k ≥ n₀ and assume P(k) — that's the inductive hypothesis. You never assume P holds for all n; that's the thing being proved.</p>
+  </div>
+
+  <div class="predict" data-answer="55">
+    <p><strong>3.</strong> Now that 1+2+…+n = n(n+1)/2 is proven for every n ≥ 1, use it to compute 1+2+…+10.</p>
+    <input aria-label="Your answer" autocomplete="off"> <button>Check</button>
+    <p class="explain" hidden>10·11/2 = 55. One line, no need to add ten numbers by hand — that's the payoff of having proved the formula.</p>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <p><strong>4.</strong> A student checks the formula for n = 1, 2, 3 and writes "it works, so it's proven for all n." What's missing?</p>
+    <button>Nothing, a few checks are already a proof</button>
+    <button>The inductive step linking k to k plus one</button>
+    <button>A base case, since three checks are not one</button>
+    <p class="explain" hidden>Checking cases never covers the infinitely many n left untested. Only an inductive step — showing P(k) ⟹ P(k+1) for arbitrary k — closes the gap for every n at once. (A base case is present here; three correct checks include n = 1.)</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Main source:</strong> Rosen, <em>Discrete Mathematics and Its Applications</em>, "Mathematical Induction" — see <a href="../RESOURCES.md">RESOURCES.md</a> for the full list.</p>
+  <p>Questions? Ask your tutor. · <a href="../reference/induction.html">Cheat sheet: induction</a></p>
+</footer>
+
+</main>
+</body>
+</html>

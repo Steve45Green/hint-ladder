@@ -1,0 +1,62 @@
+schema_version: "1.1"
+name: setup-classification
+description: /setup classifies a pasted curriculum, asks nothing already answered, and wires each active unit to the right agent.
+tags: [setup]
+execution:
+  prompt: >-
+    /cs-tutor:setup Here are my course units. Answers to your questions, so do not
+    ask: create the course in this folder (option 3); all units below are active this semester; Introdução à Programação and
+    Programação Orientada por Objetos use Java; Tecnologias Web uses PHP; DBMS is
+    SQL Server; my computer runs Windows; locale Portugal; language English; AI
+    policy unknown.
+    Introdução à Programação 9119102 1º ano 1º semestre 6 ECTS TP:30 PL:45 ;
+    Análise Matemática 9119103 1º ano 1º semestre 6 ECTS TP:30 PL:30 ;
+    Bases de Dados 1 9119110 1º ano 2º semestre 6 ECTS TP:15 PL:45 ;
+    Programação Orientada por Objetos 9119106 1º ano 2º semestre 6 ECTS TP:30 PL:45 ;
+    Sistemas Operativos 9119115 2º ano 1º semestre 6 ECTS TP:15 PL:45 ;
+    Tecnologias Web 9119116 2º ano 2º semestre 6 ECTS TP:15 PL:45 ;
+    Segurança em Redes de Comunicação 9119123 3º ano 1º semestre 6 ECTS TP:15 PL:45
+  max_turns: 60
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+runs: 1
+graders:
+  - type: file_exists
+    name: curriculum-written
+    path: CURRICULUM.md
+    weight: 1
+  - type: regex
+    name: databases-to-sql
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Bases de Dados 1[^\\n]*sql-expert"
+    weight: 1
+  - type: regex
+    name: intro-to-java
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Introdução à Programação[^\\n]*java-expert"
+    weight: 1
+  - type: regex
+    name: os-to-c
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Sistemas Operativos[^\\n]*c-expert"
+    weight: 1
+  - type: regex
+    name: security-to-linux
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Segurança em Redes[^\\n]*linux-expert"
+    weight: 1
+  - type: regex
+    name: math-no-agent
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Análise Matemática[^\\n]*-expert"
+    match: not_contains
+    weight: 1
+  - type: regex
+    name: platform-recorded
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "windows-expert"
+    weight: 1
+  - type: file_exists
+    name: db-folder-wired
+    path: bases-de-dados-1/.claude/settings.json
+    weight: 1

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="340" viewBox="0 0 1280 340" role="img" aria-labelledby="t d">
+<title id="t">CS Tutor</title>
+<desc id="d">The AI tutor for Computer Engineering students that teaches with a five-rung hint ladder and never writes graded solutions.</desc>
+<rect width="1280" height="340" fill="#0d1117"/>
+<g font-family="Segoe UI, -apple-system, Helvetica, Arial, sans-serif">
+<text x="64" y="118" font-size="64" font-weight="800" fill="#e6edf3">CS Tutor</text>
+<text x="66" y="168" font-size="24" fill="#e6edf3">The AI tutor for Computer Engineering students.</text>
+<text x="66" y="202" font-size="24" fill="#9aa4ae">It teaches you, gives feedback, and never does your graded work.</text>
+<text x="66" y="262" font-size="16" fill="#7aa7ff" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/setup · /go · /lesson · /slides · /exam · /progress · /research</text>
+<rect x="760" y="44" width="420" height="36" rx="8" fill="#16233a"/><text x="776" y="68" font-size="16" fill="#7aa7ff" font-weight="700">1</text><text x="804" y="68" font-size="16" fill="#e6edf3">Restate the task</text><rect x="778" y="90" width="420" height="36" rx="8" fill="#16233a"/><text x="794" y="114" font-size="16" fill="#7aa7ff" font-weight="700">2</text><text x="822" y="114" font-size="16" fill="#e6edf3">Name the concept</text><rect x="796" y="136" width="420" height="36" rx="8" fill="#16233a"/><text x="812" y="160" font-size="16" fill="#7aa7ff" font-weight="700">3</text><text x="840" y="160" font-size="16" fill="#e6edf3">Analogous example</text><rect x="814" y="182" width="420" height="36" rx="8" fill="#16233a"/><text x="830" y="206" font-size="16" fill="#7aa7ff" font-weight="700">4</text><text x="858" y="206" font-size="16" fill="#e6edf3">Skeleton with gaps</text><rect x="832" y="228" width="420" height="36" rx="8" fill="#16233a"/><text x="848" y="252" font-size="16" fill="#7aa7ff" font-weight="700">5</text><text x="876" y="252" font-size="16" fill="#e6edf3">Review your attempt</text><rect x="850" y="274" width="420" height="36" rx="8" fill="none" stroke="#ff7a70" stroke-width="1.5" stroke-dasharray="6 5"/><text x="866" y="298" font-size="16" fill="#ff7a70" font-weight="700">6</text><text x="894" y="298" font-size="16" fill="#ff7a70" text-decoration="line-through">Write your graded solution</text><text x="1258" y="298" font-size="13" fill="#ff7a70" text-anchor="end">you do this</text>
+</g>
+</svg>

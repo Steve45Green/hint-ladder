@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NNNN · Lesson title</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Course unit · Lesson NNNN · ~10 min</p>
+  <h1>Lesson title</h1>
+  <p class="goal"><strong>By the end of this lesson you can</strong> do one concrete thing tied to the mission.</p>
+</header>
+
+<section>
+  <h2>The idea</h2>
+  <p>Only the knowledge the practice needs. Every claim for the exam has a source: <a href="#">book, chapter</a>.</p>
+  <figure>
+    <!-- inline SVG for memory, pointers, trees, stacks, queues, state machines -->
+    <figcaption>What the figure shows, in one sentence.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Worked example</h2>
+<pre><code>int sum = 0;
+for (int i = 0; i &lt; 3; i++)
+    sum += i;</code></pre>
+  <table class="trace">
+    <thead><tr><th>step</th><th>i</th><th>sum</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>2</td><td>1</td><td>1</td></tr>
+      <tr><td>3</td><td>2</td><td>3</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Practice</h2>
+
+  <div class="predict" data-answer="3">
+    <p><strong>1.</strong> What does this print?</p>
+<pre><code>int sum = 0;
+for (int i = 0; i &lt; 3; i++) sum += i;
+printf("%d\n", sum);</code></pre>
+    <input aria-label="Your answer" autocomplete="off"> <button>Check</button>
+    <p class="explain" hidden>0 + 1 + 2 = 3: the loop stops before <code>i</code> reaches 3.</p>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <p><strong>2.</strong> With <code>n = 5</code>, how many times does the body of <code>for (i = 0; i &lt; n; i++)</code> run?</p>
+    <button>4</button>
+    <button>5</button>
+    <button>6</button>
+    <p class="explain" hidden><code>i</code> takes the values 0, 1, 2, 3, 4: that is n = 5 values.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Main source:</strong> <a href="#">the best source to go deeper</a></p>
+  <p>Questions? Ask your tutor. · <a href="#">Previous lesson</a> · <a href="../reference/">Reference</a></p>
+</footer>
+
+</main>
+</body>
+</html>

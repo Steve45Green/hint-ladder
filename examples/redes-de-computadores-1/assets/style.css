@@ -1,0 +1,62 @@
+/* Shared style for every lesson and cheat sheet in the workspace. */
+:root {
+  --bg: #fdfdfb; --fg: #1d1d1f; --muted: #5f5f66; --rule: #e2e2dc;
+  --accent: #1f5fbf; --code-bg: #f2f2ed; --right: #1e7a3c; --wrong: #b3261e;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151517; --fg: #e8e8e6; --muted: #a0a0a6; --rule: #2e2e33;
+    --accent: #7aa7ff; --code-bg: #1f1f24; --right: #5cc57f; --wrong: #ff7a70;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 18px/1.6 Charter, "Bitstream Charter", "Iowan Old Style", Georgia, serif;
+}
+main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+h1, h2, h3, table, button, input, .meta, figcaption { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+h1 { font-size: 2rem; line-height: 1.2; margin: .25rem 0 1rem; }
+h2 { font-size: 1.25rem; margin-top: 2.5rem; padding-bottom: .25rem; border-bottom: 1px solid var(--rule); }
+a { color: var(--accent); }
+.meta { color: var(--muted); font-size: 14px; margin: 0; }
+.goal { border-left: 3px solid var(--accent); padding-left: 1rem; }
+
+code, pre, .trace td, .predict input { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 15px; }
+pre { background: var(--code-bg); padding: 1rem; border-radius: 6px; overflow-x: auto; line-height: 1.5; }
+:not(pre) > code { background: var(--code-bg); padding: .1em .3em; border-radius: 4px; }
+
+table { border-collapse: collapse; margin: 1rem 0; font-size: 15px; display: block; overflow-x: auto; }
+th, td { border-bottom: 1px solid var(--rule); padding: .35rem .75rem; text-align: left; }
+th { color: var(--muted); font-weight: 600; }
+
+figure { margin: 1.5rem 0; }
+figure svg { max-width: 100%; height: auto; }
+figcaption { color: var(--muted); font-size: 14px; }
+
+.quiz, .predict { border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.25rem; margin: 1.25rem 0; }
+.quiz.right, .predict.right { border-color: var(--right); }
+.quiz.wrong, .predict.wrong { border-color: var(--wrong); }
+button, input {
+  font-size: 16px; padding: .5rem .75rem; border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--bg); color: var(--fg);
+}
+button:not(:disabled) { cursor: pointer; }
+button:not(:disabled):hover, input:focus { border-color: var(--accent); outline: none; }
+.quiz button { display: block; width: 100%; text-align: left; margin: .4rem 0; }
+.quiz button:disabled { color: var(--fg); }
+.quiz .correct { border-color: var(--right); box-shadow: inset 4px 0 var(--right); }
+.quiz .chosen { border-color: var(--wrong); box-shadow: inset 4px 0 var(--wrong); }
+.predict input { width: min(20rem, 100%); }
+.explain { color: var(--muted); }
+
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); font-size: 16px; }
+
+@media print {
+  body { background: #fff; color: #000; font-size: 11pt; }
+  main { max-width: none; padding: 0; }
+  pre, figure, table, .quiz, .predict { break-inside: avoid; }
+  a { color: inherit; }
+}

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0001 · HTTP request/response structure</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Redes de Computadores 1 · Lesson 0001 · ~10 min</p>
+  <h1>HTTP: the request/response structure</h1>
+  <p class="goal"><strong>By the end of this lesson you can</strong> read a raw HTTP request or response — the kind Wireshark shows inside a TCP stream — and name its method, status code and class without notes.</p>
+</header>
+
+<section>
+  <h2>The idea</h2>
+  <p>HTTP is a <strong>text-based, stateless</strong> request/response protocol. "Stateless" means the server treats every request on its own: nothing about one request is remembered for the next, unless the application adds cookies or a session token on top. HTTP itself runs <em>inside</em> a TCP connection — TCP moves the bytes reliably; HTTP is just the text format those bytes carry (<a href="https://www.rfc-editor.org/rfc/rfc9110">RFC 9110</a>).</p>
+  <p>A request has three parts: a <strong>request line</strong> (method, path, version), <strong>headers</strong> (one per line, <code>Name: value</code>), and an optional <strong>body</strong>. A response mirrors it: a <strong>status line</strong> (version, status code, reason phrase), headers, then an optional body. Status codes fall into five classes by their first digit:</p>
+  <table>
+    <thead><tr><th>Class</th><th>Meaning</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>1xx</td><td>informational</td><td>100 Continue</td></tr>
+      <tr><td>2xx</td><td>success</td><td>200 OK</td></tr>
+      <tr><td>3xx</td><td>redirection</td><td>301 Moved Permanently</td></tr>
+      <tr><td>4xx</td><td>client error</td><td>404 Not Found</td></tr>
+      <tr><td>5xx</td><td>server error</td><td>503 Service Unavailable</td></tr>
+    </tbody>
+  </table>
+  <figure>
+    <svg viewBox="0 0 480 220" role="img" aria-labelledby="flowTitle flowDesc">
+      <title id="flowTitle">HTTP exchange over an already-open TCP connection</title>
+      <desc id="flowDesc">The client sends one text request; the server sends back one text response, on the same connection.</desc>
+      <line x1="70" y1="30" x2="70" y2="190" stroke="currentColor" stroke-width="2"/>
+      <line x1="410" y1="30" x2="410" y2="190" stroke="currentColor" stroke-width="2"/>
+      <text x="70" y="20" text-anchor="middle" font-size="14">Client</text>
+      <text x="410" y="20" text-anchor="middle" font-size="14">Server</text>
+      <line x1="80" y1="80" x2="400" y2="80" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="240" y="70" text-anchor="middle" font-size="13">GET /index.html HTTP/1.1</text>
+      <line x1="400" y1="150" x2="80" y2="150" stroke="currentColor" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="240" y="140" text-anchor="middle" font-size="13">HTTP/1.1 200 OK</text>
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>One request, one response, both plain text, both inside the same TCP connection.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Worked example</h2>
+  <p>A browser asking for a page:</p>
+<pre><code>GET /index.html HTTP/1.1
+Host: example.org
+Accept: */*
+</code></pre>
+  <p>And the server's reply:</p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 138
+
+&lt;html&gt;...&lt;/html&gt;
+</code></pre>
+  <table class="trace">
+    <thead><tr><th>Line</th><th>Text</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td>Request line</td><td><code>GET /index.html HTTP/1.1</code></td><td>Method <code>GET</code>, path <code>/index.html</code>, version <code>HTTP/1.1</code></td></tr>
+      <tr><td>Request header</td><td><code>Host: example.org</code></td><td>Which site to serve — one server can answer for many host names</td></tr>
+      <tr><td>Status line</td><td><code>HTTP/1.1 200 OK</code></td><td>Status code <code>200</code> (class: success), reason phrase <code>OK</code></td></tr>
+      <tr><td>Response header</td><td><code>Content-Length: 138</code></td><td>The body that follows the blank line is 138 bytes</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Practice</h2>
+
+  <div class="predict" data-answer="POST">
+    <p><strong>1.</strong> A capture shows this as the first line of a request:</p>
+<pre><code>POST /login HTTP/1.1</code></pre>
+    <p>Which HTTP method is being used? (one word, capitals)</p>
+    <input aria-label="Your answer" autocomplete="off"> <button>Check</button>
+    <p class="explain" hidden>The method is always the first word of the request line — here <code>POST</code>, used to submit data such as a login form.</p>
+  </div>
+
+  <div class="predict" data-answer="server-error">
+    <p><strong>2.</strong> A server replies with status code <code>503</code>. Name its class: <code>informational</code>, <code>success</code>, <code>redirection</code>, <code>client-error</code> or <code>server-error</code>?</p>
+    <input aria-label="Your answer" autocomplete="off"> <button>Check</button>
+    <p class="explain" hidden>The first digit, 5, marks a <strong>server-error</strong>: the server itself failed to fulfil a valid request (here, it was unavailable).</p>
+  </div>
+
+  <div class="quiz" data-answer="0">
+    <p><strong>3.</strong> In a raw HTTP request, which line always comes first?</p>
+    <button>The request line</button>
+    <button>The Host header</button>
+    <button>The message body</button>
+    <p class="explain" hidden>The request line (method, path, version) always opens the request; headers follow, then a blank line, then the optional body.</p>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <p><strong>4.</strong> Without cookies or a session token, does a plain HTTP server remember your previous request?</p>
+    <button>Yes, every request is linked</button>
+    <button>No, each request stands alone</button>
+    <button>Only if using HTTPS today</button>
+    <p class="explain" hidden>HTTP is stateless: on its own, the server treats every request independently. Applications add cookies or tokens on top to fake memory.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Main source:</strong> <a href="https://www.rfc-editor.org/rfc/rfc9110">RFC 9110 — HTTP Semantics</a></p>
+  <p>Questions? Ask your tutor. · <a href="../reference/http.html">Reference: HTTP cheat sheet</a></p>
+</footer>
+
+</main>
+</body>
+</html>

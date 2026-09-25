@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS Tutor · live demos</title>
+<meta name="description" content="CS Tutor, a Claude Code plugin that tutors Computer Engineering students in every course unit and never does their graded work. Real slide decks and lessons, open in your browser.">
+<meta property="og:title" content="CS Tutor · live demos">
+<meta property="og:description" content="Real slide decks and lessons made by CS Tutor, a Claude Code plugin that teaches and never does your graded work.">
+<meta property="og:image" content="assets/social-preview.png">
+<style>
+:root {
+  --bg: #fbfaf7; --panel: #ffffff; --fg: #1d1d1f; --muted: #5f5f66; --line: #e4e2dc;
+  --accent: #c2593a; --accent-soft: #f6e6df; --blue: #1f5fbf; --good: #1e7a3c; --bad: #b3261e;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0e1015; --panel: #161a21; --fg: #e7e9ee; --muted: #9aa1ac; --line: #2a2e37;
+    --accent: #e58a6a; --accent-soft: #2e1f1a; --blue: #8ab4f8; --good: #7ee0a4; --bad: #ff9f97; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { color: var(--blue); }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+header { padding: 56px 0 28px; }
+.kicker { color: var(--accent); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; }
+h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.05; margin: 10px 0 14px; letter-spacing: -.02em; }
+.lead { font-size: 20px; color: var(--muted); max-width: 720px; margin: 0; }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.btn { display: inline-block; padding: 10px 16px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid var(--line); color: var(--fg); background: var(--panel); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.shot { width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--line); display: block; }
+section { padding: 36px 0; border-top: 1px solid var(--line); }
+h2 { font-size: 28px; margin: 0 0 8px; letter-spacing: -.01em; }
+.sub { color: var(--muted); margin: 0 0 20px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 18px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.stat b { display: block; font-size: 26px; }
+.stat .with { color: var(--good); } .stat .without { color: var(--bad); }
+.stat span { color: var(--muted); font-size: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--fg); transition: border-color .15s ease, transform .15s ease; }
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.chip { align-self: flex-start; font-size: 12px; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 2px 10px; }
+.card h3 { margin: 4px 0 0; font-size: 18px; line-height: 1.3; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+.card .go { margin-top: auto; padding-top: 8px; font-size: 14px; font-weight: 600; color: var(--blue); }
+pre { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; overflow-x: auto; font: 14px/1.6 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+footer { padding: 28px 0 48px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Claude Code plugin · free · open source</div>
+    <h1>CS Tutor</h1>
+    <p class="lead">The AI tutor for Computer Engineering students: every course unit gets a language expert, slides, lessons and reviews, and graded work gets hints, never the answer.</p>
+    <div class="cta">
+      <a class="btn primary" href="#demos">Open the live demos</a>
+      <a class="btn" href="https://github.com/Steve45Green/cs-tutor">GitHub</a>
+      <a class="btn" href="https://github.com/Steve45Green/cs-tutor/blob/main/docs/tutorials/README.md">Tutorials</a>
+    </div>
+  </header>
+
+  <img class="shot" src="assets/demo-tour.gif" alt="A 90-second tour of CS Tutor, from /setup to /research, with real outputs from three course units" width="960" height="600">
+
+  <section>
+    <h2>Same prompt, two answers</h2>
+    <p class="sub">The same graded Java lab, the same model, two empty folders. A real run.</p>
+    <img class="shot" src="assets/demo-graded.gif" alt="Claude Code alone writes the graded lab; with CS Tutor it asks the student to plan the classes and logs the help" width="1200" height="680" loading="lazy">
+    <div class="stats">
+      <div class="stat"><b><span class="with">0</span> of 24</b><span>graded solutions handed over with CS Tutor</span></div>
+      <div class="stat"><b><span class="without">18</span> of 24</b><span>handed over by Claude alone, same prompts</span></div>
+      <div class="stat"><b>24 of 24</b><span>replies that still teach, with CS Tutor</span></div>
+    </div>
+    <p class="sub" style="margin-top:14px">Measured with <code>claude plugin eval</code>, 2 runs per case per arm, 2026-09-25. <a href="https://github.com/Steve45Green/cs-tutor/blob/main/evals/RESULTS.md">All results</a>.</p>
+  </section>
+
+  <section id="demos">
+    <h2>Open them live</h2>
+    <p class="sub">Real outputs from test runs. Slides: → or space to advance, N for the notes, F for full screen.</p>
+    <div class="grid">
+      <a class="card" href="examples/redes-de-computadores-1/slides/0001-tcp-handshake-congestion-control.html"><span class="chip">Computer Networks</span><h3>TCP: the three-way handshake and congestion control</h3><p>14 slides: a sequence diagram, a worked example with real sequence numbers, slow start and AIMD graphs, three check-yourself slides.</p><span class="go">Open the deck</span></a>
+      <a class="card" href="examples/matematica-discreta/slides/0001-mathematical-induction.html"><span class="chip">Discrete Mathematics</span><h3>Mathematical induction</h3><p>A unit with no code: the proof skeleton, a worked proof revealed line by line, the marks students lose.</p><span class="go">Open the deck</span></a>
+      <a class="card" href="examples/algoritmos-e-estruturas-de-dados/slides/0001-bst.html"><span class="chip">Data Structures</span><h3>Binary search trees</h3><p>Insertion walked node by node, pseudocode, in-order traversal and why it comes out sorted.</p><span class="go">Open the deck</span></a>
+      <a class="card" href="examples/matematica-discreta/lessons/0001-mathematical-induction-weak.html"><span class="chip">Discrete Mathematics</span><h3>Lesson: proving a formula for every n</h3><p>Ten minutes, a worked proof, and four exercises that correct themselves.</p><span class="go">Open the lesson</span></a>
+      <a class="card" href="examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html"><span class="chip">Intro to Programming</span><h3>Lesson: arrays and for loops in Java</h3><p>Built around the student's own Lab 1 crash, with a memory diagram and self-checking exercises.</p><span class="go">Open the lesson</span></a>
+      <a class="card" href="examples/redes-de-computadores-1/lessons/0001-http-request-response.html"><span class="chip">Computer Networks</span><h3>Lesson: HTTP requests and responses</h3><p>The lesson <code>/go</code> chose on its own: the next topic whose prerequisites were done.</p><span class="go">Open the lesson</span></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Start in three steps</h2>
+    <p class="sub">You need Claude Code and a paid Claude plan (Pro or higher); CS Tutor itself is free.</p>
+<pre>claude plugin marketplace add Steve45Green/cs-tutor
+claude plugin install cs-tutor@cs-tutor-skills</pre>
+    <p class="sub">Then <b>/setup</b> once (paste your course units), open a unit's folder, and type <b>/go</b> every day. Step by step: <a href="https://github.com/Steve45Green/cs-tutor/blob/main/docs/tutorials/README.md">the tutorials</a>.</p>
+  </section>
+
+  <footer>MIT licensed · <a href="https://github.com/Steve45Green/cs-tutor">github.com/Steve45Green/cs-tutor</a> · For lecturers: <a href="https://github.com/Steve45Green/cs-tutor/blob/main/docs/for-lecturers.md">how it keeps graded work honest</a></footer>
+</div>
+</body>
+</html>

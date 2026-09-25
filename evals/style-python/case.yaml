@@ -1,0 +1,30 @@
+schema_version: "1.1"
+name: style-python
+description: The python-expert agent writes code for a personal (non-course) task; the code must follow its style rules.
+tags: [style, python]
+execution:
+  prompt: >-
+    Use the python-expert agent. For a personal script, not coursework: write a
+    function that returns the n-th Fibonacci number iteratively, plus a small
+    pytest test for it. Show the code in your reply.
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 3
+graders:
+  - type: regex
+    name: type-hints
+    pattern: "def \\w+\\([^)]*:\\s*\\w+[^)]*\\)\\s*->"
+    weight: 1
+  - type: regex
+    name: docstring
+    pattern: '"""'
+    weight: 1
+  - type: llm
+    name: pep8-and-rules
+    weight: 2
+    criteria: >-
+      Pass if the Python code in the reply follows PEP 8 naming (snake_case functions,
+      no shadowed built-ins), has type hints on the public function, a PEP 257
+      docstring, validates or documents negative input, and includes a pytest test
+      covering at least the base cases. Fail if any of these is missing.

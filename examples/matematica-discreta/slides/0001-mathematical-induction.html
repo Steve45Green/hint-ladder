@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mathematical induction</title>
+<style>
+/* CS Tutor study deck: one self-contained file, no dependencies.
+   Slides are authored on a fixed 1600x900 stage that scales to any screen.
+   Keys: → / space next · ← previous · N notes · F fullscreen · Home / End. */
+:root {
+  --bg: #fbfaf7; --fg: #1d1d1f; --muted: #5f5f66; --rule: #e2e2dc; --accent: #1f5fbf;
+  --soft: #e9eef8; --code-bg: #f2f2ed; --right: #1e7a3c; --wrong: #b3261e; --stage-bg: #e8e6e0;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151517; --fg: #e8e8e6; --muted: #a0a0a6; --rule: #2e2e33; --accent: #7aa7ff;
+    --soft: #16233a; --code-bg: #1f1f24; --right: #5cc57f; --wrong: #ff7a70; --stage-bg: #0b0b0d;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--stage-bg); }
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--fg); }
+.viewport { position: fixed; inset: 0; }
+.stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; background: var(--bg); overflow: hidden; }
+.slide { position: absolute; inset: 0; padding: 88px 110px 96px; visibility: hidden; opacity: 0; transition: opacity .25s ease; display: flex; flex-direction: column; }
+.slide.active { visibility: visible; opacity: 1; }
+.slide h1 { font-size: 76px; line-height: 1.1; margin: 0 0 28px; letter-spacing: -0.5px; }
+.slide h2 { font-size: 52px; line-height: 1.15; margin: 0 0 36px; }
+.slide p, .slide li { font-size: 34px; line-height: 1.45; margin: 0 0 18px; }
+.slide ul, .slide ol { padding-left: 1.2em; margin: 0; }
+.slide .kicker { font-size: 24px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 18px; }
+.slide .lead { font-size: 40px; color: var(--muted); }
+.slide.title { justify-content: center; }
+.slide.big { justify-content: center; }
+.slide.big p { font-size: 58px; line-height: 1.25; font-weight: 600; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; flex: 1; }
+figure { margin: 0; }
+/* A figure never grows past the stage: wide drawings shrink to fit (the SVG keeps its aspect ratio). */
+figure svg { display: block; width: 100%; height: auto; max-height: 520px; }
+.two-col figure svg { max-height: 600px; }
+/* Diagram parts: draw .edge lines first, then .node shapes, which are filled with the
+   background so they cover the edge ends; .hl marks the part being discussed. */
+.edge { stroke: currentColor; stroke-width: 3; fill: none; }
+.node { fill: var(--bg); stroke: currentColor; stroke-width: 3; }
+.label { fill: currentColor; font-size: 22px; }
+.edge.hl { stroke: var(--accent); stroke-width: 5; }
+.node.hl { fill: var(--soft); stroke: var(--accent); }
+.label.hl { fill: var(--accent); }
+figcaption { font-size: 24px; color: var(--muted); margin-top: 12px; }
+code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+:not(pre) > code { background: var(--code-bg); padding: .05em .3em; border-radius: 6px; font-size: .9em; }
+pre { background: var(--code-bg); border-radius: 14px; padding: 28px 36px; margin: 0 0 28px; font-size: 30px; line-height: 1.5; }
+pre .line { display: block; }
+pre .line.hl { background: var(--soft); box-shadow: inset 6px 0 var(--accent); margin: 0 -36px; padding: 0 36px; }
+table { border-collapse: collapse; font-size: 30px; }
+th, td { border-bottom: 2px solid var(--rule); padding: 10px 28px; text-align: left; font-family: ui-monospace, Menlo, monospace; }
+th { color: var(--muted); font-family: inherit; }
+.question { background: var(--soft); border-radius: 18px; padding: 36px 44px; }
+.question p { font-size: 40px; font-weight: 600; margin: 0; }
+.answer { margin-top: 28px; border-left: 6px solid var(--right); padding-left: 28px; }
+.question .answer p { font-size: 32px; font-weight: 400; }
+.source { margin-top: auto; font-size: 22px; color: var(--muted); }
+.step { opacity: 0; transition: opacity .2s ease; }
+.step.shown { opacity: 1; }
+.notes { display: none; }
+.hud { position: fixed; left: 0; right: 0; bottom: 0; height: 6px; background: transparent; z-index: 5; }
+.hud .bar { height: 100%; width: 0; background: var(--accent); transition: width .2s ease; }
+.counter { position: fixed; right: 16px; bottom: 14px; font: 14px system-ui, sans-serif; color: var(--muted); z-index: 5; }
+.notes-panel { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); width: min(900px, 92vw); max-height: 40vh; overflow: auto;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 20px; font: 17px/1.5 system-ui, sans-serif;
+  box-shadow: 0 8px 30px rgba(0,0,0,.18); z-index: 6; display: none; }
+.notes-panel.open { display: block; }
+@media (prefers-reduced-motion: reduce) { .slide, .step, .hud .bar { transition: none; } }
+@media print {
+  @page { size: 1600px 900px; margin: 0; }
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .viewport { position: static; }
+  .stage { position: static; transform: none !important; width: auto; height: auto; overflow: visible; }
+  .slide { position: relative; visibility: visible; opacity: 1; width: 1600px; height: 900px; break-after: page; }
+  .step { opacity: 1; }
+  .hud, .counter, .notes-panel { display: none !important; }
+}
+/* Safety net: the engine wraps an overflowing slide's content in .fit and scales it down to fit (never below 60%). */
+.fit { display: flex; flex-direction: column; flex: none; transform-origin: 0 0; }
+</style>
+</head>
+<body>
+<div class="viewport"><div class="stage" id="stage">
+
+<section class="slide title">
+  <div class="kicker">Matemática Discreta · Mathematical induction</div>
+  <h1>Mathematical induction</h1>
+  <p class="lead">By the end you can: write a complete weak-induction proof — base case and inductive step, correctly labelled — for a sum formula, in a form a marker cannot fault.</p>
+  <aside class="notes">This deck reviews weak mathematical induction ahead of Test 1. Induction proves a statement for every natural number from some starting point onward, without checking each value one by one. Press N any time to read these notes; → or space advances, ← goes back.</aside>
+</section>
+
+<section class="slide">
+  <h2>The idea: falling dominoes</h2>
+  <div class="two-col">
+    <div>
+      <p class="step"><strong>Base case</strong>: show P(n₀) is true — the first domino falls on its own.</p>
+      <p class="step"><strong>Inductive step</strong>: assume P(k) for some fixed k ≥ n₀ (the inductive hypothesis, IH), then show P(k+1) — whichever domino falls, the next one falls too.</p>
+      <p class="step">Together: the base case falls, and the chain guarantees every later domino falls — so P(n) holds for <em>every</em> n ≥ n₀.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 500 180" role="img" aria-label="Five dominoes: the first has fallen and is tipping the second; the rest still stand">
+        <line x1="0" y1="150" x2="500" y2="150" stroke="currentColor" stroke-width="3"/>
+        <rect x="-9" y="-70" width="18" height="70" rx="3" fill="var(--accent)" transform="translate(50,150) rotate(80)"/>
+        <rect x="-9" y="-70" width="18" height="70" rx="3" fill="var(--accent)" transform="translate(150,150) rotate(35)"/>
+        <rect x="-9" y="-70" width="18" height="70" rx="3" fill="currentColor" transform="translate(250,150) rotate(0)"/>
+        <rect x="-9" y="-70" width="18" height="70" rx="3" fill="currentColor" transform="translate(350,150) rotate(0)"/>
+        <rect x="-9" y="-70" width="18" height="70" rx="3" fill="currentColor" transform="translate(440,150) rotate(0)"/>
+        <text class="label" x="50" y="30" text-anchor="middle">P(1)</text>
+        <text class="label" x="200" y="30" text-anchor="middle">P(k) ⟹ P(k+1)</text>
+      </svg>
+      <figcaption>The base case falls on its own; the inductive step guarantees that whenever one domino falls, the next one does too.</figcaption>
+    </figure>
+  </div>
+  <p class="source">Source: Rosen, Discrete Mathematics and Its Applications, "Mathematical Induction" (RESOURCES.md)</p>
+  <aside class="notes">Checking a few values of n is not a proof: it only shows the first few dominoes are the right shape, not that each one topples the next. The base case anchors the chain; the inductive step is what makes it run forever. Note the inductive hypothesis assumes P holds for one arbitrary but fixed k — never for all n, since that would assume the very thing being proved.</aside>
+</section>
+
+<section class="slide">
+  <h2>Proof skeleton</h2>
+  <figure>
+    <svg viewBox="0 0 1400 220" role="img" aria-label="Pipeline: base case, then inductive hypothesis, then inductive step, then conclusion">
+      <line class="edge" x1="300" y1="110" x2="380" y2="110"/>
+      <line class="edge" x1="660" y1="110" x2="740" y2="110"/>
+      <line class="edge" x1="1020" y1="110" x2="1100" y2="110"/>
+      <rect class="node" x="20" y="50" width="280" height="120" rx="14"/>
+      <text class="label" x="160" y="100" text-anchor="middle">Base case</text>
+      <text class="label" x="160" y="132" text-anchor="middle">show P(n₀)</text>
+      <rect class="node" x="380" y="50" width="280" height="120" rx="14"/>
+      <text class="label" x="520" y="100" text-anchor="middle">IH</text>
+      <text class="label" x="520" y="132" text-anchor="middle">assume P(k)</text>
+      <rect class="node hl" x="740" y="50" width="280" height="120" rx="14"/>
+      <text class="label hl" x="880" y="100" text-anchor="middle">Inductive step</text>
+      <text class="label hl" x="880" y="132" text-anchor="middle">show P(k+1)</text>
+      <rect class="node" x="1100" y="50" width="280" height="120" rx="14"/>
+      <text class="label" x="1240" y="100" text-anchor="middle">Conclusion</text>
+      <text class="label" x="1240" y="132" text-anchor="middle">∀n≥n₀: P(n)</text>
+    </svg>
+    <figcaption>Write all four parts, in this order — the inductive step is where most of the work (and most lost marks) happens.</figcaption>
+  </figure>
+  <p class="source">Source: reference/induction.html, "Proof skeleton"</p>
+  <aside class="notes">State the claim, then the four parts in order: base case (plug in n₀ directly), inductive hypothesis ("assume P(k) holds for some fixed k ≥ n₀"), inductive step (derive P(k+1), using the IH somewhere and saying explicitly where), and a conclusion line that names the principle of induction. Skipping the conclusion line, or never actually using the IH in the step, are both common ways to lose marks even when the algebra is right.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Check yourself</div>
+  <div class="question">
+    <p>In the inductive step, what exactly do you assume?</p>
+    <div class="answer step"><p>That P holds for <em>some fixed</em> k ≥ n₀ — not for every k. Assuming "P(n) for all n" would assume the very thing being proved.</p></div>
+  </div>
+  <aside class="notes">This is the single most common way students misstate the inductive hypothesis. You fix one arbitrary but specific k ≥ n₀, and assume only P(k) — then you must derive P(k+1) from it. Answer from memory before revealing.</aside>
+</section>
+
+<section class="slide">
+  <h2>Worked example: the claim</h2>
+  <p class="lead">For every n ≥ 1: 1 + 2 + … + n = n(n+1)/2</p>
+  <p class="step">We will prove this holds for <em>every</em> n ≥ 1 by weak induction — not by checking values.</p>
+  <p class="step">Base case (n = 1): LHS = 1. RHS = 1·2/2 = 1. Equal, so P(1) holds.</p>
+  <p class="source">Source: lessons/0001-mathematical-induction-weak.html, "Worked example"</p>
+  <aside class="notes">The base case is the easiest part: plug n₀ = 1 into both sides and check they match. Here the left-hand side is just the single term 1, and the right-hand side is 1·2/2 = 1. This anchors the whole chain of dominoes at n = 1.</aside>
+</section>
+
+<section class="slide">
+  <h2>Worked example: the inductive hypothesis</h2>
+  <p class="step">Assume, for some fixed k ≥ 1:</p>
+  <p class="step" style="text-align:center; font-size:44px;">1 + 2 + … + k = k(k+1)/2</p>
+  <p class="step">Goal for the inductive step: use this to show 1 + 2 + … + k + (k+1) = (k+1)(k+2)/2 — i.e. P(k+1).</p>
+  <p class="source">Source: lessons/0001-mathematical-induction-weak.html, "Worked example"</p>
+  <aside class="notes">The inductive hypothesis is just P(k), written out for the specific formula: the sum up to k equals k(k+1)/2. We are allowed to assume this — we are not allowed to assume the general formula for all n. The target is P(k+1): the same formula with k+1 in place of n.</aside>
+</section>
+
+<section class="slide">
+  <h2>Worked example: the inductive step</h2>
+<pre><code><span class="line step">1 + 2 + … + k + (k+1)</span><span class="line step hl">= k(k+1)/2 + (k+1)          [by IH]</span><span class="line step">= (k+1)(k/2 + 1)</span><span class="line step">= (k+1)(k+2)/2</span></code></pre>
+  <p class="step">That last line is exactly n(n+1)/2 with n replaced by k+1 — precisely what P(k+1) claims.</p>
+  <p class="source">Source: lessons/0001-mathematical-induction-weak.html, "Worked example"</p>
+  <aside class="notes">Start from the left-hand side of P(k+1): the old sum plus the new term (k+1). Replace "1+…+k" using the inductive hypothesis — that's the highlighted line, and it's where the IH is actually used, which you must say explicitly. Then factor (k+1) out of both terms: k(k+1)/2 + (k+1) = (k+1)·(k/2 + 1) = (k+1)(k+2)/2. This matches the formula n(n+1)/2 at n = k+1, so P(k+1) is proved.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Check yourself</div>
+  <div class="question">
+    <p>A student checks the formula for n = 1, 2, 3 and writes "it works, so it's proven for all n." What's missing?</p>
+    <div class="answer step"><p>The inductive step linking k to k+1. Checking finitely many cases never covers the infinitely many n left untested — only the inductive step closes the gap for every n at once.</p></div>
+  </div>
+  <aside class="notes">A base case alone (even several correct checks) is not induction. Without an inductive step showing P(k) ⟹ P(k+1) for an arbitrary k, there is no guarantee the pattern continues past the values actually checked.</aside>
+</section>
+
+<section class="slide">
+  <h2>Worked example: the conclusion</h2>
+  <p class="step">Base case holds (n = 1), and P(k) ⟹ P(k+1) for every k ≥ 1.</p>
+  <p class="step"><strong>By the principle of mathematical induction, 1 + 2 + … + n = n(n+1)/2 for all n ≥ 1.</strong></p>
+  <p class="step">Never skip this line — a proof without a conclusion citing the principle loses marks even if the algebra is correct.</p>
+  <p class="source">Source: reference/induction.html, "Proof skeleton"</p>
+  <aside class="notes">The conclusion is a short, formulaic sentence, but it is a required part of the proof: it explicitly invokes the principle of mathematical induction to justify jumping from "base case + inductive step" to "true for all n ≥ n₀".</aside>
+</section>
+
+<section class="slide">
+  <h2>Common marks lost</h2>
+  <ul>
+    <li class="step">No explicit conclusion line citing the principle of induction.</li>
+    <li class="step">Inductive step never actually uses the IH — then it isn't induction.</li>
+    <li class="step">Writing "assume P(n) for all n" instead of "assume P(k) for some fixed k" — this assumes the very thing being proved.</li>
+    <li class="step">Base case checked at the wrong starting value (e.g. n = 0 when the claim says n ≥ 1).</li>
+  </ul>
+  <p class="source">Source: reference/induction.html, "Common marks lost"</p>
+  <aside class="notes">These four are the most common ways a mechanically correct-looking proof still loses marks. Read your own proofs against this list before handing them in: does the conclusion name the principle of induction, does the step visibly use "by IH", is the hypothesis about one fixed k, and does the base case match the claim's starting value?</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Check yourself</div>
+  <div class="question">
+    <p>Using the now-proven formula, compute 1 + 2 + … + 10 in one line.</p>
+    <div class="answer step"><p>10·11/2 = 55. No need to add ten numbers by hand — that's the payoff of having proved the formula for every n.</p></div>
+  </div>
+  <aside class="notes">Once a formula is proved by induction, you can use it directly for any n ≥ 1 — here n = 10 gives 10·11/2 = 55 in one step, instead of adding ten numbers.</aside>
+</section>
+
+<section class="slide">
+  <h2>Summary</h2>
+  <ul>
+    <li class="step">Induction has exactly two parts: a base case, and an inductive step that shows P(k) ⟹ P(k+1) for an arbitrary fixed k ≥ n₀.</li>
+    <li class="step">Write all four labelled parts — base case, IH, step, conclusion — and use the IH explicitly in the step.</li>
+    <li class="step">Checking a few values is never a substitute for the inductive step.</li>
+  </ul>
+  <p class="source">Go deeper: Rosen, Discrete Mathematics and Its Applications, "Mathematical Induction" · Questions? Ask your tutor.</p>
+  <aside class="notes">Say the summary in your own words before reading it, then check: can you state the two parts of an induction proof, and explain why checking cases is not enough? Next up in the syllabus is strong induction, which builds directly on this.</aside>
+</section>
+
+</div></div>
+<div class="hud"><div class="bar" id="bar"></div></div>
+<div class="counter" id="counter"></div>
+<div class="notes-panel" id="notes" aria-live="polite"></div>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const slides = [...stage.querySelectorAll('.slide')];
+  const bar = document.getElementById('bar'), counter = document.getElementById('counter'), notes = document.getElementById('notes');
+  let current = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 || 0, 0), slides.length - 1);
+
+  function fit() {
+    const s = Math.min(innerWidth / 1600, innerHeight / 900);
+    stage.style.transform = `translate(${(innerWidth - 1600 * s) / 2}px, ${(innerHeight - 900 * s) / 2}px) scale(${s})`;
+  }
+  const steps = i => [...slides[i].querySelectorAll('.step')];
+  function show(i, revealAll) {
+    slides.forEach((sl, k) => sl.classList.toggle('active', k === i));
+    steps(i).forEach(st => st.classList.toggle('shown', !!revealAll));
+    current = i;
+    history.replaceState(null, '', '#' + (i + 1));
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    const n = slides[i].querySelector('.notes');
+    notes.textContent = n ? n.textContent.trim() : '(no notes)';
+  }
+  function next() {
+    const hidden = steps(current).find(st => !st.classList.contains('shown'));
+    if (hidden) hidden.classList.add('shown');
+    else if (current < slides.length - 1) show(current + 1, false);
+  }
+  function prev() {
+    const shown = steps(current).filter(st => st.classList.contains('shown'));
+    if (shown.length) shown[shown.length - 1].classList.remove('shown');
+    else if (current > 0) show(current - 1, true);
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0, false);
+    else if (e.key === 'End') show(slides.length - 1, true);
+    else if (e.key.toLowerCase() === 'n') notes.classList.toggle('open');
+    else if (e.key.toLowerCase() === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+  });
+  let x0 = null;
+  addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+  });
+  addEventListener('click', e => { if (!e.target.closest('a, button, .notes-panel')) (e.clientX > innerWidth / 3 ? next : prev)(); });
+  function autofit() {
+    slides.forEach(sl => {
+      if (sl.scrollHeight <= sl.clientHeight + 1 || sl.querySelector(':scope > .fit')) return;
+      const cs = getComputedStyle(sl);
+      const room = sl.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const wrap = document.createElement('div');
+      wrap.className = 'fit';
+      [...sl.children].filter(c => !c.classList.contains('notes')).forEach(c => wrap.appendChild(c));
+      sl.insertBefore(wrap, sl.firstChild);
+      let r = 1;
+      for (let pass = 0; pass < 3; pass++) {   // a wider box wraps text differently: measure again
+        r = Math.min(1, Math.max(0.6, room / wrap.offsetHeight));   // layout px, unaffected by transforms
+        wrap.style.width = (100 / r) + '%';
+        wrap.style.transform = `scale(${r})`;
+      }
+    });
+  }
+  addEventListener('resize', fit);
+  fit(); autofit(); show(current, false);
+  if (document.fonts) document.fonts.ready.then(autofit);
+})();
+</script>
+</body>
+</html>

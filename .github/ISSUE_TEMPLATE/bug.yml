@@ -1,0 +1,33 @@
+name: Bug
+description: The tutor, a skill or an agent did something wrong
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What you asked
+      description: The command or message (remove personal data and real graded work).
+    validations:
+      required: true
+  - type: textarea
+    id: got
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should have happened
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Output of `claude --version`, and the plugin version from `/plugin`.
+  - type: dropdown
+    id: integrity
+    attributes:
+      label: Did it write a graded solution?
+      options: ["No", "Yes — integrity bug"]

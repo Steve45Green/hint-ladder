@@ -1,0 +1,45 @@
+# Public study plan of a 3-year Engenharia Informática degree (Portugal), pasted from the portal.
+# Expected: Introdução à Programação, POO, EDA, Engenharia de Software → java-expert (school uses Java);
+# Bases de Dados 1/2, Sistemas de Informação → sql-expert; Sistemas Operativos, Arquitectura → c-expert;
+# Redes 1/2, Segurança, Administração de Sistemas → linux-expert; Web units → php-expert (+ web-expert);
+# Interacção Pessoa-Computador → web-expert; Matemática Computacional, Probabilidades → python-expert;
+# maths, physics and soft-skill units → no agent.
+Unidades Curriculares
+Unidade Curricular	Descritor	Total Horas	Horas de Contacto	ECTS
+Ano / Semestre : 1º Ano / 1º Semestre (5)
+Análise Matemática	9119103	150	TP:30; PL:30	6
+Física Aplicada à Computação	9119105	150	TP:30; PL:45	6
+Introdução à Programação	9119102	150	TP:30; PL: 45	6
+Matemática Discreta	9119104	150	TP:30; PL:30	6
+Sistemas Digitais	9119101	150	TP:30; PL:30	6
+Ano / Semestre : 1º Ano / 2º Semestre (5)
+Álgebra Linear	9119108	150	TP:30; PL:30	6
+Arquitectura de Computadores	9119107	150	TP:30; PL:45	6
+Bases de Dados 1	9119110	150	TP:15; PL:45	6
+Probabilidades e Estatística	9119109	150	TP:30; PL:30	6
+Programação Orientada por Objetos	9119106	150	TP:30; PL:45	6
+Ano / Semestre : 2º Ano / 1º Semestre (5)
+Bases de Dados 2	9119111	150	TP:15; PL:45	6
+Linguagens de Programação	9119114	150	TP:15; PL:45	6
+Matemática Computacional	9119112	150	TP:30; PL:30	6
+Redes de Computadores 1	9119113	150	TP:15; PL:45	6
+Sistemas Operativos	9119115	150	TP:15; PL:45	6
+Ano / Semestre : 2º Ano / 2º Semestre (5)
+Engenharia de Software	9119117	150	TP:15; PL:45	7
+Estruturas de Dados e Algoritmos	9119118	150	TP:15; PL:45	5
+Interacção Pessoa-Computador	9119120	150	TP:15; PL:45	6
+Redes de Computadores 2	9119119	150	TP:15; PL:45	6
+Tecnologias para a Web e Ambientes Móveis	9119116	150	TP:15; PL:45	6
+Ano / Semestre : 3º Ano / 1º Semestre (6)
+Desenvolvimento de Aplicações Web	9119122	150	TP:15; PL:45	6
+Dinâmica de Grupos e Comunicação	9119125	50	TP:16	2
+Programação para Dispositivos Móveis	9119121	150	TP:15; PL:45	6
+Projeto Integrado	9119126	100	OT:50	4
+Segurança em Redes de Comunicação	9119123	150	TP:15; PL:45	6
+Sistemas de Informação	9119124	150	TP:15; PL:45	6
+Ano / Semestre : 3º Ano / 2º Semestre (5)
+Administração de Sistemas	9119127	112,5	TP:16; PL: 32	4,5
+Estágio ou Projecto	9119131	375	E: 187,5	15
+Marketing e Empreendedorismo	9119129	75	TP:32	3
+Regulação da Informática	9119130	75	TP:32	3
+Tópicos de Engenharia Informática	9119128	112,5	TP:16; PL: 32	4,5

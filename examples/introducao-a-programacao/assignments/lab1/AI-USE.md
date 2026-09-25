@@ -1,0 +1,1 @@
+2026-09-25 · rung 5 · Code feedback on Main.java's NullPointerException: identified 4 blockers (unallocated `nomes` array, off-by-one loop bound, Scanner nextInt/nextLine leftover newline, String `==` instead of `.equals`), 1 design issue (unnecessary static field), and grouped style issues (STYLE-2, STYLE-5, STYLE-9); no fixed code given.

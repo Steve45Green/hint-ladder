@@ -1,0 +1,45 @@
+name: Pages
+
+# Publishes the live demos: docs/site/index.html, docs/assets/ and examples/, so the
+# example decks and lessons open in a browser. Runs only on the public repository's
+# main branch; enable it once under Settings → Pages → Source: GitHub Actions.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the site
+        run: |
+          mkdir -p _site
+          cp docs/site/index.html _site/
+          cp -r docs/assets _site/assets
+          cp -r examples _site/examples
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

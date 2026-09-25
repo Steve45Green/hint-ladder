@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheat sheet · Mathematical induction</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Matemática Discreta · Reference</p>
+  <h1>Mathematical induction (weak)</h1>
+</header>
+
+<section>
+  <h2>Proof skeleton — write all four parts, in this order</h2>
+  <table>
+    <thead><tr><th>Part</th><th>What to write</th></tr></thead>
+    <tbody>
+      <tr><td>Claim</td><td>"We prove P(n): &lt;statement&gt;, for every n ≥ n₀."</td></tr>
+      <tr><td>Base case</td><td>Show P(n₀) directly — plug in n₀ and check both sides.</td></tr>
+      <tr><td>Inductive hypothesis (IH)</td><td>"Assume P(k) holds for some (arbitrary but fixed) k ≥ n₀."</td></tr>
+      <tr><td>Inductive step</td><td>Show P(k+1), using the IH somewhere in the derivation — say explicitly where ("by IH").</td></tr>
+      <tr><td>Conclusion</td><td>"By the principle of mathematical induction, P(n) holds for all n ≥ n₀."</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Worked template</h2>
+  <p>Claim: for every n ≥ 1, 1 + 2 + … + n = n(n+1)/2.</p>
+  <ul>
+    <li><strong>Base case</strong> (n=1): 1 = 1·2/2. ✓</li>
+    <li><strong>IH</strong>: assume 1+2+…+k = k(k+1)/2 for some k ≥ 1.</li>
+    <li><strong>Step</strong>: 1+…+k+(k+1) = k(k+1)/2 + (k+1) [by IH] = (k+1)(k+2)/2.</li>
+    <li><strong>Conclusion</strong>: true for all n ≥ 1 by induction.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Common marks lost</h2>
+  <ul>
+    <li>No explicit conclusion line citing the principle of induction.</li>
+    <li>Inductive step never actually uses the IH — then it isn't induction.</li>
+    <li>"Assume P(n) for all n" instead of "assume P(k) for some fixed k" — this assumes the very thing being proved.</li>
+    <li>Base case checked at the wrong starting value (e.g. n=0 when the claim says n≥1).</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Questions? Ask your tutor. · <a href="../lessons/0001-mathematical-induction-weak.html">Lesson: mathematical induction (weak)</a></p>
+</footer>
+
+</main>
+</body>
+</html>

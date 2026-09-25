@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="300" viewBox="0 0 1280 300" role="img" aria-labelledby="t d">
+<title id="t">How it works</title>
+<desc id="d">1. Install (once) → 2. /setup (once a year) → 3. Open a unit (every session) → 4. /go (every day) → 5. /progress → /research (every week)</desc>
+<rect width="1280" height="300" rx="16" fill="#0d1117"/>
+<g font-family="Segoe UI, -apple-system, Helvetica, Arial, sans-serif">
+<text x="32" y="42" font-size="24" font-weight="800" fill="#e6edf3">How it works</text>
+<rect x="30" y="64" width="228" height="212" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+<circle cx="60" cy="96" r="16" fill="#16233a"/><text x="60" y="102" font-size="17" font-weight="800" fill="#7aa7ff" text-anchor="middle">1</text>
+<text x="86" y="102" font-size="13" fill="#9aa4ae" text-transform="uppercase" letter-spacing="1">ONCE</text>
+<text x="48" y="148" font-size="21" font-weight="700" fill="#e6edf3">Install</text>
+<text x="48" y="182" font-size="15" fill="#e6edf3">Claude Code,</text>
+<text x="48" y="206" font-size="15" fill="#e6edf3">then the CS Tutor plugin</text>
+<text x="48" y="260" font-size="13" fill="#9aa4ae">Tutorial 1</text>
+<path d="M261 170.0 l12 0 m-5 -5 l5 5 l-5 5" fill="none" stroke="#7aa7ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="278" y="64" width="228" height="212" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+<circle cx="308" cy="96" r="16" fill="#16233a"/><text x="308" y="102" font-size="17" font-weight="800" fill="#7aa7ff" text-anchor="middle">2</text>
+<text x="334" y="102" font-size="13" fill="#9aa4ae" text-transform="uppercase" letter-spacing="1">ONCE A YEAR</text>
+<text x="296" y="148" font-size="21" font-weight="700" fill="#7aa7ff" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/setup</text>
+<text x="296" y="182" font-size="15" fill="#e6edf3">paste your course units:</text>
+<text x="296" y="206" font-size="15" fill="#e6edf3">one folder per unit, each</text>
+<text x="296" y="230" font-size="15" fill="#e6edf3">with its own expert</text>
+<text x="296" y="260" font-size="13" fill="#9aa4ae">Tutorial 2</text>
+<path d="M509 170.0 l12 0 m-5 -5 l5 5 l-5 5" fill="none" stroke="#7aa7ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="526" y="64" width="228" height="212" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+<circle cx="556" cy="96" r="16" fill="#16233a"/><text x="556" y="102" font-size="17" font-weight="800" fill="#7aa7ff" text-anchor="middle">3</text>
+<text x="582" y="102" font-size="13" fill="#9aa4ae" text-transform="uppercase" letter-spacing="1">EVERY SESSION</text>
+<text x="544" y="148" font-size="21" font-weight="700" fill="#e6edf3">Open a unit</text>
+<text x="544" y="182" font-size="15" fill="#e6edf3" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">cd &lt;unit&gt; &amp;&amp; claude</text>
+<text x="544" y="206" font-size="15" fill="#e6edf3">the session runs as</text>
+<text x="544" y="230" font-size="15" fill="#e6edf3">that unit's expert</text>
+<text x="544" y="260" font-size="13" fill="#9aa4ae">Tutorial 2</text>
+<path d="M757 170.0 l12 0 m-5 -5 l5 5 l-5 5" fill="none" stroke="#7aa7ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="774" y="64" width="228" height="212" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+<circle cx="804" cy="96" r="16" fill="#16233a"/><text x="804" y="102" font-size="17" font-weight="800" fill="#7aa7ff" text-anchor="middle">4</text>
+<text x="830" y="102" font-size="13" fill="#9aa4ae" text-transform="uppercase" letter-spacing="1">EVERY DAY</text>
+<text x="792" y="148" font-size="21" font-weight="700" fill="#7aa7ff" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/go</text>
+<text x="792" y="182" font-size="15" fill="#e6edf3">reviews, lessons, slides,</text>
+<text x="792" y="206" font-size="15" fill="#e6edf3">feedback before you submit;</text>
+<text x="792" y="230" font-size="15" fill="#e6edf3">hints only on graded work</text>
+<text x="792" y="260" font-size="13" fill="#9aa4ae">Tutorials 3–4</text>
+<path d="M1005 170.0 l12 0 m-5 -5 l5 5 l-5 5" fill="none" stroke="#7aa7ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1022" y="64" width="228" height="212" rx="12" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+<circle cx="1052" cy="96" r="16" fill="#16233a"/><text x="1052" y="102" font-size="17" font-weight="800" fill="#7aa7ff" text-anchor="middle">5</text>
+<text x="1078" y="102" font-size="13" fill="#9aa4ae" text-transform="uppercase" letter-spacing="1">EVERY WEEK</text>
+<text x="1040" y="148" font-size="16" font-weight="700" fill="#7aa7ff" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">/progress → /research</text>
+<text x="1040" y="182" font-size="15" fill="#e6edf3">where you stand, then</text>
+<text x="1040" y="206" font-size="15" fill="#e6edf3">explanations and examples</text>
+<text x="1040" y="230" font-size="15" fill="#e6edf3">for your weak topics</text>
+<text x="1040" y="260" font-size="13" fill="#9aa4ae">Tutorial 5</text>
+</g>
+</svg>

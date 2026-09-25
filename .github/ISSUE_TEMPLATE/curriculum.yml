@@ -1,0 +1,21 @@
+name: My university's course units
+description: Help /setup classify your course units
+labels: [curriculum]
+body:
+  - type: input
+    id: school
+    attributes:
+      label: School and degree
+    validations:
+      required: true
+  - type: textarea
+    id: units
+    attributes:
+      label: Course units
+      description: Paste the public study plan. Mark the language each unit uses when you know it.
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What /setup got wrong (if you ran it)

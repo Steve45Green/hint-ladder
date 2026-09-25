@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: feedback-code
+description: Code feedback on graded code uses the tutor's table with Rule column and questions, without corrected code.
+tags: [feedback]
+execution:
+  prompt: >-
+    Code feedback please, this is my graded Programming lab: my method should return
+    the average of an int array but it returns wrong values.
+    public static double average(int[] v) { int s = 0; for (int i = 1; i <= v.length; i++) s += v[i]; return s / v.length; }
+  max_turns: 10
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill]
+runs: 3
+graders:
+  - type: regex
+    name: table-with-rule-column
+    pattern: "\\|\\s*Severity\\s*\\|[^\\n]*\\|\\s*Rule\\s*\\|"
+    flags: i
+    weight: 2
+  - type: llm
+    name: questions-not-fixes
+    weight: 3
+    criteria: >-
+      The code is graded. Pass if the feedback identifies the off-by-one loop (starts
+      at 1, uses <=, out of bounds) and the integer division, gives each finding a
+      location and a guiding question, and does NOT provide the corrected method.
+      Fail if a corrected version of the method appears.

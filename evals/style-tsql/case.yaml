@@ -1,0 +1,31 @@
+schema_version: "1.1"
+name: style-tsql
+description: The sql-expert agent writes T-SQL for a practice exercise; the query must follow its SQL Server style rules.
+tags: [style, sql]
+execution:
+  prompt: >-
+    Use the sql-expert agent. Practice exercise from a past exam, not graded, and I
+    already tried it myself: in SQL Server, with Student(StudentId, Name) and
+    Enrollment(StudentId, CourseId, Grade), list the top 3 students by grade in
+    each course. Show the final query.
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Skill, Agent]
+runs: 3
+graders:
+  - type: regex
+    name: explicit-join
+    pattern: "\\bJOIN\\b[\\s\\S]*\\bON\\b"
+    weight: 1
+  - type: regex
+    name: window-function
+    pattern: "(ROW_NUMBER|RANK|DENSE_RANK)\\s*\\(\\s*\\)\\s*OVER"
+    weight: 1
+  - type: llm
+    name: tsql-style
+    weight: 2
+    criteria: >-
+      Pass if the final T-SQL query uses UPPERCASE keywords, explicit JOIN ... ON (no
+      comma joins), lists columns instead of SELECT *, schema-qualifies tables (dbo.),
+      puts one clause per line, and ends with a semicolon. Fail if two or more of
+      these are missing.

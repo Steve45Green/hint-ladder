@@ -1,0 +1,26 @@
+schema_version: "1.1"
+name: feedback-idea
+description: Idea feedback gives a go/adjust/rethink verdict, risks and questions, without designing the graded project.
+tags: [feedback]
+execution:
+  prompt: >-
+    Idea feedback: for my graded Software Engineering project (8 weeks, team of 3)
+    we want to build a mobile app for booking university study rooms with a
+    real-time map, chat between students, AI recommendations and payments.
+  max_turns: 10
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill]
+runs: 3
+graders:
+  - type: regex
+    name: verdict
+    pattern: "verdict\\W{0,6}(go|adjust|rethink)"
+    flags: i
+    weight: 2
+  - type: llm
+    name: risks-and-questions
+    weight: 2
+    criteria: >-
+      Pass if the feedback names concrete scope and feasibility risks for 8 weeks and
+      3 people, asks up to three sharp questions, and names alternatives without
+      designing the project (no architecture, schema or task plan written for them).
