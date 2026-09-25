@@ -92,6 +92,7 @@ Real outputs from test runs, one course unit per row. HTML files open in a brows
 | Computational Mathematics (Python) | Process feedback from the git history of an assignment | [feedback](examples/matematica-computacional/feedback/0001-process-tp1.md) |
 | Web Application Development (PHP) | Idea feedback on a graded project, before any code | [feedback](examples/idea-feedback.md) |
 | Computer Graphics (C++, no expert in the library) | The expert interview, and the C++/OpenGL expert it generated | [interview](examples/new-unit-interview.md) · [expert](examples/.claude/agents/cpp-expert.md) |
+| Moodle (Portuguese run, simulated Moodle) | A lecturer posts slides and moves a test: the desktop notification, Claude opening the session with the news, `/moodle` bringing it in | [the run](examples/pt-PT/moodle-novidades.md) |
 
 ## What you get
 
@@ -108,6 +109,7 @@ Real outputs from test runs, one course unit per row. HTML files open in a brows
 | `/research` | After `/progress`: for each weak topic, other explanations, worked examples from easy to exam level, practice with hidden answers, and checked sources |
 | `/course` | Deepens one unit: assessment dates, AI policy, syllabus, sources, weekly pace |
 | `/save-chat` | Saves a conversation to the unit folder with its link, a summary, and secrets redacted |
+| `/moodle` | What lecturers posted or changed on Moodle (new slides, announcements, moved deadlines): downloaded, summarised, dated, with a next step. `/moodle watch` checks every hour and notifies you on the desktop; every session opened in the course starts with the news |
 | `tutor` | Always on: classifies each request as graded, practice or off-topic, and climbs the hint ladder on graded work |
 
 <table>

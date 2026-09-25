@@ -94,6 +94,7 @@ Saídas reais de testes, uma cadeira por linha. As de Redes, Matemática Discret
 | Matemática Computacional (Python) | Feedback ao processo a partir do histórico git de um trabalho | [feedback](examples/matematica-computacional/feedback/0001-process-tp1.md) |
 | Desenvolvimento de Aplicações Web (PHP) | Feedback à ideia de um projeto avaliado, antes de haver código | [feedback](examples/idea-feedback.md) |
 | Computação Gráfica (C++, sem especialista na biblioteca) | A entrevista e o especialista C++/OpenGL que gerou, com 10 erros comuns de OpenGL | [entrevista](examples/pt-PT/entrevista-nova-cadeira.md) · [especialista](examples/pt-PT/.claude/agents/cpp-expert.md) |
+| Moodle (Moodle simulado) | Um docente publica slides e adia um teste: a notificação no ambiente de trabalho, o Claude a abrir a sessão com as novidades, o `/moodle` a tratar de tudo | [a execução](examples/pt-PT/moodle-novidades.md) |
 
 ## O que tens
 
@@ -110,6 +111,7 @@ Saídas reais de testes, uma cadeira por linha. As de Redes, Matemática Discret
 | `/research` | Depois do `/progress`: para cada tema fraco, outras explicações, exemplos resolvidos do fácil ao nível de exame, exercícios com a resposta escondida e fontes verificadas |
 | `/course` | Aprofunda uma cadeira: datas de avaliação, política de IA, programa, fontes, ritmo semanal |
 | `/save-chat` | Guarda uma conversa na pasta da cadeira, com o link, um resumo e os segredos apagados |
+| `/moodle` | O que os docentes publicaram ou mudaram no Moodle (slides novos, anúncios, prazos alterados): descarregado, resumido, com as datas atualizadas e um próximo passo. `/moodle watch` verifica de hora a hora e avisa-te no ambiente de trabalho; cada sessão aberta no curso começa com as novidades |
 | `tutor` | Sempre ligado: classifica cada pedido como avaliado, prática ou fora do curso, e sobe a escada de pistas em trabalho avaliado |
 
 <table>

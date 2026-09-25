@@ -95,6 +95,8 @@ If your school uses Moodle, `/setup` can take what it needs from there: the cour
 
 Never paste your key or password into the chat.
 
+**From then on, Moodle comes to you.** Every Claude Code session you open in the course starts by checking Moodle (at most every 30 minutes); when a lecturer posted slides, an announcement or a new deadline, Claude tells you first thing. `/moodle` brings it in: it downloads the new files and writes study notes, summarises the announcements, updates the dates in `MISSION.md` after asking you, and suggests one next step. `/moodle watch` adds an hourly check that notifies you on the desktop even when Claude Code is closed (it runs on your computer and uses no Claude usage); `/moodle stop` removes it.
+
 ## A new unit later, or one with no expert
 
 New semester, an optional, a unit in a language Hint Ladder has no expert for (Kotlin, Haskell, C++, MATLAB, Assembly…)? In the course folder:

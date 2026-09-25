@@ -33,7 +33,7 @@ Turn the files a course hands out into notes the student can study from, every p
 
 ## Step 4: Write
 
-Every concept, formula and example carries its page or slide (`p. 12`, `slide 7`). Anything you add that is not in the material is marked *(not in the material)*. Summarise and quote short excerpts; never copy whole pages.
+Every concept, formula and example carries its page or slide (`p. 12`, `slide 7`). Anything you add that is not in the material is marked *(not in the material)*, written in the recorded language. Summarise and quote short excerpts; never copy whole pages.
 
 **Lecture material** → `material/<slug>.md`:
 

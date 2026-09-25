@@ -95,6 +95,8 @@ Se a tua escola usa Moodle, o `/setup` pode ir lá buscar o que precisa: as cade
 
 Nunca coles a tua chave nem a tua password no chat.
 
+**A partir daí, o Moodle vem ter contigo.** Cada sessão do Claude Code que abres no curso começa por ver o Moodle (no máximo de 30 em 30 minutos); quando um docente publicou slides, um anúncio ou um prazo novo, o Claude diz-to logo à entrada. O `/moodle` trata do resto: descarrega os ficheiros novos e escreve apontamentos, resume os anúncios, atualiza as datas no `MISSION.md` depois de te perguntar e sugere um próximo passo. O `/moodle watch` junta uma verificação de hora a hora que te avisa no ambiente de trabalho mesmo com o Claude Code fechado (corre no teu computador e não gasta o teu plano do Claude); o `/moodle stop` desliga-a.
+
 ## Uma cadeira nova mais tarde, ou uma sem especialista
 
 Semestre novo, uma optativa, uma cadeira numa linguagem para a qual o Hint Ladder não tem especialista (Kotlin, Haskell, C++, MATLAB, Assembly…)? Na pasta do curso:

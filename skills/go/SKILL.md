@@ -44,6 +44,7 @@ Settle it from the environment, cheapest check first, and ask nothing you can lo
 
 1. **The argument as free text** comes first. "I have a bug in my linked list" is a bug; "is my project idea good" is idea feedback. Route it with the table in Step 3, whether or not a workspace exists: a missing workspace never blocks help (the tutor works without one), so mention `/setup` in one line at most.
 2. **No argument, and no `CURRICULUM.md` in this directory or a parent, and no `MISSION.md`** → `setup`.
+   The session's opening context holds a Hint Ladder Moodle notice → mention it first and start `moodle`, unless the student asked for something else.
 3. **A course workspace** (`MISSION.md` here or in a parent):
    - run `python3 ../exam/scripts/review.py <workspace>` from this skill's directory; records due → `exam` drill;
    - an assessment in `MISSION.md` within 14 days → `exam` mock, or `exam` oral when it has an oral defence;
@@ -66,6 +67,7 @@ Settle it from the environment, cheapest check first, and ask nothing you can lo
 | No curriculum yet | `setup` |
 | A new course unit (a new semester, an optional), or a unit with no expert yet | `setup`, with `add <unit>` |
 | New or empty course workspace | `course` |
+| The session opened with a Moodle notice (new files, announcements, moved deadlines), or "what's new on Moodle?" | `moodle` |
 | "What have I done / where do I stand?" | `progress` |
 | Weak topics, "I need more examples", a better explanation than the slides | `research` |
 | Slides, PDFs, course sheet, past exams to read | `analyze` |

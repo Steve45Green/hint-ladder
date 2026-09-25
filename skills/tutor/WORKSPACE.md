@@ -19,12 +19,14 @@ A workspace is one directory per course unit. `/setup` creates them under a **st
 ├── assets/                 style.css, quiz.js and other shared lesson components
 ├── past-exams/             past exams the student drops here
 ├── material/               /analyze notes on slides, course sheet, past exams; INDEX.md lists them
-│   └── moodle/             files downloaded from Moodle by /setup (not versioned: they are the lecturers')
+│   └── moodle/             files downloaded from Moodle by /setup and /moodle (not versioned: they are the lecturers')
 ├── chats/                  saved conversations (/save-chat); INDEX.md lists them
 ├── mocks/0001*.md          mock exams
 ├── feedback/0001-<kind>-*.md  code, process and idea feedback, saved as given
 └── assignments/<slug>/     graded work: statement, the student's code, AI-USE.md
 ```
+
+The study root may also hold `.moodle.json`, written by `moodle.py` (not versioned, no secrets): the Moodle course linked to each unit folder, what was already seen and notified, and the last check. The student's Moodle key is never in the course; it lives in `~/.config/hint-ladder/moodle.json`.
 
 Numbered files (`records/`, `lessons/`, `slides/`, `research/`, `mocks/`, `feedback/`): scan for the highest number and add one.
 

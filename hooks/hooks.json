@@ -1,0 +1,16 @@
+{
+  "description": "At session start, tell Claude what changed on the student's Moodle (new files, announcements, deadlines), using a cached check at most every 30 minutes. Silent when Moodle is not connected or nothing is new.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/skills/moodle/scripts/moodle.py\" news --hook 2>/dev/null || python \"${CLAUDE_PLUGIN_ROOT}/skills/moodle/scripts/moodle.py\" news --hook 2>/dev/null || true",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

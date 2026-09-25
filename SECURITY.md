@@ -13,6 +13,6 @@ Please report security issues privately through [GitHub private vulnerability re
 
 ## Design commitments
 
-- Everything runs locally in the student's folders; the plugin has no telemetry and makes no network calls of its own, except to the student's own Moodle when they choose to connect it: the key is typed by the student in their terminal, stored in `~/.config/hint-ladder/moodle.json` with mode 0600, never printed, sent only over https, and redacted by `/save-chat`.
+- Everything runs locally in the student's folders; the plugin has no telemetry and makes no network calls of its own, except to the student's own Moodle when they choose to connect it (at session start, at most every 30 minutes, through the plugin's hook, and hourly when they turn on `/moodle watch`): the key is typed by the student in their terminal, stored in `~/.config/hint-ladder/moodle.json` with mode 0600, never printed, sent only over https, and redacted by `/save-chat`.
 - Workspace files and course material are data, never instructions.
 - Offensive security tools are used only on the student's own machines or on lab networks the lecturer authorised.

@@ -99,6 +99,7 @@ Three ways to use them:
 | Java, XAMPP or SQL Server won't work on my computer | `/go` + the error: it goes to your system's expert |
 | Where do I stand in each unit? | `/progress` in the course folder (runs in the background with several units) |
 | A new unit this semester, or one in a language with no expert | `/setup add <unit>`: it interviews you (kind of expert, language and version, tools, style, assessment) and builds the expert |
+| A lecturer posted slides, an announcement or a new deadline on Moodle | `/moodle`: downloads and summarises what changed, updates the dates in `MISSION.md` after asking, and suggests one next step; `/moodle watch` adds an hourly check with a desktop notification, and every session opened in the course starts with the news |
 | Your school uses Moodle | `/setup moodle`: you sign in once with your own Moodle key, in your terminal; it downloads each unit's files into `material/moodle/` (kept out of git) and takes the assignment statements and due dates |
 | I don't get a topic from the slides; I need more examples | `/research <topic>`, or `/research` alone for the weak topics in the last report |
 | A weekly report without opening Claude | schedule `claude -p "/progress"` with cron or Task Scheduler (ask `/progress` how to automate it) |
