@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ficha · Indução matemática</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Matemática Discreta · Ficha de consulta</p>
+  <h1>Indução matemática</h1>
+</header>
+
+<section>
+  <h2>Indução fraca — estrutura da prova</h2>
+  <p>Para provar <code>P(n)</code> verdadeira para todo <code>n ≥ n₀</code>:</p>
+  <ol>
+    <li><strong>Base:</strong> mostrar <code>P(n₀)</code> diretamente.</li>
+    <li><strong>H.I.:</strong> assumir <code>P(k)</code> verdadeira para um <code>k ≥ n₀</code> arbitrário.</li>
+    <li><strong>Passo indutivo:</strong> provar <code>P(k) → P(k+1)</code> usando a H.I.</li>
+    <li><strong>Conclusão:</strong> por indução, <code>P(n)</code> vale para todo <code>n ≥ n₀</code>.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Erros comuns</h2>
+  <ul>
+    <li>Esquecer a base — sem ela, o "efeito dominó" não tem primeiro dominó.</li>
+    <li>Assumir <code>P(k+1)</code> em vez de <code>P(k)</code> na H.I. (é isso que se quer <em>provar</em>, não assumir).</li>
+    <li>No passo indutivo, não usar a H.I. em lado nenhum — se a H.I. nunca aparece na prova, a prova não é indução.</li>
+    <li>Testar só um valor de <code>k</code> no passo indutivo em vez de argumentar para um <code>k</code> arbitrário.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Fórmulas de soma úteis para praticar</h2>
+  <table>
+    <thead><tr><th>Fórmula</th><th>Válida para</th></tr></thead>
+    <tbody>
+      <tr><td>1 + 2 + ⋯ + n = n(n+1)/2</td><td>n ≥ 1</td></tr>
+      <tr><td>1 + 3 + 5 + ⋯ + (2n−1) = n²</td><td>n ≥ 1</td></tr>
+      <tr><td>1² + 2² + ⋯ + n² = n(n+1)(2n+1)/6</td><td>n ≥ 1</td></tr>
+      <tr><td>1 + 2 + 4 + ⋯ + 2ⁿ = 2ⁿ⁺¹ − 1</td><td>n ≥ 0</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <p>Dúvidas? Pergunta ao teu tutor. · <a href="../lessons/0001-inducao-matematica-simples.html">Lição: Indução matemática simples</a></p>
+</footer>
+
+</main>
+</body>
+</html>

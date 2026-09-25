@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0001 · Portas, segmentos e o three-way handshake</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Redes de Computadores 1 · Lição 0001 · ~10 min</p>
+  <h1>Portas, segmentos e o three-way handshake</h1>
+  <p class="goal"><strong>No final desta lição consegues</strong> identificar, numa captura Wireshark, a que gama pertence uma porta e reconhecer os três segmentos do handshake TCP e o que cada um sincroniza — a base para ler uma ligação TCP sem apontamentos.</p>
+</header>
+
+<section>
+  <h2>A ideia</h2>
+  <p>A camada de transporte multiplexa vários processos na mesma máquina através de <strong>portas</strong> (16 bits, 0–65535). O IANA divide-as em três gamas: <strong>bem-conhecidas</strong> (0–1023, ex.: 80 HTTP, 53 DNS), <strong>registadas</strong> (1024–49151) e <strong>dinâmicas/efémeras</strong> (49152–65535, atribuídas pelo sistema operativo ao processo cliente em cada nova ligação). TCP e UDP têm espaços de portas <em>independentes</em>: a porta 53/UDP e a porta 53/TCP são coisas distintas, ambas usadas por DNS.</p>
+  <p>UDP e TCP são os dois protocolos de transporte da Internet, mas resolvem problemas diferentes. UDP é <strong>não orientado à ligação</strong>: envia o segmento e esquece — sem handshake, sem confirmação, sem ordenação. TCP é <strong>orientado à ligação</strong>: antes de trocar dados da aplicação, negoceia a ligação com o <strong>three-way handshake</strong>, que sincroniza o número de sequência inicial (ISN) de cada lado. É essa sincronização — não o transporte de dados — que os três primeiros segmentos fazem.</p>
+  <figure>
+    <svg viewBox="0 0 620 260" role="img" aria-label="Comparação do cabeçalho UDP (4 campos) com o cabeçalho TCP (mais campos, incluindo seq, ack e flags)">
+      <rect class="node" x="20" y="30" width="260" height="130" rx="6"/>
+      <text class="label" x="150" y="20" text-anchor="middle">UDP — 8 bytes fixos</text>
+      <text class="label" x="150" y="60" text-anchor="middle">porta origem · porta destino</text>
+      <text class="label" x="150" y="90" text-anchor="middle">comprimento</text>
+      <text class="label" x="150" y="120" text-anchor="middle">checksum</text>
+      <text class="label" x="150" y="150" text-anchor="middle">(sem seq, sem ack, sem flags)</text>
+
+      <rect class="node hl" x="340" y="10" width="260" height="230" rx="6"/>
+      <text class="label hl" x="470" y="0" text-anchor="middle" dy="12">TCP — cabeçalho ≥ 20 bytes</text>
+      <text class="label" x="470" y="45" text-anchor="middle">porta origem · porta destino</text>
+      <text class="label" x="470" y="75" text-anchor="middle">número de sequência (seq)</text>
+      <text class="label" x="470" y="105" text-anchor="middle">número de confirmação (ack)</text>
+      <text class="label" x="470" y="135" text-anchor="middle">flags: SYN · ACK · FIN · RST …</text>
+      <text class="label" x="470" y="165" text-anchor="middle">janela de receção</text>
+      <text class="label" x="470" y="195" text-anchor="middle">checksum · opções</text>
+    </svg>
+    <figcaption>O cabeçalho UDP tem só o essencial para entregar ao processo certo; o TCP acrescenta os campos (seq, ack, flags) que tornam possível o handshake, a confirmação e a ordenação.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Exemplo resolvido: o three-way handshake</h2>
+  <p>Cliente com ISN = 2000 liga-se a um servidor com ISN = 9000, numa porta bem-conhecida (ex.: 443).</p>
+  <table class="trace">
+    <thead><tr><th>passo</th><th>direção</th><th>flags</th><th>seq</th><th>ack</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>cliente → servidor</td><td>SYN</td><td>2000</td><td>—</td></tr>
+      <tr><td>2</td><td>servidor → cliente</td><td>SYN, ACK</td><td>9000</td><td>2001</td></tr>
+      <tr><td>3</td><td>cliente → servidor</td><td>ACK</td><td>2001</td><td>9001</td></tr>
+    </tbody>
+  </table>
+  <p>Regra fixa: um SYN não transporta dados da aplicação mas <strong>consome um número de sequência</strong>; por isso <code>ack</code> confirma sempre <code>seq</code> recebido + 1. No passo 2 o servidor faz duas coisas ao mesmo tempo — confirma o SYN do cliente (<code>ack = 2001</code>) e envia o seu próprio SYN (<code>seq = 9000</code>) — por isso o handshake tem só três segmentos, não quatro.</p>
+  <figure>
+    <svg viewBox="0 0 500 220" role="img" aria-label="Diagrama do three-way handshake entre cliente e servidor com três setas: SYN, SYN+ACK, ACK">
+      <line class="edge" x1="80" y1="20" x2="80" y2="200"/>
+      <line class="edge" x1="420" y1="20" x2="420" y2="200"/>
+      <circle class="node" cx="80" cy="20" r="6"/>
+      <circle class="node" cx="420" cy="20" r="6"/>
+      <text class="label" x="80" y="12" text-anchor="middle">cliente</text>
+      <text class="label" x="420" y="12" text-anchor="middle">servidor</text>
+
+      <line class="edge hl" x1="80" y1="60" x2="420" y2="90" marker-end="url(#arrow)"/>
+      <text class="label" x="250" y="55" text-anchor="middle">1. SYN, seq=2000</text>
+
+      <line class="edge hl" x1="420" y1="120" x2="80" y2="150" marker-end="url(#arrow)"/>
+      <text class="label" x="250" y="110" text-anchor="middle">2. SYN+ACK, seq=9000, ack=2001</text>
+
+      <line class="edge hl" x1="80" y1="170" x2="420" y2="195" marker-end="url(#arrow)"/>
+      <text class="label" x="250" y="166" text-anchor="middle">3. ACK, ack=9001</text>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 z" fill="currentColor"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>Três segmentos bastam: o segundo acumula a confirmação do cliente e o SYN do servidor.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Prática</h2>
+
+  <div class="predict" data-answer="7001">
+    <p><strong>1.</strong> O ISN do servidor foi 7000. Que valor tem o campo <code>ack</code> que o cliente envia no terceiro segmento do handshake?</p>
+    <input aria-label="A tua resposta" autocomplete="off"> <button>Verificar</button>
+    <p class="explain" hidden>O <code>ack</code> confirma o <code>seq</code> do servidor + 1 (o SYN dele consumiu o número 7000) — não depende do ISN do próprio cliente.</p>
+  </div>
+
+  <div class="quiz" data-answer="0">
+    <p><strong>2.</strong> Porque é que a porta 53 pode estar reservada em TCP e em UDP ao mesmo tempo, sem conflito?</p>
+    <button>TCP e UDP têm espaços de portas independentes, geridos em separado</button>
+    <button>A porta 53 está reservada apenas para tráfego DNS válido</button>
+    <button>O sistema operativo alterna a porta entre os dois protocolos</button>
+    <p class="explain" hidden>O par (protocolo, número de porta) é a chave: porta 53/UDP e porta 53/TCP são recursos distintos, cada um multiplexado à parte.</p>
+  </div>
+
+  <div class="quiz" data-answer="0">
+    <p><strong>3.</strong> Porque é que UDP não precisa de um three-way handshake antes de enviar dados?</p>
+    <button>UDP não é orientado à ligação: não mantém estado nem confirma a entrega</button>
+    <button>UDP usa um handshake mais curto, de apenas um segmento</button>
+    <button>UDP delega o handshake para a camada de aplicação</button>
+    <p class="explain" hidden>Sem estado de ligação para sincronizar, não há nada para o handshake negociar — é essa ausência de garantias que torna o UDP mais rápido e mais leve.</p>
+  </div>
+
+  <div class="quiz" data-answer="2">
+    <p><strong>4.</strong> Numa captura, vês uma ligação HTTPS com porta destino 443 e porta origem 51234 do lado do cliente. A que gama pertence a porta 51234?</p>
+    <button>Portas bem-conhecidas (0–1023)</button>
+    <button>Portas registadas (1024–49151)</button>
+    <button>Portas dinâmicas/efémeras (49152–65535)</button>
+    <p class="explain" hidden>O sistema operativo do cliente atribui uma porta efémera de curta duração a cada nova ligação; o servidor é que escuta na porta bem-conhecida (443).</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Fonte principal:</strong> <a href="https://www.rfc-editor.org/rfc/rfc9293">RFC 9293 — Transmission Control Protocol (TCP)</a>, secções sobre o formato do segmento e o estabelecimento da ligação; para UDP, <a href="https://www.rfc-editor.org/rfc/rfc768">RFC 768</a>.</p>
+  <p>Dúvidas? Pergunta ao teu tutor. · <a href="../slides/0001-handshake-tcp-congestao.html">Deck: handshake TCP e controlo de congestão</a> · <a href="../reference/">Referência</a></p>
+</footer>
+
+</main>
+</body>
+</html>

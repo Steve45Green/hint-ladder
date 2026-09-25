@@ -27,9 +27,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 KEBAB = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 FRONTMATTER = re.compile(r"\A---\n(.*?)\n---\n", re.S)
 LINK = re.compile(r"\]\(([^)\s]+)\)")
-AGENT_SECTIONS = ["## Role", "## Modes", "## Course units", "## Style rules",
+AGENT_SECTIONS = ["## Role", "## Modes", "## Course units", "## Style rules", "## Common mistakes",
                   "## Feedback", "## Feedback loop", "## Teaching moves", "## Done when"]
 MIN_STYLE_RULES = 8
+MIN_MISTAKES = 8
 
 
 def parse_frontmatter(text):
@@ -105,6 +106,10 @@ def validate_agent(path, skills_dir):
     rules = re.findall(r"^\d+\. ", style.group(1), re.M) if style else []
     if style and len(rules) < MIN_STYLE_RULES:
         errors.append(f"{label}: {len(rules)} numbered style rules (min {MIN_STYLE_RULES})")
+    mistakes = re.search(r"^## Common mistakes\n(.*?)(?=^## |\Z)", text, re.S | re.M)
+    items = re.findall(r"^\d+\. .*\bask: ", mistakes.group(1), re.M) if mistakes else []
+    if mistakes and len(items) < MIN_MISTAKES:
+        errors.append(f"{label}: {len(items)} common mistakes with an 'ask:' question (min {MIN_MISTAKES})")
     return errors
 
 
@@ -135,7 +140,9 @@ def run(extra_agent_dirs=()):
 
 def self_test():
     good_agent = "---\nname: x-expert\ndescription: d\nskills:\n  - tutor\n---\n" + "\n".join(
-        s + "\n" + ("\n".join(f"{i}. rule" for i in range(1, 9)) if s == "## Style rules" else "text")
+        s + "\n" + ("\n".join(f"{i}. rule" for i in range(1, 9)) if s == "## Style rules"
+                    else "\n".join(f'{i}. **m{i}**: s · ask: "q" · drill: d' for i in range(1, 9)) if s == "## Common mistakes"
+                    else "text")
         for s in AGENT_SECTIONS) + "\n"
     with tempfile.TemporaryDirectory() as d:
         base = pathlib.Path(d)
@@ -144,11 +151,11 @@ def self_test():
         (base / "x-expert.md").write_text(good_agent)
         assert validate_agent(base / "x-expert.md", base / "skills") == []
         bad = good_agent.replace("name: x-expert", "name: y").replace("  - tutor", "  - ghost")
-        bad = bad.replace("## Teaching moves", "## Other").replace("8. rule", "")
+        bad = bad.replace("## Teaching moves", "## Other").replace("8. rule", "").replace('8. **m8**: s · ask: "q" · drill: d', "")
         (base / "bad-expert.md").write_text(bad)
         errors = validate_agent(base / "bad-expert.md", base / "skills")
         for fragment in ["does not match the file name", "'ghost' does not exist",
-                         "missing section '## Teaching moves'", "7 numbered style rules"]:
+                         "missing section '## Teaching moves'", "7 numbered style rules", "7 common mistakes"]:
             assert any(fragment in e for e in errors), (fragment, errors)
         (base / "skills" / "Bad_Skill").mkdir()
         (base / "skills" / "Bad_Skill" / "SKILL.md").write_text("---\nname: other\ndescription: d\n---\n[a](missing.md)\n")

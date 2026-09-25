@@ -36,7 +36,7 @@ The repository has an eval suite that runs each case with and without the plugin
 
 ## Privacy
 
-Everything runs on the student's computer, in their own folders. The plugin has no telemetry and sends nothing to lecturers or to the project.
+Everything runs on the student's computer, in their own folders. The plugin has no telemetry and sends nothing to lecturers or to the project. When a student connects their Moodle, your files are downloaded to their computer only, with their own access, into a folder kept out of git; nothing is republished.
 
 ## Feedback
 

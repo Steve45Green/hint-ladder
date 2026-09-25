@@ -7,7 +7,7 @@ A Claude Code plugin that tutors any Computer Engineering student: they paste th
 - `skills/<name>/SKILL.md`: one skill per directory. `tutor` is the only model-invoked skill; every other skill sets `disable-model-invocation: true`.
 - `skills/tutor/SKILL.md`: modes, hint ladder, policy order (`COURSE-POLICY.md` > `MISSION.md` > defaults) and the **feedback formats** (code, process, idea). The single source for all of them.
 - `skills/tutor/WORKSPACE.md`: the single source for workspace and study-root file formats. Other skills link to it (`../tutor/WORKSPACE.md`) instead of restating it.
-- `skills/setup/`: `/setup` (course units → `CURRICULUM.md` + one workspace per active unit + agent wiring), `LANGUAGE-MAP.md` (unit name → stack → agent) and `AGENT-TEMPLATE.md` (the skeleton every language agent follows).
+- `skills/setup/`: `/setup` (course units → `CURRICULUM.md` + one workspace per active unit + agent wiring), `LANGUAGE-MAP.md` (unit name → stack → agent), `AGENT-TEMPLATE.md` (the skeleton every language agent follows) and `scripts/moodle.py` (the student's Moodle courses, files and assignments, with a key the student types in their own terminal and that is never printed).
 - `skills/go/SKILL.md`: the user-invoked entry point, routing to this pack's skills, agents and optional complements.
 - `agents/<lang>-expert.md`: curated language agents. Each preloads `tutor` (applies when run as a subagent) and tells itself to invoke `tutor` when run as the main agent (preloading does not apply there).
 - `agents/windows-expert.md`, `agents/macos-expert.md`: platform agents, picked by the student's OS (`OS:` line in `CURRICULUM.md`), for toolchain setup and Windows/macOS course topics.

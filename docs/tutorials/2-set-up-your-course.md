@@ -83,6 +83,18 @@ Put the unit's course sheet (*ficha da unidade curricular*, a PDF) in the folder
 
 `/analyze` reads the PDF; `/course` fills in `MISSION.md` (assessment, dates, AI policy) and asks only what is missing. Do this for each unit when its semester starts.
 
+## From Moodle (optional)
+
+If your school uses Moodle, `/setup` can take what it needs from there: the courses you are enrolled in, each unit's files (course sheet, slides, statements) and the assignment due dates. Say yes when it asks, or run `/setup moodle` later in the course folder.
+
+1. It gives you one command to run **in your own terminal**, not in the chat, for example `python3 ".../moodle.py" login --url https://moodle.yourschool.pt`.
+2. The command asks for your Moodle key: in Moodle, **Preferences → Security keys → "Moodle mobile web service"**, copy the key. If your school has no such page and signs you in with a username and password on Moodle itself, press Enter and type them instead: the password is used once and never stored.
+3. Back in Claude Code, `/setup` lists your courses, matches them to your units, downloads the files into each unit's `material/moodle/` and writes each assignment's statement and due date.
+
+**It worked when** each unit has `material/moodle/` with the course's PDFs, and `MISSION.md` lists the assignment dates. The key is saved only on your computer (`~/.config/hint-ladder/moodle.json`, readable by you alone); the downloaded files stay out of git, because they are your lecturers'. If your school has not enabled the Moodle app, it says so and carries on without it: download the files by hand and use `/analyze`.
+
+Never paste your key or password into the chat.
+
 ## A new unit later, or one with no expert
 
 New semester, an optional, a unit in a language Hint Ladder has no expert for (Kotlin, Haskell, C++, MATLAB, Assembly…)? In the course folder:

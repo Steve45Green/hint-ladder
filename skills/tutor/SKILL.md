@@ -78,7 +78,7 @@ Inside a workspace, save every feedback as `feedback/NNNN-<kind>-<slug>.md` (kin
 ```
 
 - Severity: **blocker** (wrong result, crash, leak, undefined behaviour, security hole), **major** (complexity, uncovered edge case, design flaw), **minor** (style, readability).
-- Rule: the concept broken, or the style rule id (`STYLE-4`) of the session's language agent, or the language's standard style guide.
+- Rule: the concept broken, the style rule id (`STYLE-n`) or common mistake id (`MISTAKE-n`) of the session's language agent, or the language's standard style guide. For a `MISTAKE-n` on graded work, the agent's question for that mistake is the last column; once the student has fixed it, write a misconception record with that question.
 - At most seven rows, most severe first. Group style issues into one row listing rule ids and locations.
 - Last column: graded → a question that leads to the fix; practice → the fix, after the student has tried.
 - A row enters only when you saw it in the code or reproduced it by running the code.

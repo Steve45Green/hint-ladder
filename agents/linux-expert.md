@@ -41,10 +41,24 @@ Follow these in every script you write, and cite them as `STYLE-n` in feedback. 
 12. **`shellcheck` clean**, with any disabled check justified in a comment.
 13. **Comments** on every non-obvious flag or filter.
 
+## Common mistakes
+The classic errors students make in the shell and Linux, most frequent first, each with the question that leads the student to find it and a drill that fixes the idea. In feedback, cite them as `MISTAKE-n`: on graded work the question goes in the last column, never the fix; after the student fixes one, write a misconception record with that question (WORKSPACE.md, rule 3).
+1. **Unquoted variables**: breaks on file names with spaces or `*` · ask: "What does the shell do with the spaces in `$file` before the command runs?" · drill: predict `rm $f` and `rm "$f"` with `f='a b'`
+2. **`for f in $(ls)`**: names with spaces split into pieces · ask: "How many words does `$(ls)` produce for `a b.txt`?" · drill: rewrite with a glob `for f in *.txt` and predict both
+3. **`cd` that fails silently before a destructive command**: files deleted in the wrong directory · ask: "Which directory are you in if this `cd` fails?" · drill: trace `cd /nope; rm -r *` against `cd /nope || exit 1`
+4. **Failures hidden by a pipe**: the script "succeeds" after an error · ask: "Whose exit status does a pipeline return?" · drill: predict `$?` after `false | true` with and without `set -o pipefail`
+5. **`sudo echo … > /etc/file`**: "Permission denied" despite `sudo` · ask: "Who opens the file for the redirection: `sudo` or your shell?" · drill: rewrite with `| sudo tee` and explain why it works
+6. **`chmod 777` as a fix**: it works, and now anyone can change the file · ask: "Which user runs this, and which permission bit do they actually need?" · drill: read `ls -l` modes and choose the smallest `chmod`
+7. **Relative paths and `PATH` in cron or services**: works by hand, fails under cron · ask: "Which directory and `PATH` does cron run your script with?" · drill: run the script with `env -i` and a different working directory
+8. **`[ ]` test pitfalls**: "unary operator expected", or string compared as a number · ask: "What does `[ $x = y ]` become when `x` is empty?" · drill: predict `[ $x = y ]`, `[ "$x" = y ]` and `[ "$n" -eq 10 ]`
+9. **Variables set inside `cmd | while read`**: the value is lost after the loop · ask: "Which process runs the loop body?" · drill: predict a counter after `printf 'a\nb\n' | while read l; do n=$((n+1)); done`
+10. **Firewall and routing rule order**: a rule "does nothing" · ask: "Which rule matches first?" · drill: order five `iptables` or `nft` rules and predict which one matches a packet
+11. **Windows line endings in a script**: `$'\r': command not found` · ask: "What is at the end of each line of this file?" · drill: inspect with `cat -A` and fix with `dos2unix`
+
 ## Feedback
 Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. Checklist, most severe first:
 - **Safety**: `rm -rf "$dir/"` with an empty or unset variable; commands run as root without need; `chmod 777`; secrets in scripts or shell history; destructive commands without confirmation.
-- **Correctness**: unquoted expansions (word splitting and globbing); `cd` without checking it worked; failures hidden by pipes (no `pipefail`); `for f in $(ls)`; `sudo echo … > file` (the redirect runs unprivileged); different `PATH` and environment under `cron` and `systemd`.
+- **Correctness**: the Common mistakes above (`MISTAKE-n`), then unquoted expansions (word splitting and globbing); `cd` without checking it worked; failures hidden by pipes (no `pipefail`); `for f in $(ls)`; `sudo echo … > file` (the redirect runs unprivileged); different `PATH` and environment under `cron` and `systemd`.
 - **Configuration**: services not enabled on boot, unit files without restart policy, logs ignored, firewall rule order, SSH password login left on.
 - **Networking**: subnet mask and gateway errors, overlapping subnets, confusing DNS failures with connectivity failures, missing return routes.
 - **Style**: the rules above.

@@ -29,7 +29,8 @@ SECRETS = [
     (re.compile(r"\bgh[pousr]_[A-Za-z0-9]{20,}|\bgithub_pat_[A-Za-z0-9_]{20,}"), "<REDACTED>"),
     (re.compile(r"\bAKIA[0-9A-Z]{16}\b"), "<REDACTED>"),
     (re.compile(r"\bxox[baprs]-[A-Za-z0-9\-]{10,}"), "<REDACTED>"),
-    (re.compile(r"(?i)\b(password|passwd|pwd|secret|token|api[_-]?key)(\s*[:=]\s*)(\"[^\"]*\"|'[^']*'|\S+)"), r"\1\2<REDACTED>"),
+    (re.compile(r"(?i)\b(password|passwd|pwd|secret|(?:ws)?token|api[_-]?key)(\s*[:=]\s*)(\"[^\"]*\"|'[^']*'|\S+)"), r"\1\2<REDACTED>"),
+    (re.compile(r"\b[0-9a-f]{32}\b"), "<REDACTED>"),  # Moodle web service keys
 ]
 REMINDER = re.compile(r"<system-reminder>.*?</system-reminder>", re.S)
 COMMAND = re.compile(r"<command-name>\s*(/?[^<\s]+)\s*</command-name>")
@@ -211,7 +212,7 @@ def self_test():
     rows = [
         {"type": "agent-setting", "agentSetting": "java-expert", "sessionId": "s1"},
         {"type": "user", "sessionId": "s1", "cwd": "/w", "gitBranch": "main", "timestamp": "2026-09-25T10:00:00Z",
-         "message": {"role": "user", "content": "My lab crashes. token=abc123"}},
+         "message": {"role": "user", "content": "My lab crashes. token=abc123 wstoken=ws999 key 0123456789abcdef0123456789abcdef"}},
         {"type": "assistant", "sessionId": "s1", "cwd": "/w", "timestamp": "2026-09-25T10:00:05Z",
          "message": {"content": [{"type": "thinking", "thinking": "secret thoughts"},
                                  {"type": "tool_use", "name": "Bash", "input": {"command": "javac /w/Main.java"}}]}},
@@ -227,9 +228,10 @@ def self_test():
     md = to_markdown(rows, url="https://claude.ai/code/session_x")
     for expected in ["# My lab crashes.", "`claude --resume s1`", "https://claude.ai/code/session_x", "**Agent:** `java-expert`",
                      "### You · 2026-09-25 10:00", "> Did: Bash `javac Main.java`", "Line 8 dereferences null.", "`/go drill`",
-                     "token=<REDACTED>", "Key <REDACTED>"]:
+                     "token=<REDACTED>", "wstoken=<REDACTED>", "key <REDACTED>", "Key <REDACTED>"]:
         assert expected in md, (expected, md)
-    for absent in ["secret thoughts", "compiler output", "Base directory", "subagent chatter", "abc123", "abcdefghijklmnop"]:
+    for absent in ["secret thoughts", "compiler output", "Base directory", "subagent chatter", "abc123", "ws999",
+                   "0123456789abcdef0123456789abcdef", "abcdefghijklmnop"]:
         assert absent not in md, (absent, md)
     with tempfile.TemporaryDirectory() as d:
         out = pathlib.Path(d) / "chats" / "a.md"

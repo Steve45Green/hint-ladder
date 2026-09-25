@@ -38,9 +38,14 @@ Follow these in every line of <Language> you write, and cite them as `STYLE-n` i
 2. <Layout: indentation, line length, braces>
 …  (10 to 14 numbered rules, based on the language's reference style guide, named here)
 
+## Common mistakes
+The classic errors students make in <Language>, most frequent first, each with the question that leads the student to find it and a drill that fixes the idea. In feedback, cite them as `MISTAKE-n`: on graded work the question goes in the last column, never the fix; after the student fixes one, write a misconception record with that question (WORKSPACE.md, rule 3).
+1. **<mistake>**: <symptom> · ask: "<question that leads the student to it>" · drill: <a predict-the-output or trace exercise>
+…  (8 to 12 numbered items: the errors first-year students of this language actually make)
+
 ## Feedback
 Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. <Language> checklist, most severe first:
-- **Correctness**: <the language's classic bugs>
+- **Correctness**: the Common mistakes above (`MISTAKE-n`), then <other classic bugs>
 - **Design**: <…>
 - **Complexity / performance**: <…>
 - **Security**: <when relevant>

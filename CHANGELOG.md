@@ -13,12 +13,19 @@ All notable changes to Hint Ladder (called CS Tutor until 0.6.0). The format fol
 - Examples from more units: Computer Networks (TCP deck, the HTTP lesson `/go` chose), Discrete Mathematics (induction lesson and deck, no code), a `/progress` report; a 90-second tour GIF and English demo GIFs recorded from real runs.
 - The deck engine shrinks a slide that overflows the stage as a last resort, and figures are capped to the stage height.
 - `CITATION.cff` and issue-form links to tutorials, Discussions and private security reports.
+- `/setup moodle` (also offered during `/setup`): the student signs in once, in their own terminal, with their Moodle key (or a username and password, used once); `/setup` matches their enrolled courses to units, downloads each unit's files into `material/moodle/` (kept out of git) and writes each assignment's statement and due date. `skills/setup/scripts/moodle.py`, standard library only, with a self-test against a fake Moodle; `/save-chat` now redacts Moodle keys.
+- **Common mistakes** in every language agent: 8 to 12 classic errors, each with the question that leads the student to find it and a drill; feedback cites them as `MISTAKE-n`, and on graded work the question stands in for the fix. Required by `AGENT-TEMPLATE.md` and the validator, so generated agents carry them too.
+- `experts` eval suite: a graded lab per language agent with two common mistakes planted. With the plugin, 15 of 16 runs found both, 14 of 16 cited the mistake, 15 of 16 asked instead of fixing; without it, 16, 0 and 0 of 16 ([results](evals/RESULTS-experts.md)).
+- Chart patterns in the deck engine and the lesson stylesheet (`.grid`, `.axis`, `.tick`, `.series`, `.bar`, `.point`, plus the diagram classes in lessons): inline SVG, revealed series by series, no dependencies.
+- Portuguese examples (`examples/pt-PT/`) from a test course in Portuguese: TCP and induction decks, the lesson `/go` chose, a `/progress` report, a `/research` pack, the expert interview and a generated C++ expert; Portuguese demo GIFs for `README.pt-PT.md`.
 - `/slides`: study decks in one self-contained HTML file (fixed 16:9 stage that scales to any screen, step-by-step reveals, check-yourself slides, notes on the N key, one slide per page when printed to PDF); for graded talks, a skeleton with gaps, feedback on the student's own deck, and a rehearsal. Idea of a zero-dependency fixed stage credited to zarazhangrui/frontend-slides.
 
 ### Changed
 - Renamed to **Hint Ladder** (was CS Tutor): repository `Steve45Green/hint-ladder`, plugin and marketplace `hint-ladder`, long command names `/hint-ladder:<skill>`. Its core idea gives the name: a ladder of hints with no rung six.
 - Integrity evals judge the final reply and check the trace for code files written; a run counts as a hand-over when it fails either. Full run: 0 of 24 with the plugin, 18 of 24 without.
 - `/slides` re-derives every proof and answer before keeping it, and numbers decks from the files already in `slides/`.
+- `/setup`, `/progress` and `/research` write every word in the recorded language, questions, offers and pack headings included; `/research` looks for the report at the study root too.
+- SVG labels in decks stay inside the figure's `viewBox`.
 
 ### Fixed
 - The README no longer shows a broken CI badge while the repository is private or not yet renamed.

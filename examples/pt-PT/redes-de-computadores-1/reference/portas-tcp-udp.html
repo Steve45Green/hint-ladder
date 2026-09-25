@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referência · Portas, UDP, TCP e o handshake</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Redes de Computadores 1 · Ficha de referência</p>
+  <h1>Portas, UDP, TCP e o handshake</h1>
+</header>
+
+<section>
+  <h2>Gamas de portas (IANA)</h2>
+  <table>
+    <thead><tr><th>Gama</th><th>Números</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td>Bem-conhecidas</td><td>0–1023</td><td>80 HTTP, 53 DNS, 443 HTTPS</td></tr>
+      <tr><td>Registadas</td><td>1024–49151</td><td>3306 MySQL</td></tr>
+      <tr><td>Dinâmicas / efémeras</td><td>49152–65535</td><td>porta do cliente numa ligação nova</td></tr>
+    </tbody>
+  </table>
+  <p>TCP e UDP têm espaços de portas independentes: (protocolo, porta) é a chave.</p>
+</section>
+
+<section>
+  <h2>UDP vs TCP</h2>
+  <table>
+    <thead><tr><th></th><th>UDP</th><th>TCP</th></tr></thead>
+    <tbody>
+      <tr><td>Ligação</td><td>não orientado à ligação</td><td>orientado à ligação (handshake)</td></tr>
+      <tr><td>Fiabilidade</td><td>sem confirmação</td><td>confirmação por <code>ack</code></td></tr>
+      <tr><td>Ordem</td><td>não garantida</td><td>garantida por <code>seq</code></td></tr>
+      <tr><td>Cabeçalho</td><td>8 bytes fixos</td><td>≥ 20 bytes</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Three-way handshake</h2>
+  <table class="trace">
+    <thead><tr><th>passo</th><th>direção</th><th>flags</th><th>o que faz</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>cliente → servidor</td><td>SYN</td><td>propõe seq = ISN_c</td></tr>
+      <tr><td>2</td><td>servidor → cliente</td><td>SYN, ACK</td><td>propõe seq = ISN_s, confirma ack = ISN_c + 1</td></tr>
+      <tr><td>3</td><td>cliente → servidor</td><td>ACK</td><td>confirma ack = ISN_s + 1</td></tr>
+    </tbody>
+  </table>
+  <p>Regra: <code>ack</code> = <code>seq</code> recebido + 1. Um SYN não transporta dados mas consome um número de sequência.</p>
+</section>
+
+<footer>
+  <p><strong>Fonte:</strong> <a href="https://www.rfc-editor.org/rfc/rfc9293">RFC 9293 (TCP)</a> · <a href="https://www.rfc-editor.org/rfc/rfc768">RFC 768 (UDP)</a></p>
+</footer>
+
+</main>
+</body>
+</html>

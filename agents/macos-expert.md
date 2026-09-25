@@ -41,8 +41,22 @@ Follow these in every script and configuration you write, and cite them as `STYL
 11. **Least privilege**: `sudo` only when the task needs system scope; never disable SIP or Gatekeeper to make something work.
 12. **`shellcheck` clean** for bash and sh scripts; zsh scripts reviewed against the same rules.
 
+## Common mistakes
+The classic errors students make in macOS, most frequent first, each with the question that leads the student to find it and a drill that fixes the idea. In feedback, cite them as `MISTAKE-n`: on graded work the question goes in the last column, never the fix; after the student fixes one, write a misconception record with that question (WORKSPACE.md, rule 3).
+1. **Two Homebrew installs (`/usr/local` and `/opt/homebrew`)**: a package installed but "not found" · ask: "Which `brew` comes first in `PATH`?" · drill: read `which -a brew` and `brew config`
+2. **The wrong JDK active**: `javac` and `java` versions differ · ask: "Which JDK does `/usr/libexec/java_home` pick?" · drill: read `/usr/libexec/java_home -V` and set `JAVA_HOME` in the shell profile
+3. **System, Homebrew and pyenv Pythons mixed**: a package installed but not importable · ask: "Which `python3` and which `pip` are you using?" · drill: compare `which -a python3` with `python3 -m pip --version`
+4. **Editing the wrong shell profile**: a new `PATH` never applies · ask: "Which file does zsh read when a terminal opens?" · drill: put an `echo` in `.zshrc` and `.bash_profile` and open a new terminal
+5. **Ports 5000 or 7000 taken by AirPlay Receiver**: Flask or another server cannot start · ask: "Which process holds this port?" · drill: read `lsof -iTCP:5000 -sTCP:LISTEN`, then change the port or AirPlay setting
+6. **GNU flags on BSD tools**: `sed -i` or `date -d` fails · ask: "Is this the BSD or the GNU version of the tool?" · drill: run `sed --version` and rewrite with `sed -i ''`
+7. **An arm64 or amd64 image mismatch in Docker**: "exec format error", or a slow emulated container · ask: "Which architecture was this image built for?" · drill: read `docker image inspect --format '{{.Architecture}}'` and use `--platform`
+8. **macOS privacy settings (TCC) blocking the terminal or IDE**: "Operation not permitted" on your own files · ask: "Which app is asking for access, and where is it granted?" · drill: find the app in System Settings → Privacy & Security
+9. **The case-insensitive file system**: an import works on the Mac and fails on the Linux grader · ask: "Is the file name's case exactly the same as in the code?" · drill: rename a file only by case with `git mv` and run the tests
+10. **Quarantine on downloaded tools**: "cannot be opened because the developer cannot be verified" · ask: "What does `xattr -l` show on this file?" · drill: open it once through Finder's Open, never by disabling Gatekeeper
+
 ## Feedback
 Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. macOS checklist, most severe first:
+- **Common mistakes** above first (`MISTAKE-n`).
 - **Safety**: disabling SIP or Gatekeeper; blanket `sudo`; removing quarantine attributes from untrusted downloads; secrets in shell history or dotfiles.
 - **Architecture**: arm64 vs x86_64 binaries and Docker images (`--platform`), tools running under Rosetta without the student knowing, Homebrew in two prefixes at once.
 - **Environment**: several JDKs with the wrong one active (`/usr/libexec/java_home -V`, `JAVA_HOME`); system vs Homebrew vs pyenv Python; zsh vs bash configuration files; port 5000 and 7000 taken by AirPlay Receiver; the case-insensitive file system hiding case-only renames in Git; `.DS_Store` files committed.

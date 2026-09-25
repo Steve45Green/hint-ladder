@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Handshake TCP e controlo de congestão</title>
+<style>
+/* Hint Ladder study deck: one self-contained file, no dependencies.
+   Slides are authored on a fixed 1600x900 stage that scales to any screen.
+   Keys: → / space next · ← previous · N notes · F fullscreen · Home / End. */
+:root {
+  --bg: #fbfaf7; --fg: #1d1d1f; --muted: #5f5f66; --rule: #e2e2dc; --accent: #1f5fbf;
+  --soft: #e9eef8; --code-bg: #f2f2ed; --right: #1e7a3c; --wrong: #b3261e; --stage-bg: #e8e6e0;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151517; --fg: #e8e8e6; --muted: #a0a0a6; --rule: #2e2e33; --accent: #7aa7ff;
+    --soft: #16233a; --code-bg: #1f1f24; --right: #5cc57f; --wrong: #ff7a70; --stage-bg: #0b0b0d;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--stage-bg); }
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--fg); }
+.viewport { position: fixed; inset: 0; }
+.stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; background: var(--bg); overflow: hidden; }
+.slide { position: absolute; inset: 0; padding: 88px 110px 96px; visibility: hidden; opacity: 0; transition: opacity .25s ease; display: flex; flex-direction: column; }
+.slide.active { visibility: visible; opacity: 1; }
+.slide h1 { font-size: 76px; line-height: 1.1; margin: 0 0 28px; letter-spacing: -0.5px; }
+.slide h2 { font-size: 52px; line-height: 1.15; margin: 0 0 36px; }
+.slide p, .slide li { font-size: 34px; line-height: 1.45; margin: 0 0 18px; }
+.slide ul, .slide ol { padding-left: 1.2em; margin: 0; }
+.slide .kicker { font-size: 24px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 18px; }
+.slide .lead { font-size: 40px; color: var(--muted); }
+.slide.title { justify-content: center; }
+.slide.big { justify-content: center; }
+.slide.big p { font-size: 58px; line-height: 1.25; font-weight: 600; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; flex: 1; }
+figure { margin: 0; }
+/* A figure never grows past the stage: wide drawings shrink to fit (the SVG keeps its aspect ratio). */
+figure svg { display: block; width: 100%; height: auto; max-height: 520px; }
+.two-col figure svg { max-height: 600px; }
+/* Diagram parts: draw .edge lines first, then .node shapes, which are filled with the
+   background so they cover the edge ends; .hl marks the part being discussed. */
+.edge { stroke: currentColor; stroke-width: 3; fill: none; }
+.node { fill: var(--bg); stroke: currentColor; stroke-width: 3; }
+.label { fill: currentColor; font-size: 22px; }
+.edge.hl { stroke: var(--accent); stroke-width: 5; }
+.node.hl { fill: var(--soft); stroke: var(--accent); }
+.label.hl { fill: var(--accent); }
+figcaption { font-size: 24px; color: var(--muted); margin-top: 12px; }
+code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+:not(pre) > code { background: var(--code-bg); padding: .05em .3em; border-radius: 6px; font-size: .9em; }
+pre { background: var(--code-bg); border-radius: 14px; padding: 28px 36px; margin: 0 0 28px; font-size: 30px; line-height: 1.5; }
+pre .line { display: block; }
+pre .line.hl { background: var(--soft); box-shadow: inset 6px 0 var(--accent); margin: 0 -36px; padding: 0 36px; }
+table { border-collapse: collapse; font-size: 30px; }
+th, td { border-bottom: 2px solid var(--rule); padding: 10px 28px; text-align: left; font-family: ui-monospace, Menlo, monospace; }
+th { color: var(--muted); font-family: inherit; }
+.question { background: var(--soft); border-radius: 18px; padding: 36px 44px; }
+.question p { font-size: 40px; font-weight: 600; margin: 0; }
+.answer { margin-top: 28px; border-left: 6px solid var(--right); padding-left: 28px; }
+.question .answer p { font-size: 32px; font-weight: 400; }
+.source { margin-top: auto; font-size: 22px; color: var(--muted); }
+/* Safety net: the engine wraps an overflowing slide's content in .fit and scales it down to fit (never below 60%). */
+.fit { display: flex; flex-direction: column; flex: none; transform-origin: 0 0; }
+.step { opacity: 0; transition: opacity .2s ease; }
+.step.shown { opacity: 1; }
+.notes { display: none; }
+.hud { position: fixed; left: 0; right: 0; bottom: 0; height: 6px; background: transparent; z-index: 5; }
+.hud .bar { height: 100%; width: 0; background: var(--accent); transition: width .2s ease; }
+.counter { position: fixed; right: 16px; bottom: 14px; font: 14px system-ui, sans-serif; color: var(--muted); z-index: 5; }
+.notes-panel { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); width: min(900px, 92vw); max-height: 40vh; overflow: auto;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 20px; font: 17px/1.5 system-ui, sans-serif;
+  box-shadow: 0 8px 30px rgba(0,0,0,.18); z-index: 6; display: none; }
+.notes-panel.open { display: block; }
+@media (prefers-reduced-motion: reduce) { .slide, .step, .hud .bar { transition: none; } }
+@media print {
+  @page { size: 1600px 900px; margin: 0; }
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .viewport { position: static; }
+  .stage { position: static; transform: none !important; width: auto; height: auto; overflow: visible; }
+  .slide { position: relative; visibility: visible; opacity: 1; width: 1600px; height: 900px; break-after: page; }
+  .step { opacity: 1; }
+  .hud, .counter, .notes-panel { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="stage" id="stage">
+
+<section class="slide title">
+  <div class="kicker">Redes de Computadores 1 · Temas 3 e 4</div>
+  <h1>Handshake TCP e controlo de congestão</h1>
+  <p class="lead">No final consegues ler o início de uma ligação TCP numa captura Wireshark e identificar se o emissor está em slow start ou em congestion avoidance.</p>
+  <aside class="notes">Este diapositivo define o objetivo do estudo: não é decorar os três segmentos do handshake nem as fórmulas do cwnd isoladamente, mas conseguir olhar para uma captura real (Wireshark) e reconhecer os dois mecanismos em ação. Os temas 3 e 4 do programa dependem um do outro: só faz sentido falar de controlo de congestão depois de a ligação estar estabelecida pelo three-way handshake.</aside>
+</section>
+
+<section class="slide">
+  <h2>Porquê o TCP negoceia a ligação</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">O TCP é orientado à ligação e fiável: antes de trocar dados, os dois lados têm de concordar num número de sequência inicial (ISN) cada um.</p>
+      <p class="step">O ISN não começa em 0: é escolhido de forma pseudo-aleatória, para reduzir o risco de confundir segmentos de uma ligação antiga com a nova.</p>
+      <p class="step">O handshake também troca outros parâmetros da ligação (ex.: tamanho de janela, MSS) antes de qualquer dado circular.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 400 220" role="img" aria-label="Cliente e servidor têm cada um o seu próprio número de sequência inicial">
+        <line class="edge" x1="130" y1="75" x2="230" y2="75"/>
+        <rect class="node" x="10" y="40" width="120" height="70" rx="10"/>
+        <text class="label" x="70" y="72" text-anchor="middle">Cliente</text>
+        <text class="label" x="70" y="98" text-anchor="middle">ISN = x</text>
+        <rect class="node" x="230" y="40" width="160" height="70" rx="10"/>
+        <text class="label" x="310" y="72" text-anchor="middle">Servidor</text>
+        <text class="label" x="310" y="98" text-anchor="middle">ISN = y</text>
+        <text class="label" x="200" y="160" text-anchor="middle"><tspan x="200">cada lado escolhe o seu ISN,</tspan><tspan x="200" dy="28">de forma independente</tspan></text>
+      </svg>
+      <figcaption>Cada lado da ligação tem o seu próprio número de sequência inicial.</figcaption>
+    </figure>
+  </div>
+  <p class="source">Fonte: Kurose &amp; Ross, Redes de Computadores: uma abordagem top-down, cap. 3.5 (gestão de ligações TCP)</p>
+  <aside class="notes">O TCP dá a ideia de um fluxo contínuo de bytes numerado. Para isso funcionar, cada lado precisa de saber a partir de que número o outro lado vai contar os seus bytes — daí o ISN (Initial Sequence Number). Se o ISN fosse sempre 0, um segmento antigo perdido na rede de uma ligação anterior entre os mesmos IP/porta podia ser confundido com um segmento novo; escolher o ISN de forma pseudo-aleatória reduz esse risco. O handshake serve exatamente para cada lado comunicar o seu ISN ao outro e confirmar que o recebeu.</aside>
+</section>
+
+<section class="slide">
+  <h2>O three-way handshake, passo a passo</h2>
+  <figure>
+    <svg viewBox="0 0 1000 400" role="img" aria-label="Diagrama de sequência do three-way handshake TCP">
+      <rect class="node" x="40" y="20" width="180" height="60" rx="10"/>
+      <text class="label" x="130" y="56" text-anchor="middle">Cliente</text>
+      <rect class="node" x="780" y="20" width="180" height="60" rx="10"/>
+      <text class="label" x="870" y="56" text-anchor="middle">Servidor</text>
+      <line class="edge" x1="130" y1="90" x2="130" y2="370" stroke-dasharray="6 6"/>
+      <line class="edge" x1="870" y1="90" x2="870" y2="370" stroke-dasharray="6 6"/>
+
+      <g class="step">
+        <line class="edge" x1="130" y1="150" x2="855" y2="150"/>
+        <polygon points="845,144 862,150 845,156" style="fill:currentColor"/>
+        <text class="label" x="500" y="135" text-anchor="middle">1. SYN, seq = x</text>
+      </g>
+
+      <g class="step">
+        <line class="edge" x1="870" y1="240" x2="145" y2="240"/>
+        <polygon points="155,234 138,240 155,246" style="fill:currentColor"/>
+        <text class="label" x="500" y="225" text-anchor="middle">2. SYN + ACK, seq = y, ack = x+1</text>
+      </g>
+
+      <g class="step">
+        <line class="edge" x1="130" y1="330" x2="855" y2="330"/>
+        <polygon points="845,324 862,330 845,336" style="fill:currentColor"/>
+        <text class="label" x="500" y="315" text-anchor="middle">3. ACK, ack = y+1</text>
+      </g>
+    </svg>
+    <figcaption>Três segmentos: SYN, SYN+ACK, ACK — nenhum dos dois primeiros transporta dados da aplicação.</figcaption>
+  </figure>
+  <p class="source">Fonte: Kurose &amp; Ross, cap. 3.5.6 (estabelecimento da ligação TCP)</p>
+  <aside class="notes">Passo 1: o cliente envia um segmento SYN com o seu ISN (x); este segmento não tem dados, mas "consome" um número de sequência. Passo 2: o servidor responde com SYN+ACK — o SYN porque também está a anunciar o seu próprio ISN (y), o ACK porque confirma que recebeu o SYN do cliente (ack = x+1, o próximo byte que espera). Passo 3: o cliente confirma o ISN do servidor com ack = y+1; a partir daqui a ligação está ESTABLISHED e pode transportar dados, inclusive já no próprio terceiro segmento. Repara que o campo ack nunca é o mesmo número que o seu próprio seq: cada lado confirma o número de sequência do outro lado, não o seu.</aside>
+</section>
+
+<section class="slide">
+  <h2>Estados do TCP durante o handshake</h2>
+  <figure>
+    <svg viewBox="0 0 900 460" role="img" aria-label="Máquina de estados do TCP durante o estabelecimento da ligação, para o cliente e para o servidor">
+      <text class="label" x="450" y="30" text-anchor="middle">Cliente</text>
+      <line class="edge" x1="175" y1="120" x2="355" y2="120"/>
+      <polygon points="345,115 362,120 345,125" style="fill:currentColor"/>
+      <text class="label" x="265" y="75" text-anchor="middle">envia SYN</text>
+      <line class="edge" x1="505" y1="120" x2="685" y2="120"/>
+      <polygon points="675,115 692,120 675,125" style="fill:currentColor"/>
+      <text class="label" x="595" y="75" text-anchor="middle">recebe SYN+ACK, envia ACK</text>
+
+      <rect class="node" x="25" y="90" width="150" height="60" rx="10"/>
+      <text class="label" x="100" y="126" text-anchor="middle">CLOSED</text>
+      <rect class="node" x="355" y="90" width="150" height="60" rx="10"/>
+      <text class="label" x="430" y="126" text-anchor="middle">SYN_SENT</text>
+      <rect class="node hl" x="685" y="90" width="180" height="60" rx="10"/>
+      <text class="label hl" x="775" y="126" text-anchor="middle">ESTABLISHED</text>
+
+      <text class="label" x="450" y="310" text-anchor="middle">Servidor</text>
+      <line class="edge" x1="175" y1="380" x2="355" y2="380"/>
+      <polygon points="345,375 362,380 345,385" style="fill:currentColor"/>
+      <line class="edge" x1="505" y1="380" x2="685" y2="380"/>
+      <polygon points="675,375 692,380 675,385" style="fill:currentColor"/>
+      <text class="label" x="265" y="430" text-anchor="middle">recebe SYN, envia SYN+ACK</text>
+      <text class="label" x="595" y="430" text-anchor="middle">recebe ACK</text>
+
+      <rect class="node" x="25" y="350" width="150" height="60" rx="10"/>
+      <text class="label" x="100" y="386" text-anchor="middle">LISTEN</text>
+      <rect class="node" x="355" y="350" width="150" height="60" rx="10"/>
+      <text class="label" x="430" y="386" text-anchor="middle">SYN_RCVD</text>
+      <rect class="node hl" x="685" y="350" width="180" height="60" rx="10"/>
+      <text class="label hl" x="775" y="386" text-anchor="middle">ESTABLISHED</text>
+    </svg>
+    <figcaption>Os dois lados percorrem estados diferentes, mas convergem em ESTABLISHED depois do terceiro segmento.</figcaption>
+  </figure>
+  <p class="source">Fonte: Kurose &amp; Ross, cap. 3.5.6 (diagrama de transição de estados do TCP)</p>
+  <aside class="notes">O cliente inicia em CLOSED; ao enviar o SYN passa a SYN_SENT, à espera da resposta. O servidor começa em LISTEN (à escuta de ligações); ao receber o SYN passa a SYN_RCVD e responde com SYN+ACK. Quando o cliente recebe o SYN+ACK, envia o ACK final e passa logo a ESTABLISHED — não espera confirmação desse ACK. O servidor só passa a ESTABLISHED quando esse terceiro segmento (ACK) chega. Por isso há um pequeno intervalo em que o cliente já considera a ligação estabelecida mas o servidor ainda está em SYN_RCVD.</aside>
+</section>
+
+<section class="slide">
+  <h2>Exemplo com números concretos</h2>
+  <table>
+    <tr><th>Segmento</th><th>Sentido</th><th>Flags</th><th>seq</th><th>ack</th></tr>
+    <tr class="step"><td>1</td><td>cliente → servidor</td><td>SYN</td><td>1000</td><td>—</td></tr>
+    <tr class="step"><td>2</td><td>servidor → cliente</td><td>SYN, ACK</td><td>5000</td><td>1001</td></tr>
+    <tr class="step"><td>3</td><td>cliente → servidor</td><td>ACK</td><td>1001</td><td>5001</td></tr>
+  </table>
+  <p class="step">Regra fixa: o campo <code>ack</code> confirma sempre <code>seq</code> do outro lado + 1 (um SYN sem dados consome um número de sequência).</p>
+  <p class="source">Fonte: Kurose &amp; Ross, cap. 3.5.6</p>
+  <aside class="notes">Cliente escolhe ISN=1000, servidor escolhe ISN=5000 — números independentes um do outro. No segmento 2, o servidor confirma o SYN do cliente com ack=1001 (1000+1) e anuncia o seu próprio seq=5000. No segmento 3, o cliente confirma o SYN do servidor com ack=5001 (5000+1) e o seu próprio seq passa a 1001, porque o SYN do segmento 1 já "gastou" o número 1000. Este padrão — ack = seq recebido + 1 — é o que se procura numa captura Wireshark para confirmar que se está a ver um handshake completo e não um handshake a meio (SYN sem resposta, por exemplo).</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Verifica-te</div>
+  <div class="question">
+    <p>Sabendo que o ISN do servidor foi 7000, que valor tem o campo <code>ack</code> que o cliente envia no terceiro segmento do handshake?</p>
+    <div class="answer step"><p>7001 — o <code>ack</code> confirma o <code>seq</code> do servidor (o SYN dele consumiu o número 7000), não depende do ISN do próprio cliente.</p></div>
+  </div>
+  <aside class="notes">Responde de memória antes de revelar. O erro mais comum aqui é confundir o ack do cliente com o próprio seq do cliente — são números independentes, cada lado tem a sua contagem.</aside>
+</section>
+
+<section class="slide">
+  <h2>Controlo de fluxo vs. controlo de congestão</h2>
+  <div class="two-col">
+    <div>
+      <p class="kicker step">Controlo de fluxo</p>
+      <p class="step">Protege o recetor: evita que o emissor envie mais do que o buffer do recetor consegue guardar (janela anunciada, receive window).</p>
+    </div>
+    <div>
+      <p class="kicker step">Controlo de congestão</p>
+      <p class="step">Protege a rede: evita que o emissor envie mais do que a rede consegue transportar, ajustando a janela de congestão (cwnd).</p>
+    </div>
+  </div>
+  <p class="step">A janela efetiva usada pelo TCP é o mínimo entre a janela anunciada pelo recetor e o cwnd calculado pelo emissor.</p>
+  <p class="source">Fonte: Kurose &amp; Ross, cap. 3.7 (princípios do controlo de congestão)</p>
+  <aside class="notes">É fácil confundir os dois porque ambos limitam quantos bytes o emissor pode ter "em trânsito" sem confirmação. A diferença está em quem cada mecanismo protege: o controlo de fluxo evita afogar o recetor (um problema local, fim-a-fim); o controlo de congestão evita afogar a rede entre os dois (um problema partilhado com outras ligações). No exame, se a pergunta falar em "buffer do recetor" é fluxo; se falar em "perda de pacotes na rede" ou "router congestionado", é congestão.</aside>
+</section>
+
+<section class="slide">
+  <h2>Slow start: crescimento exponencial</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">O cwnd começa pequeno (tipicamente 1 MSS) e <strong>duplica a cada RTT</strong> em que todos os segmentos são confirmados.</p>
+      <p class="step">Cresce depressa de propósito: o emissor ainda não sabe quanto a rede aguenta, e quer descobrir rapidamente.</p>
+      <p class="step">Termina quando o cwnd atinge o <code>ssthresh</code> (limiar de slow start) — ou mais cedo, se ocorrer perda.</p>
+    </div>
+    <table>
+      <tr><th>Ronda (RTT)</th><th>cwnd (MSS)</th></tr>
+      <tr class="step"><td>0</td><td>1</td></tr>
+      <tr class="step"><td>1</td><td>2</td></tr>
+      <tr class="step"><td>2</td><td>4</td></tr>
+      <tr class="step"><td>3</td><td>8</td></tr>
+      <tr class="step"><td>4</td><td>16</td></tr>
+      <tr class="step"><td>5</td><td>32</td></tr>
+    </table>
+  </div>
+  <p class="source">Fonte: Kurose &amp; Ross, cap. 3.7.1 (TCP slow start)</p>
+  <aside class="notes">Cada segmento confirmado com sucesso soma 1 MSS ao cwnd; como numa RTT chegam cwnd segmentos, o cwnd duplica por RTT — daí o crescimento exponencial (1, 2, 4, 8, 16, 32...). O nome "slow start" é enganador: começa devagar em termos absolutos, mas cresce muito depressa em termos relativos. Neste exemplo, com ssthresh=32, a fase de slow start termina na ronda 5, quando cwnd atinge exatamente esse limiar, e passa-se para congestion avoidance.</aside>
+</section>
+
+<section class="slide">
+  <h2>Congestion avoidance: AIMD</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">Depois do <code>ssthresh</code>, o cwnd cresce de forma <strong>linear</strong>: cerca de +1 MSS por RTT (additive increase).</p>
+      <p class="step">Se houver perda, o cwnd é reduzido de forma <strong>multiplicativa</strong> (multiplicative decrease) — tipicamente para metade.</p>
+      <p class="step">Este padrão chama-se AIMD e é o que dá o aspeto de "dente de serra" ao gráfico do cwnd ao longo do tempo.</p>
+    </div>
+    <table>
+      <tr><th>Ronda (RTT)</th><th>cwnd (MSS)</th></tr>
+      <tr class="step"><td>5</td><td>32</td></tr>
+      <tr class="step"><td>6</td><td>33</td></tr>
+      <tr class="step"><td>7</td><td>34</td></tr>
+      <tr class="step"><td>…</td><td>…</td></tr>
+    </table>
+  </div>
+  <p class="source">Fonte: Kurose &amp; Ross, cap. 3.7.1 (additive-increase, multiplicative-decrease)</p>
+  <aside class="notes">Em congestion avoidance, cada RTT em que tudo corre bem só soma 1 MSS (não duplica) — o TCP passa a explorar a capacidade da rede com mais cautela, porque já está perto do limite que causou perdas anteriores (ou do ssthresh herdado de uma ligação semelhante). Quando finalmente ocorre perda, a reação é proporcional ao cwnd atual (reduz para metade), não um valor fixo — daí "multiplicativa". A combinação de subida lenta e linear com descida rápida e proporcional é o que torna o TCP justo entre ligações que partilham a mesma rede.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Verifica-te</div>
+  <div class="question">
+    <p>O cwnd de uma ligação vai duplicando a cada RTT: 4, 8, 16, 32. A que fase corresponde este crescimento, e o que a pode terminar?</p>
+    <div class="answer step"><p>Slow start (crescimento exponencial). Termina quando o cwnd atinge o <code>ssthresh</code> — nesse caso passa a congestion avoidance — ou quando ocorre uma perda antes disso.</p></div>
+  </div>
+  <aside class="notes">O sinal de reconhecimento é a duplicação por RTT. Se em vez disso o aluno vir um incremento fixo (+1 MSS por RTT), está em congestion avoidance, não em slow start.</aside>
+</section>
+
+<section class="slide">
+  <h2>O cwnd ao longo do tempo</h2>
+  <figure>
+    <svg viewBox="0 0 900 480" role="img" aria-label="Gráfico do cwnd ao longo das rondas, mostrando slow start, congestion avoidance e uma perda por triplo ACK duplicado">
+      <text class="label" x="150" y="25" text-anchor="middle">slow start</text>
+      <text class="label" x="560" y="25" text-anchor="middle">congestion avoidance</text>
+
+      <line class="edge" x1="60" y1="450" x2="860" y2="450"/>
+      <polygon points="855,445 870,450 855,455" style="fill:currentColor"/>
+      <text class="label" x="860" y="430" text-anchor="end">ronda (RTT)</text>
+
+      <line class="edge" x1="60" y1="450" x2="60" y2="40"/>
+      <polygon points="55,50 60,35 65,50" style="fill:currentColor"/>
+      <text class="label" x="30" y="45" text-anchor="middle">cwnd</text>
+      <text class="label" x="40" y="454" text-anchor="end">0</text>
+      <text class="label" x="40" y="264" text-anchor="end">20</text>
+      <text class="label" x="40" y="78" text-anchor="end">40</text>
+
+      <line class="edge" x1="60" y1="151.8" x2="860" y2="151.8" stroke-dasharray="6 6"/>
+      <text class="label" x="65" y="146" text-anchor="start">ssthresh inicial = 32</text>
+
+      <polyline class="edge hl" points="60,440.7 117.1,431.4 174.3,412.7 231.4,375.5 288.6,300.9 345.7,151.8"/>
+      <polyline class="edge" points="345.7,151.8 402.9,142.5 460,133.2 517.1,123.9 574.3,114.5 631.4,105.2 688.6,95.9 745.7,86.6 802.9,77.3"/>
+      <line class="edge" x1="802.9" y1="77.3" x2="802.9" y2="263.6" stroke-dasharray="3 5"/>
+      <polyline class="edge" points="802.9,263.6 860,254.3"/>
+
+      <line class="edge" x1="802.9" y1="263.6" x2="860" y2="263.6" stroke-dasharray="6 6"/>
+      <text class="label" x="855" y="285" text-anchor="end">novo ssthresh = 20</text>
+
+      <circle class="node hl" cx="802.9" cy="77.3" r="8"/>
+      <text class="label hl" x="860" y="60" text-anchor="end">perda: 3 ACKs duplicados</text>
+
+      <text class="label" x="60" y="474" text-anchor="middle">0</text>
+      <text class="label" x="345.7" y="474" text-anchor="middle">5</text>
+      <text class="label" x="631.4" y="474" text-anchor="middle">10</text>
+      <text class="label" x="802.9" y="474" text-anchor="middle">13</text>
+    </svg>
+    <figcaption>Slow start duplica o cwnd até ao ssthresh; depois cresce 1 MSS por RTT até uma perda, que o reduz a metade (fast recovery).</figcaption>
+  </figure>
+  <p class="source">Fonte: Kurose &amp; Ross, cap. 3.7.1 (evolução do cwnd, modelo clássico "dente de serra")</p>
+  <aside class="notes">O troço destacado (0 a 5) é o slow start: duplica a cada ronda, de 1 até 32, onde atinge o ssthresh inicial. Dali até à ronda 13 é congestion avoidance: sobe 1 MSS por ronda, de 32 até 40. Na ronda 13 chegam 3 ACKs duplicados — sinal de que um segmento se perdeu, mas que segmentos posteriores ainda estão a chegar (a rede não parou completamente). O TCP reage com fast retransmit (reenvia o segmento perdido sem esperar pelo timeout) e fast recovery: o novo ssthresh passa a metade do cwnd (40/2=20) e o cwnd salta diretamente para esse valor, sem voltar a 1. A partir daí recomeça congestion avoidance a partir de 20. É este padrão em dente de serra que se procura num gráfico "TCP Stream Graphs → Window Scaling" do Wireshark.</aside>
+</section>
+
+<section class="slide">
+  <h2>Deteção de perda: duas reações diferentes</h2>
+  <div class="two-col">
+    <div>
+      <p class="kicker step">Timeout</p>
+      <p class="step">Nenhum ACK chega dentro do tempo esperado — sinal de congestão grave. O TCP assume o pior: <code>ssthresh = cwnd/2</code>, <code>cwnd = 1 MSS</code>, e recomeça em slow start.</p>
+    </div>
+    <div>
+      <p class="kicker step">Triplo ACK duplicado</p>
+      <p class="step">Chegam 3 ACKs repetidos — sinal de que só um segmento se perdeu, o resto ainda circula. Fast retransmit reenvia logo esse segmento; fast recovery ajusta <code>ssthresh = cwnd/2</code> e <code>cwnd = ssthresh</code> (sem voltar a 1).</p>
+    </div>
+  </div>
+  <p class="source">Fonte: Kurose &amp; Ross, cap. 3.7.1 (fast retransmit e fast recovery)</p>
+  <aside class="notes">A diferença entre as duas reações vem da informação disponível: um timeout não diz nada sobre o que aconteceu depois do segmento perdido, por isso o TCP é conservador e recomeça do zero (slow start). Um triplo ACK duplicado, pelo contrário, é boa notícia disfarçada de má notícia: só chega porque outros segmentos, enviados depois do perdido, estão a chegar ao recetor e a gerar ACKs duplicados (o recetor continua a confirmar o último byte em ordem que recebeu). Isso diz ao emissor que a rede não colapsou, só perdeu um segmento — por isso pode ser menos agressivo na redução, saltando diretamente para congestion avoidance em vez de voltar a slow start.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Verifica-te</div>
+  <div class="question">
+    <p>O emissor deteta perda por triplo ACK duplicado com cwnd = 40 MSS. Qual o novo <code>ssthresh</code> e o novo <code>cwnd</code>, no modelo clássico (fast recovery)?</p>
+    <div class="answer step"><p><code>ssthresh</code> = 20 (metade de 40) e <code>cwnd</code> = 20 (salta logo para o novo ssthresh, sem passar por slow start). Se em vez disso fosse um timeout, seria <code>ssthresh</code> = 20 mas <code>cwnd</code> = 1.</p></div>
+  </div>
+  <aside class="notes">O ponto a fixar: ssthresh reage sempre da mesma forma (metade do cwnd) independentemente da causa da perda; é o cwnd que reage de forma diferente consoante a causa — 1 MSS depois de timeout, ssthresh depois de triplo ACK duplicado.</aside>
+</section>
+
+<section class="slide">
+  <h2>Resumo</h2>
+  <ul>
+    <li class="step">O three-way handshake (SYN → SYN+ACK → ACK) sincroniza os números de sequência iniciais dos dois lados antes de qualquer dado circular.</li>
+    <li class="step">O cwnd cresce em slow start (exponencial, até ao ssthresh) e depois em congestion avoidance (linear, AIMD).</li>
+    <li class="step">Um timeout é tratado como congestão grave (cwnd → 1); um triplo ACK duplicado é tratado como um problema pontual (cwnd → ssthresh, via fast recovery).</li>
+    <li class="step">Numa captura Wireshark: os números seq/ack mostrados são relativos (começam em 0); usa Statistics → TCP Stream Graphs → Window Scaling para ver o cwnd em dente de serra.</li>
+  </ul>
+  <p class="source">Aprofundar: Kurose &amp; Ross, cap. 3.5–3.7 · Dúvidas? Pergunta ao teu tutor.</p>
+  <aside class="notes">Antes de reler, tenta dizer os quatro pontos de cabeça: o que sincroniza o handshake, as duas fases de crescimento do cwnd, a diferença entre timeout e triplo ACK duplicado, e onde procurar isto no Wireshark. Se algum ponto ficar vago, volta ao diapositivo correspondente antes de avançar para os exercícios de laboratório.</aside>
+</section>
+
+</div></div>
+<div class="hud"><div class="bar" id="bar"></div></div>
+<div class="counter" id="counter"></div>
+<div class="notes-panel" id="notes" aria-live="polite"></div>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const slides = [...stage.querySelectorAll('.slide')];
+  const bar = document.getElementById('bar'), counter = document.getElementById('counter'), notes = document.getElementById('notes');
+  let current = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 || 0, 0), slides.length - 1);
+
+  function fit() {
+    const s = Math.min(innerWidth / 1600, innerHeight / 900);
+    stage.style.transform = `translate(${(innerWidth - 1600 * s) / 2}px, ${(innerHeight - 900 * s) / 2}px) scale(${s})`;
+  }
+  const steps = i => [...slides[i].querySelectorAll('.step')];
+  function show(i, revealAll) {
+    slides.forEach((sl, k) => sl.classList.toggle('active', k === i));
+    steps(i).forEach(st => st.classList.toggle('shown', !!revealAll));
+    current = i;
+    history.replaceState(null, '', '#' + (i + 1));
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    const n = slides[i].querySelector('.notes');
+    notes.textContent = n ? n.textContent.trim() : '(no notes)';
+  }
+  function next() {
+    const hidden = steps(current).find(st => !st.classList.contains('shown'));
+    if (hidden) hidden.classList.add('shown');
+    else if (current < slides.length - 1) show(current + 1, false);
+  }
+  function prev() {
+    const shown = steps(current).filter(st => st.classList.contains('shown'));
+    if (shown.length) shown[shown.length - 1].classList.remove('shown');
+    else if (current > 0) show(current - 1, true);
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0, false);
+    else if (e.key === 'End') show(slides.length - 1, true);
+    else if (e.key.toLowerCase() === 'n') notes.classList.toggle('open');
+    else if (e.key.toLowerCase() === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+  });
+  let x0 = null;
+  addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+  });
+  addEventListener('click', e => { if (!e.target.closest('a, button, .notes-panel')) (e.clientX > innerWidth / 3 ? next : prev)(); });
+  function autofit() {
+    slides.forEach(sl => {
+      if (sl.scrollHeight <= sl.clientHeight + 1 || sl.querySelector(':scope > .fit')) return;
+      const cs = getComputedStyle(sl);
+      const room = sl.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const wrap = document.createElement('div');
+      wrap.className = 'fit';
+      [...sl.children].filter(c => !c.classList.contains('notes')).forEach(c => wrap.appendChild(c));
+      sl.insertBefore(wrap, sl.firstChild);
+      let r = 1;
+      for (let pass = 0; pass < 3; pass++) {   // a wider box wraps text differently: measure again
+        r = Math.min(1, Math.max(0.6, room / wrap.offsetHeight));   // layout px, unaffected by transforms
+        wrap.style.width = (100 / r) + '%';
+        wrap.style.transform = `scale(${r})`;
+      }
+    });
+  }
+  addEventListener('resize', fit);
+  fit(); autofit(); show(current, false);
+  if (document.fonts) document.fonts.ready.then(autofit);
+})();
+</script>
+</body>
+</html>

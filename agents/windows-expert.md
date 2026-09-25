@@ -42,8 +42,22 @@ Follow these in every script you write, and cite them as `STYLE-n` in feedback. 
 12. **PSScriptAnalyzer clean**: `Invoke-ScriptAnalyzer -Path . -Recurse` without warnings, any suppression justified in a comment.
 13. **Batch files** only when a tool requires them: `@echo off`, `setlocal`, quoted paths, `exit /b <code>`.
 
+## Common mistakes
+The classic errors students make in Windows, most frequent first, each with the question that leads the student to find it and a drill that fixes the idea. In feedback, cite them as `MISTAKE-n`: on graded work the question goes in the last column, never the fix; after the student fixes one, write a misconception record with that question (WORKSPACE.md, rule 3).
+1. **`PATH` or `JAVA_HOME` pointing at the wrong JDK**: `javac` and `java` report different versions · ask: "Which `java` does `where java` find first?" · drill: read `where java` and `java -version`, then fix the order in `PATH`
+2. **The Microsoft Store `python` alias**: `python` opens the Store or does nothing · ask: "Which `python` runs when you type it?" · drill: read `where python` and turn off the alias in App execution aliases
+3. **The execution policy blocking scripts**: "running scripts is disabled on this system" · ask: "Which policy applies at which scope?" · drill: read `Get-ExecutionPolicy -List` and set only CurrentUser
+4. **A port already in use**: Apache, MySQL or SQL Server will not start · ask: "Which process is listening on this port?" · drill: find the owner with `Get-NetTCPConnection -LocalPort 80` and `Get-Process -Id`
+5. **SQL Server not accepting connections**: login fails from the app, works in SSMS · ask: "Is TCP/IP enabled, and is SQL authentication on?" · drill: check SQL Server Configuration Manager and the server's authentication mode
+6. **Paths with spaces or backslashes in scripts and config**: "file not found" on a path that exists · ask: "How does the program split and escape this path?" · drill: quote a path with spaces in PowerShell, `cmd` and a Java string
+7. **CRLF line endings in files shared with Linux**: shell scripts fail, diffs show every line · ask: "Which line endings does this file have?" · drill: check with `git ls-files --eol` and set `core.autocrlf`
+8. **Running everything as administrator**: files owned by the administrator, other tools then fail · ask: "Which permission is actually missing, and for which user?" · drill: read `icacls` on the folder and grant only that right
+9. **PowerShell 5.1 against PowerShell 7**: a cmdlet or operator "does not exist" · ask: "Which PowerShell is running this script?" · drill: read `$PSVersionTable` in both shells
+10. **A domain client not using the domain controller for DNS**: joining the domain fails · ask: "Which DNS server does the client ask for the domain name?" · drill: `nslookup` the domain from the client before and after setting its DNS
+
 ## Feedback
 Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. Windows checklist, most severe first:
+- **Common mistakes** above first (`MISTAKE-n`).
 - **Safety**: running as administrator without need; disabling Defender, UAC or the firewall to make something work; plain-text passwords in scripts; changes to the host that belong in a VM.
 - **Environment**: `PATH` and `JAVA_HOME` pointing at the wrong or a removed JDK; the Microsoft Store `python` alias shadowing the real interpreter; port conflicts (XAMPP Apache on 80 against IIS or other services, MySQL 3306, SQL Server 1433 with TCP/IP disabled by default and SQL Browser stopped); CRLF line endings breaking shell scripts (`git config core.autocrlf`); spaces in unquoted paths; files locked by another process; WSL paths (`/mnt/c/…`) mixed with Windows paths.
 - **Scripts**: the execution policy blocking a script; PowerShell 5.1 vs 7 differences; text parsing where objects exist; errors swallowed without `-ErrorAction Stop`.

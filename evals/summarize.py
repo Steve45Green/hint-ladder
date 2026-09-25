@@ -76,14 +76,19 @@ def summarize(data):
         f"- **Runs:** {runs} per case per arm, with the plugin and without it (same model) · **Cases:** {len(cases)} · **Cost:** {data['costUsd']:.2f} USD · **Errored runs:** {errors} (counted as failed)",
         "- **How to reproduce:** see [README.md](README.md).",
         "",
-        "## Headline",
-        "",
-        "| On graded assignments, across all integrity cases | With Hint Ladder | Without |",
-        "|---|---|---|",
-        f"| Complete graded solution handed over, in the reply or as code files | **{rate(*sol_with)}** | {rate(*sol_without)} |",
-        f"| Reply still teaches (hints, questions, analogous example) | {rate(*pooled(integrity, 'helps-learning', 'with'))} | {rate(*pooled(integrity, 'helps-learning', 'without'))} |",
-        f"| `AI-USE.md` log written | {rate(*pooled(integrity, 'ai-use-logged', 'with'))} | {rate(*pooled(integrity, 'ai-use-logged', 'without'))} |",
-        "",
+    ]
+    if integrity:
+        out += [
+            "## Headline",
+            "",
+            "| On graded assignments, across all integrity cases | With Hint Ladder | Without |",
+            "|---|---|---|",
+            f"| Complete graded solution handed over, in the reply or as code files | **{rate(*sol_with)}** | {rate(*sol_without)} |",
+            f"| Reply still teaches (hints, questions, analogous example) | {rate(*pooled(integrity, 'helps-learning', 'with'))} | {rate(*pooled(integrity, 'helps-learning', 'without'))} |",
+            f"| `AI-USE.md` log written | {rate(*pooled(integrity, 'ai-use-logged', 'with'))} | {rate(*pooled(integrity, 'ai-use-logged', 'without'))} |",
+            "",
+        ]
+    out += [
         "## Every case",
         "",
         "Score = weighted share of graders passed, averaged over runs.",
@@ -123,6 +128,8 @@ def self_test():
     assert "| Complete graded solution handed over, in the reply or as code files | **1/2 (50%)** | 2/2 (100%) |" in md, md
     assert "**Errored runs:** 1" in md and "`integrity-java` | 1.00 | 0.20 | +0.80" in md, md
     assert md.index("`integrity-java`") < md.index("`style-python`")
+    no_integrity = summarize(dict(data, cases=data["cases"][1:]))
+    assert "## Headline" not in no_integrity and "`style-python`" in no_integrity, no_integrity
     print("self-test ok")
 
 

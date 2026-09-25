@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0001 · Indução matemática simples (fraca)</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="meta">Matemática Discreta · Lição 0001 · ~10 min</p>
+  <h1>Indução matemática simples (fraca)</h1>
+  <p class="goal"><strong>No final consegues:</strong> escrever, do zero e em papel, uma prova completa por indução fraca de uma fórmula de soma — com base, hipótese de indução e passo indutivo todos justificados, sem saltar nenhum.</p>
+</header>
+
+<section>
+  <h2>A ideia</h2>
+  <p>Indução serve para provar que uma afirmação <code>P(n)</code> é verdadeira para <strong>todos</strong> os inteiros <code>n</code> a partir de um certo <code>n₀</code> (normalmente 0 ou 1) — não conseguimos testar infinitos casos um a um, por isso provamos que o primeiro é verdadeiro e que cada caso "empurra" o seguinte.</p>
+  <p>⚠️ <em>Ainda não me deste os slides ou a bibliografia oficial da UC, por isso esta definição segue a formulação standard de indução matemática (comum à generalidade dos manuais, p. ex. Rosen, <em>Discrete Mathematics and Its Applications</em>) — não confirmada contra o material específico da cadeira. Confirma a notação usada nas aulas assim que puderes.</em></p>
+  <figure>
+    <svg viewBox="0 0 480 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="domino-title domino-desc">
+      <title id="domino-title">Efeito dominó como analogia da indução</title>
+      <desc id="domino-desc">O primeiro dominó cai sobre o segundo; uma seta mostra que cada dominó k que cai empurra o dominó k+1.</desc>
+      <line x1="10" y1="120" x2="470" y2="120" stroke="var(--rule)" stroke-width="2"/>
+      <g transform="translate(40,120) rotate(-55)">
+        <rect x="0" y="-70" width="16" height="70" fill="var(--accent)"/>
+      </g>
+      <text x="30" y="135" font-size="12" fill="var(--muted)" text-anchor="middle">P(1) — base</text>
+
+      <rect x="110" y="50" width="16" height="70" fill="var(--fg)" opacity="0.75"/>
+      <text x="118" y="135" font-size="12" fill="var(--muted)" text-anchor="middle">P(2)</text>
+
+      <rect x="200" y="50" width="16" height="70" fill="var(--fg)" opacity="0.55"/>
+      <text x="208" y="135" font-size="12" fill="var(--muted)" text-anchor="middle">P(k)</text>
+
+      <rect x="290" y="50" width="16" height="70" fill="var(--fg)" opacity="0.55"/>
+      <text x="298" y="135" font-size="12" fill="var(--muted)" text-anchor="middle">P(k+1)</text>
+
+      <text x="420" y="90" font-size="12" fill="var(--muted)" text-anchor="middle">…</text>
+
+      <path d="M220 55 C 245 20, 265 20, 288 55" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+      <text x="255" y="18" font-size="13" fill="var(--accent)" text-anchor="middle">passo indutivo: P(k) → P(k+1)</text>
+
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+    </svg>
+    <figcaption>A base derruba o primeiro dominó; o passo indutivo garante que, se um dominó cai, o seguinte também cai — logo caem todos.</figcaption>
+  </figure>
+
+  <p>Uma prova por indução fraca tem sempre três partes, nesta ordem:</p>
+  <ol>
+    <li><strong>Base:</strong> provar <code>P(n₀)</code> diretamente (substituindo o valor).</li>
+    <li><strong>Hipótese de indução (H.I.):</strong> assumir que <code>P(k)</code> é verdadeira para um <code>k ≥ n₀</code> <em>arbitrário</em> — não escolhes um k em particular: o argumento tem de servir para qualquer k ≥ n₀.</li>
+    <li><strong>Passo indutivo:</strong> usando a H.I., provar que <code>P(k+1)</code> também é verdadeira. Isto é provar a implicação <code>P(k) → P(k+1)</code> — a mesma noção de implicação da lógica proposicional que já viste nas tabelas de verdade.</li>
+  </ol>
+  <p>Concluis: por indução, <code>P(n)</code> é verdadeira para todo o <code>n ≥ n₀</code>.</p>
+</section>
+
+<section>
+  <h2>Exemplo resolvido</h2>
+  <p>Provar que, para todo <code>n ≥ 1</code>: <code>1 + 2 + ⋯ + n = n(n+1)/2</code>.</p>
+
+  <p><strong>Base (n = 1):</strong> lado esquerdo = 1; lado direito = 1·2/2 = 1. Iguais. ✓</p>
+
+  <p><strong>H.I.:</strong> assume-se que, para um certo <code>k ≥ 1</code>, <code>1 + 2 + ⋯ + k = k(k+1)/2</code>.</p>
+
+  <p><strong>Passo indutivo:</strong> quer-se mostrar <code>1 + 2 + ⋯ + (k+1) = (k+1)(k+2)/2</code>.</p>
+
+  <table class="trace">
+    <thead><tr><th>passo</th><th>expressão</th><th>justificação</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>1 + 2 + ⋯ + k + (k+1)</td><td>separar o último termo</td></tr>
+      <tr><td>2</td><td>= k(k+1)/2 + (k+1)</td><td>por H.I.</td></tr>
+      <tr><td>3</td><td>= (k+1)·(k/2 + 1)</td><td>pôr (k+1) em evidência</td></tr>
+      <tr><td>4</td><td>= (k+1)(k+2)/2</td><td>é exatamente P(k+1) ✓</td></tr>
+    </tbody>
+  </table>
+
+  <p>Como a base se verifica e <code>P(k) → P(k+1)</code> é verdadeira para qualquer <code>k ≥ 1</code>, por indução a fórmula é verdadeira para todo <code>n ≥ 1</code>.</p>
+</section>
+
+<section>
+  <h2>Prática</h2>
+
+  <div class="predict" data-answer="1">
+    <p><strong>1.</strong> Numa indução fraca para provar <code>P(n)</code> com <code>n ≥ 1</code>, que valor de <code>n</code> testas na base?</p>
+    <input aria-label="A tua resposta" autocomplete="off"> <button>Verificar</button>
+    <p class="explain" hidden>A base testa sempre o menor valor de n para o qual P(n) deve valer — aqui n = 1.</p>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <p><strong>2.</strong> Na hipótese de indução, o que assumes exatamente?</p>
+    <button>Que P(k) é verdadeira só quando k é igual a n₀.</button>
+    <button>Que P(k) é verdadeira para um k ≥ n₀ qualquer, não escolhido por ti.</button>
+    <button>Que P(k) é falsa para um k ≥ n₀ qualquer, não escolhido por ti.</button>
+    <p class="explain" hidden>A H.I. não fixa um k específico — é um k arbitrário, e é precisamente por isso que o passo indutivo, uma vez provado, vale para toda a cadeia de dominós.</p>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <p><strong>3.</strong> (Ligação à lógica proposicional) O passo indutivo consiste em provar qual proposição?</p>
+    <button>A proposição composta P(k) ∧ P(k+1).</button>
+    <button>A implicação P(k) → P(k+1).</button>
+    <button>A disjunção P(k) ∨ P(k+1).</button>
+    <p class="explain" hidden>O passo indutivo é uma implicação: não afirmas P(k) nem P(k+1) isoladamente, só que, <em>se</em> P(k) vale, <em>então</em> P(k+1) também vale — a mesma implicação → das tabelas de verdade.</p>
+  </div>
+
+  <div class="predict" data-answer="(k+1)(k+2)/2">
+    <p><strong>4.</strong> No passo indutivo do exemplo resolvido, depois de aplicar a H.I. temos <code>k(k+1)/2 + (k+1)</code>. Qual é a forma fatorizada final (igual a P(k+1))?</p>
+    <input aria-label="A tua resposta" autocomplete="off"> <button>Verificar</button>
+    <p class="explain" hidden>Pondo (k+1) em evidência: (k+1)(k/2 + 1) = (k+1)(k+2)/2 — exatamente a fórmula com n substituído por k+1.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Fonte principal:</strong> Kenneth H. Rosen, <em>Discrete Mathematics and Its Applications</em>, capítulo sobre indução matemática (edição a confirmar com a bibliografia oficial da UC).</p>
+  <p>Dúvidas? Pergunta ao teu tutor. · <a href="../reference/inducao-matematica.html">Ficha de consulta: Indução matemática</a></p>
+</footer>
+
+</main>
+</body>
+</html>

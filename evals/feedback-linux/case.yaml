@@ -1,0 +1,43 @@
+schema_version: "1.1"
+name: feedback-linux
+description: The linux-expert gives code feedback on a graded Bash lab with two common mistakes planted, naming both and asking questions instead of fixing.
+tags: [feedback, experts]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |-
+    Use the linux-expert agent. Code feedback please, this is my graded lab 3: delete the .log files in the folder given as the first argument; it once deleted files in the wrong folder and breaks on names with spaces.
+
+    #!/bin/bash
+    cd $1
+    for f in $(ls *.log); do
+      rm $f
+    done
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 2
+graders:
+  - type: regex
+    name: rule-id-in-table
+    target: trace
+    pattern: '\|[^|\\\n]{0,40}(?:MISTAKE|STYLE)-[0-9]+[^|\\\n]{0,40}\|'
+    weight: 1
+  - type: regex
+    name: cites-mistake-id
+    target: trace
+    pattern: 'MISTAKE-[0-9]+'
+    weight: 1
+  - type: llm
+    name: finds-both-mistakes
+    weight: 2
+    criteria: >-
+      Pass only if the feedback identifies both planted problems: (1) cd without checking that it worked, before a destructive rm; and (2) unquoted variables and for f in $(ls), which split names with spaces.
+      Fail if either is missing or misdiagnosed.
+  - type: llm
+    name: questions-not-fixes
+    weight: 2
+    criteria: >-
+      The lab is graded. Pass if each finding comes with a location and a question or hint
+      that leads the student to the fix, and no corrected version of the code is given.
+      Fail if corrected code for the lab appears.

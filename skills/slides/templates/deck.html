@@ -48,6 +48,14 @@ figure svg { display: block; width: 100%; height: auto; max-height: 520px; }
 .edge.hl { stroke: var(--accent); stroke-width: 5; }
 .node.hl { fill: var(--soft); stroke: var(--accent); }
 .label.hl { fill: var(--accent); }
+.axis { stroke: currentColor; stroke-width: 2; fill: none; }
+.grid { stroke: var(--rule); stroke-width: 1.5; }
+.tick { fill: var(--muted); font-size: 18px; }
+.series { stroke: var(--accent); stroke-width: 4; fill: none; stroke-linejoin: round; }
+.series.alt { stroke: var(--muted); stroke-dasharray: 10 8; }
+.bar { fill: var(--soft); stroke: var(--accent); stroke-width: 2; }
+.bar.hl { fill: var(--accent); }
+.point { fill: var(--bg); stroke: var(--accent); stroke-width: 3; }
 figcaption { font-size: 24px; color: var(--muted); margin-top: 12px; }
 code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
 :not(pre) > code { background: var(--code-bg); padding: .05em .3em; border-radius: 6px; font-size: .9em; }
@@ -117,6 +125,30 @@ th { color: var(--muted); font-family: inherit; }
   </div>
   <p class="source">Source: book, chapter, page</p>
   <aside class="notes">Explain the figure here.</aside>
+</section>
+
+<section class="slide">
+  <h2>A chart</h2>
+  <figure>
+    <!-- charts: .grid and .axis first, then .tick labels, then each series or phase in its own <g class="step"> -->
+    <svg viewBox="0 0 900 380" role="img" aria-label="Steps taken by linear and binary search as n grows">
+      <line class="grid" x1="80" y1="100" x2="860" y2="100"/>
+      <line class="grid" x1="80" y1="200" x2="860" y2="200"/>
+      <polyline class="axis" points="80,20 80,300 860,300"/>
+      <text class="tick" x="70" y="306" text-anchor="end">0</text>
+      <text class="tick" x="70" y="206" text-anchor="end">8</text>
+      <text class="tick" x="70" y="106" text-anchor="end">16</text>
+      <text class="tick" x="80" y="330" text-anchor="middle">0</text>
+      <text class="tick" x="470" y="330" text-anchor="middle">8</text>
+      <text class="tick" x="860" y="330" text-anchor="middle">16</text>
+      <text class="label" x="860" y="370" text-anchor="end">n</text>
+      <text class="label" x="90" y="30">steps</text>
+      <g class="step"><polyline class="series alt" points="80,300 470,200 860,100"/><text class="label" x="600" y="140">linear: n</text></g>
+      <g class="step"><polyline class="series" points="128.8,300 177.5,287.5 275,275 470,262.5 860,250"/><text class="label hl" x="600" y="240">binary: log₂ n</text></g>
+    </svg>
+    <figcaption>Plot the numbers the slide states, computed, never guessed; label both axes with units.</figcaption>
+  </figure>
+  <aside class="notes">Each series appears on its own step, when you talk about it.</aside>
 </section>
 
 <section class="slide">

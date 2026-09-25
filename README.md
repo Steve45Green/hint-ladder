@@ -98,7 +98,7 @@ Real outputs from test runs, one course unit per row. HTML files open in a brows
 | Command | What it does |
 |---|---|
 | `/go` | Reads the situation and starts the right skill or expert |
-| `/setup` | Course units → one folder per unit, each with its language expert |
+| `/setup` | Course units → one folder per unit, each with its language expert; `/setup moodle` brings each unit's files and assignment dates from your school's Moodle |
 | `/analyze` | Slides, PDFs, course sheets, past exams, photos of the board → study notes with page references, likely exam questions and self-tests |
 | `/lesson` | A ten-minute HTML lesson with a worked example and instant-feedback exercises |
 | `/slides` | A study deck: one idea per slide, worked examples revealed line by line, check-yourself slides, notes for studying alone. For a graded talk: a skeleton, feedback and a rehearsal instead |
@@ -136,7 +136,7 @@ Every help on graded work is logged in `AI-USE.md`, so you can declare AI use ho
 
 ## The experts
 
-Each expert is a senior engineer and teacher of one language, with **numbered style rules** it follows in every line it writes and cites (`STYLE-4`) when it reviews yours. Your lecturer's rules always win.
+Each expert is a senior engineer and teacher of one language, with **numbered style rules** it follows in every line it writes and cites (`STYLE-4`) when it reviews yours, and a catalogue of the language's **common mistakes** (`MISTAKE-3`), each with the question that leads you to find it yourself and a drill that fixes the idea. On graded work you get that question, never the fix. Your lecturer's rules always win.
 
 | Expert | Typical courses | Style base |
 |---|---|---|
@@ -202,13 +202,32 @@ Measured with Claude Code's own eval runner (`claude plugin eval`): 20 cases, ea
 
 Limits, honestly: small samples (2 runs per arm) on one model. The eval harness cannot approve writes inside `.claude/`, so the check that `/setup` wrote a unit's `settings.json` fails there by design; in a normal session the student approves it ([example](examples/introducao-a-programacao/.claude/settings.json)).
 
+### Experts, measured
+
+A graded lab per expert with two classic mistakes planted (C: returning a local buffer and `scanf` without `&`; SQL: a `WHERE` on the outer-joined table and `COUNT(*)`; …), run with and without the plugin: 8 cases, 2 runs per arm, Sonnet, 2026-09-25, 3.90 USD. [Every grader](evals/RESULTS-experts.md).
+
+| Expert | Finds both mistakes | Cites the common mistake (`MISTAKE-n`) in its table | Questions, not fixes |
+|---|---|---|---|
+| `c-expert` | 2 of 2 | 2 of 2 | 2 of 2 |
+| `csharp-expert` | 2 of 2 | 2 of 2 | 2 of 2 |
+| `java-expert` | 2 of 2 | 0 of 2 ¹ | 1 of 2 ¹ |
+| `linux-expert` | 1 of 2 ² | 2 of 2 | 2 of 2 |
+| `php-expert` | 2 of 2 | 2 of 2 | 2 of 2 |
+| `python-expert` | 2 of 2 | 2 of 2 | 2 of 2 |
+| `sql-expert` | 2 of 2 | 2 of 2 | 2 of 2 |
+| `web-expert` | 2 of 2 | 2 of 2 | 2 of 2 |
+| **All, with the plugin** | **15 of 16** | **14 of 16** | **15 of 16** |
+| Without the plugin | 16 of 16 | 0 of 16 | 0 of 16 |
+
+The model finds the bugs either way; what the expert changes is how they reach you: named after a common mistake, with a question instead of the corrected code. ¹ Both Java runs used up their 12-turn budget, and their final replies carried no `MISTAKE-n`; a re-run of that case alone passed every check in both runs (0.48 USD). ² The judge failed one Linux run whose reply names both mistakes (`cd` unchecked, `for f in $(ls)`); it stays counted as a failure.
+
 ## For lecturers
 
 Hint Ladder is meant to be a tool you can recommend instead of ban: hints instead of solutions, an `AI-USE.md` log per assignment, and a `COURSE-POLICY.md` you publish that it obeys. See [For lecturers](docs/for-lecturers.md).
 
 ## Privacy
 
-Everything runs on your computer, in your folders. Hint Ladder has no telemetry and sends nothing anywhere; the only network calls are the ones Claude Code makes to the model. Keep course repositories **private**: they hold graded work.
+Everything runs on your computer, in your folders. Hint Ladder has no telemetry and sends nothing anywhere; the only network calls are the ones Claude Code makes to the model and, if you connect it, to your school's Moodle, with your own key, stored only on your computer. Keep course repositories **private**: they hold graded work.
 
 ## Other agents
 
@@ -220,4 +239,4 @@ Built on ideas from [mattpocock/skills](https://github.com/mattpocock/skills) (`
 
 ## License
 
-[MIT](LICENSE) © 2026 José Ameixa. Changes: [CHANGELOG](CHANGELOG.md). Contributions welcome: [CONTRIBUTING](CONTRIBUTING.md).
+[MIT](LICENSE) © 2026 [Steve45Green](https://github.com/Steve45Green) aka José Ameixa. Changes: [CHANGELOG](CHANGELOG.md). Contributions welcome: [CONTRIBUTING](CONTRIBUTING.md).

@@ -99,6 +99,7 @@ Três formas de os usar:
 | O Java, o XAMPP ou o SQL Server não funcionam no meu computador | `/go` + o erro: vai para o agente do teu sistema |
 | Onde estou em cada cadeira? | `/progress` na pasta do curso (corre em segundo plano com várias cadeiras) |
 | Uma cadeira nova este semestre, ou numa linguagem sem especialista | `/setup add <cadeira>`: entrevista-te (tipo de especialista, linguagem e versão, ferramentas, estilo, avaliação) e cria o especialista |
+| A tua escola usa Moodle | `/setup moodle`: entras uma vez com a tua chave do Moodle, no teu terminal; descarrega os ficheiros de cada cadeira para `material/moodle/` (fora do git) e traz os enunciados e as datas de entrega dos trabalhos |
 | Não percebo um tema pelos slides; preciso de mais exemplos | `/research <tema>`, ou só `/research` para os temas fracos do último relatório |
 | Relatório automático todas as semanas | agendar `claude -p "/progress"` com cron ou no Agendador de Tarefas (o comando exato está na skill; pergunta ao `/progress` como automatizar) |
 | O docente publicou regras de uso de IA | guarda-as como `COURSE-POLICY.md` na pasta da cadeira |

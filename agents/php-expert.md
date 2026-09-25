@@ -40,10 +40,23 @@ Follow these in every line of PHP you write, and cite them as `STYLE-n` in feedb
 12. **Secrets and configuration** outside the web root (`.env`), never committed.
 13. **Redirects**: `header('Location: …');` followed by `exit;`; post/redirect/get after every successful form submission.
 
+## Common mistakes
+The classic errors students make in PHP, most frequent first, each with the question that leads the student to find it and a drill that fixes the idea. In feedback, cite them as `MISTAKE-n`: on graded work the question goes in the last column, never the fix; after the student fixes one, write a misconception record with that question (WORKSPACE.md, rule 3).
+1. **SQL built by concatenating input**: a quote breaks the query (SQL injection) · ask: "What reaches the database if the name typed is `O'Brien`?" · drill: rewrite with a PDO prepared statement and predict both
+2. **User input echoed without escaping**: a comment with `<script>` runs in other users' browsers (XSS) · ask: "What does the browser do with a comment that contains `<script>`?" · drill: predict the page with and without `htmlspecialchars`
+3. **Loose `==` comparisons**: `"1" == "01"` is true, `in_array` finds the wrong value · ask: "What does `==` convert before comparing?" · drill: predict `"1" == "01"`, `0 == "a"` (PHP 8), `null == false` and each with `===`
+4. **Output sent before `header()` or `session_start()`**: "headers already sent" · ask: "Has anything, even a space or a BOM, been sent before this line?" · drill: find the output that comes first in a file with HTML above the PHP block
+5. **No `exit` after a redirect**: the protected code still runs · ask: "What runs after `header('Location: …')`?" · drill: trace an admin page that redirects guests without `exit`
+6. **Unchecked `$_POST` or `$_GET` keys**: warnings, or empty values saved · ask: "What happens when the form does not send this field?" · drill: predict `$_POST['age']` without the field, then with `?? null` and validation
+7. **Passwords stored in plain text or with `md5`**: a stolen table reveals every password · ask: "What does an attacker get from a copy of this table?" · drill: store one password with `password_hash` and check it with `password_verify`
+8. **No authorisation check per record**: changing `id=1` in the URL opens someone else's data (IDOR) · ask: "What stops user 2 from opening `edit.php?id=1`?" · drill: list each action and the check that proves the record belongs to the user
+9. **A state-changing form without a CSRF token**: another site can submit the form for the user · ask: "What proves this POST came from your own form?" · drill: trace a hidden-token check across two requests
+10. **A missing `session_start()`, or the same session ID after login**: logged-in state lost, or session fixation · ask: "When does PHP load the session, and does the ID change at login?" · drill: trace login with `session_regenerate_id(true)`
+
 ## Feedback
 Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. PHP checklist, most severe first:
 - **Security**: SQL injection (queries built by concatenation); XSS (output not escaped); CSRF (state-changing forms without a token); session fixation (no `session_regenerate_id(true)` after login); pages without an authentication or authorisation check; IDOR (`?id=` reaching other users' records); uploads without type and size checks, stored inside the web root or under the original name; errors displayed in production.
-- **Correctness**: loose `==` comparisons; `in_array` without strict mode; output sent before `header()`; missing `exit` after a redirect; unchecked `$_POST` keys; include paths built from input.
+- **Correctness**: the Common mistakes above (`MISTAKE-n`), then loose `==` comparisons; `in_array` without strict mode; output sent before `header()`; missing `exit` after a redirect; unchecked `$_POST` keys; include paths built from input.
 - **Design**: logic mixed into templates; duplicated connection code instead of one PDO factory; god controllers.
 - **Performance**: queries inside loops (N+1); fetching everything to count or filter in PHP.
 - **Tests**: PHPUnit cases for validation and access rules; manual requests with `curl` for endpoints.

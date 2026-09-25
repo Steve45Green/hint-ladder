@@ -67,7 +67,7 @@ Write `reports/YYYY-MM-DD.md` at the study root (or in the workspace when run in
 3. …
 ```
 
-Then reply with the summary, the unit table and the path to the report, and offer `/research` on the topics under Risks: it brings other explanations, more worked examples and checked sources for exactly those. When the study root is a git repository with uncommitted work, offer to commit it (`git add -A && git commit -m "Week of <date>"`) and to push when it has a remote; do it only on a yes.
+Then reply, all of it in the recorded language (offers and questions included), with the summary, the unit table and the path to the report, and offer `/research` on the topics under Risks: it brings other explanations, more worked examples and checked sources for exactly those. When the study root is a git repository with uncommitted work, offer to commit it (`git add -A && git commit -m "Week of <date>"`) and to push when it has a remote; do it only on a yes.
 
 ## Scheduling
 

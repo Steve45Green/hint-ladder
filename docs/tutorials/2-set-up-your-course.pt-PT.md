@@ -83,6 +83,18 @@ Põe na pasta a ficha da unidade curricular (um PDF) e depois:
 
 O `/analyze` lê o PDF; o `/course` preenche o `MISSION.md` (avaliação, datas, política de IA) e pergunta só o que falta. Faz isto em cada cadeira quando o semestre dela começar.
 
+## A partir do Moodle (opcional)
+
+Se a tua escola usa Moodle, o `/setup` pode ir lá buscar o que precisa: as cadeiras em que estás inscrito, os ficheiros de cada uma (ficha da UC, slides, enunciados) e as datas de entrega dos trabalhos. Diz que sim quando ele perguntar, ou corre `/setup moodle` mais tarde na pasta do curso.
+
+1. Dá-te um comando para correres **no teu próprio terminal**, não no chat, por exemplo `python3 ".../moodle.py" login --url https://moodle.atuaescola.pt`.
+2. O comando pede a tua chave do Moodle: no Moodle, **Preferências → Chaves de segurança → "Moodle mobile web service"**, copia a chave. Se a tua escola não tem essa página e entras com utilizador e password no próprio Moodle, carrega em Enter e escreve-os: a password é usada uma vez e nunca é guardada.
+3. De volta ao Claude Code, o `/setup` lista as tuas cadeiras, faz a correspondência com as do curso, descarrega os ficheiros para `material/moodle/` de cada cadeira e escreve o enunciado e a data de entrega de cada trabalho.
+
+**Correu bem quando** cada cadeira tem `material/moodle/` com os PDFs da cadeira e o `MISSION.md` tem as datas dos trabalhos. A chave fica só no teu computador (`~/.config/hint-ladder/moodle.json`, que só tu consegues ler); os ficheiros descarregados ficam fora do git, porque são dos teus docentes. Se a tua escola não ativou a app do Moodle, ele diz-to e continua sem ela: descarrega os ficheiros à mão e usa o `/analyze`.
+
+Nunca coles a tua chave nem a tua password no chat.
+
 ## Uma cadeira nova mais tarde, ou uma sem especialista
 
 Semestre novo, uma optativa, uma cadeira numa linguagem para a qual o Hint Ladder não tem especialista (Kotlin, Haskell, C++, MATLAB, Assembly…)? Na pasta do curso:
@@ -99,6 +111,6 @@ Quando nenhum especialista serve, primeiro entrevista-te, numa só ronda, cada p
 4. estilo: as regras do docente, ou o guia de referência da linguagem;
 5. como é avaliada: laboratórios, projeto com defesa, código escrito à mão no exame.
 
-Depois cria a pasta da cadeira e um especialista feito a partir das tuas respostas, com as suas regras de estilo e os comandos das ferramentas, e valida-o. Exemplos reais: [a entrevista](../../examples/new-unit-interview.md) e [o especialista de C++ que criou](../../examples/.claude/agents/cpp-expert.md).
+Depois cria a pasta da cadeira e um especialista feito a partir das tuas respostas, com as suas regras de estilo e os comandos das ferramentas, e valida-o. Exemplos reais: [a entrevista](../../examples/pt-PT/entrevista-nova-cadeira.md) e [o especialista de C++ que criou](../../examples/pt-PT/.claude/agents/cpp-expert.md).
 
 A seguir: [3. Um dia de estudo](3-a-study-day.pt-PT.md).

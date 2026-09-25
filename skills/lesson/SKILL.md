@@ -28,7 +28,7 @@ Take the content from `RESOURCES.md`, official course material first. Match the 
 Copy the components from this skill's `templates/` into the workspace's `assets/` when missing (`style.css`, `quiz.js`), then start from `templates/lesson.html`, setting `<html lang>` to the recorded language. Save as `lessons/NNNN-slug.html`.
 
 - **Goal**: one sentence, an action the student can do at the end, tied to the mission.
-- **The idea**: only the knowledge the practice needs; difficulty here eats working memory. Draw memory, pointers, trees, stacks, queues and state machines as inline SVG in a `<figure>`: a drawing of memory beats a paragraph about it.
+- **The idea**: only the knowledge the practice needs; difficulty here eats working memory. Draw memory, pointers, trees, stacks, queues and state machines as inline SVG in a `<figure>` with the classes in `assets/style.css` (`.edge`, `.node`, `.label`, `.hl`), and measurements or growth as a chart (`.grid`, `.axis`, `.tick`, `.series`, `.bar`, `.point`) whose points are computed, never guessed: a drawing of memory beats a paragraph about it.
 - **Worked example**: step by step. With loops or recursion, add a `table.trace` trace table.
 - **Practice**: at least three exercises with instant feedback, built from `assets/quiz.js` components:
   - `.predict`: "what does this code print?", the strongest retrieval drill for programming.

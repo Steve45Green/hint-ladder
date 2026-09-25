@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indução matemática (fraca e forte)</title>
+<style>
+/* Hint Ladder study deck: one self-contained file, no dependencies.
+   Slides are authored on a fixed 1600x900 stage that scales to any screen.
+   Keys: → / space next · ← previous · N notes · F fullscreen · Home / End. */
+:root {
+  --bg: #fbfaf7; --fg: #1d1d1f; --muted: #5f5f66; --rule: #e2e2dc; --accent: #1f5fbf;
+  --soft: #e9eef8; --code-bg: #f2f2ed; --right: #1e7a3c; --wrong: #b3261e; --stage-bg: #e8e6e0;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151517; --fg: #e8e8e6; --muted: #a0a0a6; --rule: #2e2e33; --accent: #7aa7ff;
+    --soft: #16233a; --code-bg: #1f1f24; --right: #5cc57f; --wrong: #ff7a70; --stage-bg: #0b0b0d;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--stage-bg); }
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--fg); }
+.viewport { position: fixed; inset: 0; }
+.stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; background: var(--bg); overflow: hidden; }
+.slide { position: absolute; inset: 0; padding: 88px 110px 96px; visibility: hidden; opacity: 0; transition: opacity .25s ease; display: flex; flex-direction: column; }
+.slide.active { visibility: visible; opacity: 1; }
+.slide h1 { font-size: 76px; line-height: 1.1; margin: 0 0 28px; letter-spacing: -0.5px; }
+.slide h2 { font-size: 52px; line-height: 1.15; margin: 0 0 36px; }
+.slide p, .slide li { font-size: 34px; line-height: 1.45; margin: 0 0 18px; }
+.slide ul, .slide ol { padding-left: 1.2em; margin: 0; }
+.slide .kicker { font-size: 24px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 18px; }
+.slide .lead { font-size: 40px; color: var(--muted); }
+.slide.title { justify-content: center; }
+.slide.big { justify-content: center; }
+.slide.big p { font-size: 58px; line-height: 1.25; font-weight: 600; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; flex: 1; }
+figure { margin: 0; }
+/* A figure never grows past the stage: wide drawings shrink to fit (the SVG keeps its aspect ratio). */
+figure svg { display: block; width: 100%; height: auto; max-height: 520px; }
+.two-col figure svg { max-height: 600px; }
+/* Diagram parts: draw .edge lines first, then .node shapes, which are filled with the
+   background so they cover the edge ends; .hl marks the part being discussed. */
+.edge { stroke: currentColor; stroke-width: 3; fill: none; }
+.node { fill: var(--bg); stroke: currentColor; stroke-width: 3; }
+.label { fill: currentColor; font-size: 22px; }
+.edge.hl { stroke: var(--accent); stroke-width: 5; }
+.node.hl { fill: var(--soft); stroke: var(--accent); }
+.label.hl { fill: var(--accent); }
+figcaption { font-size: 24px; color: var(--muted); margin-top: 12px; }
+code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+:not(pre) > code { background: var(--code-bg); padding: .05em .3em; border-radius: 6px; font-size: .9em; }
+pre { background: var(--code-bg); border-radius: 14px; padding: 28px 36px; margin: 0 0 28px; font-size: 30px; line-height: 1.5; }
+pre .line { display: block; }
+pre .line.hl { background: var(--soft); box-shadow: inset 6px 0 var(--accent); margin: 0 -36px; padding: 0 36px; }
+table { border-collapse: collapse; font-size: 30px; }
+th, td { border-bottom: 2px solid var(--rule); padding: 10px 28px; text-align: left; font-family: ui-monospace, Menlo, monospace; }
+th { color: var(--muted); font-family: inherit; }
+.question { background: var(--soft); border-radius: 18px; padding: 36px 44px; }
+.question p { font-size: 40px; font-weight: 600; margin: 0; }
+.answer { margin-top: 28px; border-left: 6px solid var(--right); padding-left: 28px; }
+.question .answer p { font-size: 32px; font-weight: 400; }
+.source { margin-top: auto; font-size: 22px; color: var(--muted); }
+/* Safety net: the engine wraps an overflowing slide's content in .fit and scales it down to fit (never below 60%). */
+.fit { display: flex; flex-direction: column; flex: none; transform-origin: 0 0; }
+.step { opacity: 0; transition: opacity .2s ease; }
+.step.shown { opacity: 1; }
+.notes { display: none; }
+.hud { position: fixed; left: 0; right: 0; bottom: 0; height: 6px; background: transparent; z-index: 5; }
+.hud .bar { height: 100%; width: 0; background: var(--accent); transition: width .2s ease; }
+.counter { position: fixed; right: 16px; bottom: 14px; font: 14px system-ui, sans-serif; color: var(--muted); z-index: 5; }
+.notes-panel { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); width: min(900px, 92vw); max-height: 40vh; overflow: auto;
+  background: var(--bg); color: var(--fg); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 20px; font: 17px/1.5 system-ui, sans-serif;
+  box-shadow: 0 8px 30px rgba(0,0,0,.18); z-index: 6; display: none; }
+.notes-panel.open { display: block; }
+@media (prefers-reduced-motion: reduce) { .slide, .step, .hud .bar { transition: none; } }
+@media print {
+  @page { size: 1600px 900px; margin: 0; }
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .viewport { position: static; }
+  .stage { position: static; transform: none !important; width: auto; height: auto; overflow: visible; }
+  .slide { position: relative; visibility: visible; opacity: 1; width: 1600px; height: 900px; break-after: page; }
+  .step { opacity: 1; }
+  .hud, .counter, .notes-panel { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="stage" id="stage">
+
+<section class="slide title">
+  <div class="kicker">Matemática Discreta · Indução matemática</div>
+  <h1>Indução matemática (fraca e forte)</h1>
+  <p class="lead">No fim consegues escrever, sozinho, uma prova por indução — fraca ou forte — completa, sem confundir hipótese com tese.</p>
+  <aside class="notes">Esta é a base de toda a Matemática Discreta: quase todas as provas sobre naturais, sucessões e recorrências passam por aqui. O Teste 1 (2026-11-05) inclui indução; o objetivo deste estudo é escrever uma prova que um corretor não consiga contestar.</aside>
+</section>
+
+<section class="slide">
+  <h2>Porque precisamos de indução</h2>
+  <ul>
+    <li class="step">Testar caso a caso nunca acaba: há infinitos naturais — não podemos verificar P(1), P(2), P(3)… um a um.</li>
+    <li class="step">A indução prova P(n) para <em>todos</em> os n de uma vez: um caso base + um argumento que se repete indefinidamente.</li>
+    <li class="step">Analogia: uma fila infinita de dominós. Basta (1) empurrar o primeiro e (2) garantir que cada um, ao cair, derruba o seguinte.</li>
+  </ul>
+  <aside class="notes">A ideia central: em vez de verificar infinitos casos, verificamos duas coisas finitas — o caso base, e que o padrão "se funciona aqui, funciona no próximo" se mantém sempre. Isso substitui um número infinito de verificações por duas.</aside>
+</section>
+
+<section class="slide">
+  <h2>Princípio da indução fraca</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">Para provar P(n) para todo n ≥ n₀:</p>
+      <ol>
+        <li class="step"><strong>Base:</strong> P(n₀) é verdadeira.</li>
+        <li class="step"><strong>Passo indutivo:</strong> para todo k ≥ n₀, se P(k) é verdadeira então P(k+1) é verdadeira.</li>
+      </ol>
+      <p class="step">Conclusão: P(n) verdadeira para todo n ≥ n₀.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 720 120" role="img" aria-label="Fila de dominós: a queda de P(1) arrasta P(2); a queda de P(k) arrasta P(k+1)">
+        <defs>
+          <marker id="arrowW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <line class="edge" x1="120" y1="75" x2="178" y2="75" marker-end="url(#arrowW)"/>
+        <line class="edge hl" x1="480" y1="75" x2="578" y2="75" marker-end="url(#arrowW)"/>
+        <rect class="node hl" x="20" y="30" width="100" height="80" rx="8"/>
+        <rect class="node" x="180" y="30" width="100" height="80" rx="8"/>
+        <rect class="node" x="380" y="30" width="100" height="80" rx="8"/>
+        <rect class="node hl" x="580" y="30" width="130" height="80" rx="8"/>
+        <text class="label" x="70" y="18" text-anchor="middle">base</text>
+        <text class="label" x="70" y="80" text-anchor="middle">P(1)</text>
+        <text class="label" x="230" y="80" text-anchor="middle">P(2)</text>
+        <text class="label" x="330" y="80" text-anchor="middle">...</text>
+        <text class="label" x="430" y="80" text-anchor="middle">P(k)</text>
+        <text class="label hl" x="645" y="80" text-anchor="middle">P(k+1)</text>
+      </svg>
+      <figcaption>O passo destacado é sempre o mesmo, qualquer que seja k: "se este cai, o seguinte cai".</figcaption>
+    </figure>
+  </div>
+  <p class="source">Fonte: Rosen, <em>Discrete Mathematics and Its Applications</em>, cap. 5 (Indução e Recursão).</p>
+  <aside class="notes">O nome "fraca" não significa "menos válida" — significa apenas que o passo indutivo só pode usar P(k), o vizinho imediato, para provar P(k+1). Repara que k é um natural fixo mas arbitrário: a prova do passo tem de funcionar para qualquer k, não para um k específico.</aside>
+</section>
+
+<section class="slide">
+  <h2>Exemplo resolvido (fraca)</h2>
+  <p class="step">Provar que, para todo n ≥ 1: 1+2+⋯+n = n(n+1)/2</p>
+<pre><code><span class="line step">Base (n = 1): 1 = 1·2/2 = 1 ✓</span><span class="line step">Hipótese P(k): 1+2+⋯+k = k(k+1)/2</span><span class="line step">Queremos P(k+1): 1+2+⋯+k+(k+1) = (k+1)(k+2)/2</span><span class="line step hl">1+2+⋯+k+(k+1) = k(k+1)/2 + (k+1)   [usa a hipótese]</span><span class="line step">= (k+1)·(k/2 + 1) = (k+1)(k+2)/2 ✓</span></code></pre>
+  <p class="source">Fonte: Rosen, <em>Discrete Mathematics and Its Applications</em>, cap. 5.1, exemplo clássico da soma dos n primeiros naturais.</p>
+  <aside class="notes">A linha destacada é o único sítio onde a hipótese de indução é realmente usada — é aí que trocamos "1+2+⋯+k" por "k(k+1)/2", porque assumimos P(k) verdadeira. Sem essa substituição não há indução, é só álgebra. A partir daí é fatorizar (k+1) e comparar com a tese.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Verifica-te · 1</div>
+  <div class="question">
+    <p>Na prova acima, qual é exatamente a hipótese de indução — nem mais, nem menos?</p>
+    <div class="answer step"><p>P(k): "1+2+⋯+k = k(k+1)/2", para um k ≥ 1 fixo mas arbitrário. Nunca é P(n) (o que queremos provar no geral) nem P(k+1) (a tese do passo) — assumir P(k+1) seria dar como provado aquilo que se quer provar.</p></div>
+  </div>
+  <aside class="notes">Este é o erro mais comum em exame: escrever "assumo P(k+1)" ou confundir a hipótese com a tese. A hipótese é sempre sobre o caso anterior, k; a tese do passo é sobre k+1, e é isso que a prova tem de derivar — sem assumir.</aside>
+</section>
+
+<section class="slide">
+  <h2>Erros comuns que um corretor rejeita</h2>
+  <ul>
+    <li class="step">Esquecer o caso base — sem ele, o passo indutivo prova algo que pode nunca ter começado.</li>
+    <li class="step">Assumir P(k+1) em vez de P(k) — é circular, não é uma prova.</li>
+    <li class="step">Escrever a hipótese e nunca a usar no passo — se a demonstração de P(k+1) não usa P(k), não é indução.</li>
+    <li class="step">Indexar mal: começar a base no n errado, ou deixar k variar fora do domínio de P.</li>
+  </ul>
+  <aside class="notes">Antes de entregar uma prova por indução, faz sempre esta checklist: (1) o caso base está lá e está correto; (2) a hipótese está escrita explicitamente e só fala de k; (3) a linha onde a hipótese é usada está identificada; (4) a conclusão fecha citando o princípio de indução.</aside>
+</section>
+
+<section class="slide">
+  <h2>Quando a fraca não chega</h2>
+  <ul>
+    <li class="step">Às vezes provar P(k+1) exige P(a) e P(b) com a,b &lt; k+1 — mas a e b não são necessariamente k. Ex.: se k+1 = a·b, os fatores a e b podem ser muito menores do que k.</li>
+    <li class="step">Outro caso clássico: sucessões definidas por recorrência com mais de um termo anterior (ex.: F(n) = F(n−1) + F(n−2)). Uma propriedade de F(n) pode depender de dois termos anteriores, não só do "vizinho" imediato.</li>
+    <li class="step">Precisamos de uma hipótese mais generosa: assumir <em>todos</em> os casos anteriores, não só o último.</li>
+  </ul>
+  <p class="source">Este ponto liga diretamente ao tema seguinte do programa: Relações de recorrência.</p>
+  <aside class="notes">A indução fraca não está errada nestes casos — é só insuficiente na forma como a hipótese está escrita. A solução não é abandonar a indução, é fortalecer a hipótese: em vez de "assumo só P(k)", assumo "P(n₀) e P(n₀+1) e … e P(k)", tudo o que já foi estabelecido até k.</aside>
+</section>
+
+<section class="slide">
+  <h2>Princípio da indução forte</h2>
+  <div class="two-col">
+    <div>
+      <p class="step">Para provar P(n) para todo n ≥ n₀:</p>
+      <ol>
+        <li class="step"><strong>Base:</strong> P(n₀) verdadeira (e P(n₀+1), … se o passo precisar de mais do que um caso).</li>
+        <li class="step"><strong>Passo indutivo forte:</strong> para todo k ≥ n₀, se P(n₀), P(n₀+1), …, P(k) são <em>todas</em> verdadeiras, então P(k+1) é verdadeira.</li>
+      </ol>
+      <p class="step">Conclusão: P(n) verdadeira para todo n ≥ n₀.</p>
+    </div>
+    <figure>
+      <svg viewBox="0 0 620 270" role="img" aria-label="P(k+1) apoiado em todos os dominós anteriores, não só no vizinho imediato">
+        <defs>
+          <marker id="arrowF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <line class="edge hl" x1="110" y1="90" x2="300" y2="178" marker-end="url(#arrowF)"/>
+        <line class="edge hl" x1="270" y1="90" x2="308" y2="178" marker-end="url(#arrowF)"/>
+        <line class="edge hl" x1="430" y1="90" x2="320" y2="178" marker-end="url(#arrowF)"/>
+        <rect class="node hl" x="60" y="20" width="100" height="70" rx="8"/>
+        <rect class="node" x="220" y="20" width="100" height="70" rx="8"/>
+        <rect class="node" x="380" y="20" width="100" height="70" rx="8"/>
+        <rect class="node hl" x="245" y="180" width="130" height="70" rx="8"/>
+        <text class="label hl" x="110" y="60" text-anchor="middle">P(1)</text>
+        <text class="label" x="270" y="60" text-anchor="middle">P(2)</text>
+        <text class="label" x="330" y="58" text-anchor="middle">...</text>
+        <text class="label" x="430" y="60" text-anchor="middle">P(k)</text>
+        <text class="label hl" x="310" y="220" text-anchor="middle">P(k+1)</text>
+      </svg>
+      <figcaption>Todos os dominós anteriores sustentam o seguinte — não só o vizinho.</figcaption>
+    </figure>
+  </div>
+  <p class="source">Fonte: Rosen, <em>Discrete Mathematics and Its Applications</em>, cap. 5.2 (Strong Induction).</p>
+  <aside class="notes">Fraca e forte são logicamente equivalentes — provam exatamente as mesmas afirmações, porque uma hipótese forte inclui a fraca como caso particular e pode ser derivada dela. A diferença é só de conforto: a forte dá-te mais material para trabalhar dentro do passo, o que é essencial quando o passo precisa de um caso que não é k.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Verifica-te · 2</div>
+  <div class="question">
+    <p>Qual é, exatamente, a diferença entre a hipótese da indução fraca e a da indução forte?</p>
+    <div class="answer step"><p>Fraca: assume só P(k). Forte: assume P(n₀), P(n₀+1), …, P(k) — todos os casos desde a base até k. A forte contém a fraca como caso particular (podias sempre optar por só usar P(k) lá dentro); usa-se quando o passo precisa de um caso anterior que não é k.</p></div>
+  </div>
+  <aside class="notes">Um erro comum é achar que a indução forte "prova mais coisas" do que a fraca — não é verdade, são equivalentes em poder lógico. A forte só é mais prática de escrever quando o argumento do passo precisa de casos que não são o imediatamente anterior.</aside>
+</section>
+
+<section class="slide">
+  <h2>Exemplo resolvido (forte)</h2>
+  <p class="step">Provar que todo n ≥ 2 é produto de um ou mais primos.</p>
+<pre><code><span class="line step">Base (n = 2): 2 é primo, logo já é "produto" de um fator ✓</span><span class="line step">Hipótese forte: todo i com 2 ≤ i ≤ k é produto de primos</span><span class="line step">Caso A — k+1 é primo: é o próprio único fator ✓</span><span class="line step hl">Caso B — k+1 composto: k+1 = a·b, com 2 ≤ a,b ≤ k</span><span class="line step">Por hipótese, a e b são produto de primos ⟹ k+1 = a·b também ✓</span></code></pre>
+  <p class="source">Fonte: Rosen, <em>Discrete Mathematics and Its Applications</em>, cap. 5.2 — existência na fatorização em primos (Teorema Fundamental da Aritmética).</p>
+  <aside class="notes">O ponto crucial está na linha destacada: k+1 = a·b, e a e b são ambos menores que k+1 (porque nenhum fator próprio de um número composto pode ser igual ou maior que ele), mas não sabemos se são iguais a k — podem ser qualquer valor entre 2 e k. Só por isso é preciso a hipótese forte: a fraca (só P(k)) não cobre a e b em geral.</aside>
+</section>
+
+<section class="slide">
+  <div class="kicker">Verifica-te · 3</div>
+  <div class="question">
+    <p>Porque não bastava a hipótese fraca (só P(k)) na prova de que todo n ≥ 2 é produto de primos?</p>
+    <div class="answer step"><p>Porque no caso composto, k+1 = a·b, os fatores a e b são menores do que k+1 mas não são necessariamente iguais a k — podem ser qualquer valor entre 2 e k. A hipótese fraca só te dá P(k); a hipótese forte dá-te P(a) e P(b) para quaisquer a,b nesse intervalo, que é exatamente o que o passo precisa.</p></div>
+  </div>
+  <aside class="notes">Repete este raciocínio em voz alta antes de veres a resposta: é o padrão que aparece sempre que a indução forte é necessária — o passo depende de um valor "algures lá atrás", não do vizinho imediato.</aside>
+</section>
+
+<section class="slide">
+  <h2>Fraca vs. forte, lado a lado</h2>
+  <table>
+    <tr><th>Aspeto</th><th>Indução fraca</th><th>Indução forte</th></tr>
+    <tr><td class="step">Hipótese no passo</td><td class="step">só P(k)</td><td class="step">P(n₀),…,P(k)</td></tr>
+    <tr><td class="step">Usa-se quando</td><td class="step">o passo só depende do vizinho k</td><td class="step">o passo depende de um caso anterior variável</td></tr>
+    <tr><td class="step">Poder lógico</td><td class="step">equivalente à forte</td><td class="step">equivalente à fraca</td></tr>
+    <tr><td class="step">Exemplo típico</td><td class="step">somas, produtos, desigualdades</td><td class="step">fatorização, recorrências com &gt;1 termo</td></tr>
+  </table>
+  <aside class="notes">Não há "melhor" — há a que se escreve mais naturalmente para o problema em mãos. Em exame, escolhe a forte assim que sentires necessidade de usar um caso que não é k; caso contrário, a fraca é mais direta e mais curta de escrever.</aside>
+</section>
+
+<section class="slide">
+  <h2>Resumo</h2>
+  <ul>
+    <li class="step">Indução fraca: base + "P(k) ⟹ P(k+1)". Indução forte: base + "P(n₀),…,P(k) ⟹ P(k+1)" — equivalentes, a forte só dá mais para trabalhar no passo.</li>
+    <li class="step">O erro que mais reprova em exame: assumir a tese em vez da hipótese, ou nunca usar a hipótese no passo.</li>
+    <li class="step">Este princípio é a base do próximo tema do programa — Relações de recorrência — onde quase todas as provas são por indução forte.</li>
+  </ul>
+  <p class="source">Ir mais fundo: Rosen, <em>Discrete Mathematics and Its Applications</em>, cap. 5 · Dúvidas? Pergunta ao teu tutor.</p>
+  <aside class="notes">Antes do Teste 1, treina escrever de memória as duas estruturas (base + passo) e reescreve os dois exemplos resolvidos aqui sem espreitar. Se conseguires identificar em qualquer prova nova "isto precisa de fraca ou de forte?" antes de começar a escrever, estás pronto para esta parte da matéria.</aside>
+</section>
+
+</div></div>
+<div class="hud"><div class="bar" id="bar"></div></div>
+<div class="counter" id="counter"></div>
+<div class="notes-panel" id="notes" aria-live="polite"></div>
+<script>
+(() => {
+  const stage = document.getElementById('stage');
+  const slides = [...stage.querySelectorAll('.slide')];
+  const bar = document.getElementById('bar'), counter = document.getElementById('counter'), notes = document.getElementById('notes');
+  let current = Math.min(Math.max(parseInt(location.hash.slice(1), 10) - 1 || 0, 0), slides.length - 1);
+
+  function fit() {
+    const s = Math.min(innerWidth / 1600, innerHeight / 900);
+    stage.style.transform = `translate(${(innerWidth - 1600 * s) / 2}px, ${(innerHeight - 900 * s) / 2}px) scale(${s})`;
+  }
+  const steps = i => [...slides[i].querySelectorAll('.step')];
+  function show(i, revealAll) {
+    slides.forEach((sl, k) => sl.classList.toggle('active', k === i));
+    steps(i).forEach(st => st.classList.toggle('shown', !!revealAll));
+    current = i;
+    history.replaceState(null, '', '#' + (i + 1));
+    bar.style.width = ((i + 1) / slides.length * 100) + '%';
+    counter.textContent = (i + 1) + ' / ' + slides.length;
+    const n = slides[i].querySelector('.notes');
+    notes.textContent = n ? n.textContent.trim() : '(no notes)';
+  }
+  function next() {
+    const hidden = steps(current).find(st => !st.classList.contains('shown'));
+    if (hidden) hidden.classList.add('shown');
+    else if (current < slides.length - 1) show(current + 1, false);
+  }
+  function prev() {
+    const shown = steps(current).filter(st => st.classList.contains('shown'));
+    if (shown.length) shown[shown.length - 1].classList.remove('shown');
+    else if (current > 0) show(current - 1, true);
+  }
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0, false);
+    else if (e.key === 'End') show(slides.length - 1, true);
+    else if (e.key.toLowerCase() === 'n') notes.classList.toggle('open');
+    else if (e.key.toLowerCase() === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+  });
+  let x0 = null;
+  addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+  addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+  });
+  addEventListener('click', e => { if (!e.target.closest('a, button, .notes-panel')) (e.clientX > innerWidth / 3 ? next : prev)(); });
+  function autofit() {
+    slides.forEach(sl => {
+      if (sl.scrollHeight <= sl.clientHeight + 1 || sl.querySelector(':scope > .fit')) return;
+      const cs = getComputedStyle(sl);
+      const room = sl.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+      const wrap = document.createElement('div');
+      wrap.className = 'fit';
+      [...sl.children].filter(c => !c.classList.contains('notes')).forEach(c => wrap.appendChild(c));
+      sl.insertBefore(wrap, sl.firstChild);
+      let r = 1;
+      for (let pass = 0; pass < 3; pass++) {   // a wider box wraps text differently: measure again
+        r = Math.min(1, Math.max(0.6, room / wrap.offsetHeight));   // layout px, unaffected by transforms
+        wrap.style.width = (100 / r) + '%';
+        wrap.style.transform = `scale(${r})`;
+      }
+    });
+  }
+  addEventListener('resize', fit);
+  fit(); autofit(); show(current, false);
+  if (document.fonts) document.fonts.ready.then(autofit);
+})();
+</script>
+</body>
+</html>

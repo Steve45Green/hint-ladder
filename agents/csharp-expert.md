@@ -41,9 +41,22 @@ Follow these in every line of C# you write, and cite them as `STYLE-n` in feedba
 12. **XML doc comments** on public APIs.
 13. **`dotnet format` clean**, analyser warnings addressed.
 
+## Common mistakes
+The classic errors students make in C#, most frequent first, each with the question that leads the student to find it and a drill that fixes the idea. In feedback, cite them as `MISTAKE-n`: on graded work the question goes in the last column, never the fix; after the student fixes one, write a misconception record with that question (WORKSPACE.md, rule 3).
+1. **Using a reference that was never assigned**: `NullReferenceException` · ask: "On which line does this variable get an object?" · drill: turn on nullable reference types and predict the warnings in a short class
+2. **Changing a copy of a struct**: the change "does not stick" · ask: "Is this type a struct or a class, and what does assignment copy?" · drill: predict a point struct changed through a local copy and through a list element
+3. **Integer division**: an average comes out truncated · ask: "What is the type of `sum / count` when both are `int`?" · drill: predict `7 / 2`, `7 / 2.0` and `(double) 7 / 2`
+4. **`async void`, or a `Task` nobody awaits**: exceptions vanish, steps run out of order · ask: "Who waits for this task to finish?" · drill: predict the print order of a method with and without `await`
+5. **Blocking on `.Result` or `.Wait()` in a UI or ASP.NET context**: the application freezes · ask: "Which thread is waiting, and which thread must finish the task?" · drill: sequence diagram of the deadlock
+6. **LINQ deferred execution**: a query runs twice, or sees later changes · ask: "When does this query actually run?" · drill: predict the output when the list changes between defining the query and enumerating it
+7. **Changing a collection inside `foreach`**: `InvalidOperationException` · ask: "What is `foreach` holding while you change the collection?" · drill: predict removal inside `foreach`, with a `for` loop backwards and with `RemoveAll`
+8. **An `IDisposable` never disposed**: locked files, exhausted connection pools · ask: "Where is this connection closed when an exception is thrown?" · drill: trace a `using` block with an exception in the middle
+9. **Off-by-one between `Length`, `Count` and the last index**: `IndexOutOfRangeException` · ask: "What is the last valid index of a list of `Count` n?" · drill: trace table for `for (i = 0; i <= list.Count; i++)`
+10. **`string` concatenation in a loop**: slow output on large inputs · ask: "How many strings does this loop create?" · drill: count the allocations for 5 iterations, then with `StringBuilder`
+
 ## Feedback
 Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. C# checklist, most severe first:
-- **Correctness**: `NullReferenceException` sources; value vs reference semantics (struct copies, mutable structs); integer division; deadlocks from `.Result` in UI or ASP.NET contexts; `IDisposable` not disposed; deferred LINQ execution surprises; event handlers never unsubscribed.
+- **Correctness**: the Common mistakes above (`MISTAKE-n`), then `NullReferenceException` sources; value vs reference semantics (struct copies, mutable structs); integer division; deadlocks from `.Result` in UI or ASP.NET contexts; `IDisposable` not disposed; deferred LINQ execution surprises; event handlers never unsubscribed.
 - **Data access**: EF Core N+1 queries and tracking where none is needed; SQL injection through `FromSqlRaw` with string interpolation (use parameters or `FromSqlInterpolated`); missing migrations.
 - **Security (web)**: missing `[Authorize]`, anti-forgery tokens not validated, over-posting through bound entities (use view models or DTOs), secrets in `appsettings.json` committed.
 - **Design**: controllers holding business logic, `new` of dependencies instead of injection, god classes.

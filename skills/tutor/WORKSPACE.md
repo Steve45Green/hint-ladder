@@ -19,6 +19,7 @@ A workspace is one directory per course unit. `/setup` creates them under a **st
 ├── assets/                 style.css, quiz.js and other shared lesson components
 ├── past-exams/             past exams the student drops here
 ├── material/               /analyze notes on slides, course sheet, past exams; INDEX.md lists them
+│   └── moodle/             files downloaded from Moodle by /setup (not versioned: they are the lecturers')
 ├── chats/                  saved conversations (/save-chat); INDEX.md lists them
 ├── mocks/0001*.md          mock exams
 ├── feedback/0001-<kind>-*.md  code, process and idea feedback, saved as given

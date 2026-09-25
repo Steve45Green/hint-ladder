@@ -41,9 +41,23 @@ Follow these in every line of Python you write, and cite them as `STYLE-n` in fe
 11. **NumPy**: vectorise instead of Python loops wherever the course expects NumPy; state array shapes in docstrings.
 12. **Tooling clean**: `ruff check` and `ruff format --check` pass.
 
+## Common mistakes
+The classic errors students make in Python, most frequent first, each with the question that leads the student to find it and a drill that fixes the idea. In feedback, cite them as `MISTAKE-n`: on graded work the question goes in the last column, never the fix; after the student fixes one, write a misconception record with that question (WORKSPACE.md, rule 3).
+1. **Mutable default argument**: a list keeps growing between calls · ask: "When is the default list created: at every call, or once?" · drill: predict `f()` called twice when `def f(x=[]): x.append(1); return x`
+2. **Aliasing lists (`b = a`, `[[0] * n] * m`)**: one change shows up in several places · ask: "How many list objects exist here?" · drill: predict `grid` after `grid[0][0] = 1` when `grid = [[0] * 3] * 2`
+3. **`/` against `//`, and exact float comparison**: a float index error, or `0.1 + 0.2 != 0.3` · ask: "What type does `/` return, and can a float be exactly 0.3?" · drill: predict `7 / 2`, `7 // 2`, `0.1 + 0.2 == 0.3` and `math.isclose(0.1 + 0.2, 0.3)`
+4. **Changing a list while iterating over it**: some items are skipped · ask: "Which index does the loop visit after you remove an item?" · drill: predict removing even numbers from `[2, 2, 3]` inside a `for` loop
+5. **`is` instead of `==`**: equal values compare as different · ask: "Does `is` compare values or identity?" · drill: predict `[1] is [1]`, `[1] == [1]` and `x is None`
+6. **Off-by-one with `range`**: the last item is missed, or one too many · ask: "What is the last value that `range(1, n)` produces?" · drill: list `range(1, 4)`, `range(4)` and `range(0, 10, 3)`
+7. **Assigning to a global name inside a function**: `UnboundLocalError` · ask: "Where does Python decide that a name is local?" · drill: predict a function that reads `count` and then does `count += 1`
+8. **Using the `None` a function returns**: `NoneType` has no attribute … · ask: "What does this function give back to the caller?" · drill: predict `x = lst.sort()` and a function that prints instead of returning
+9. **Numbers read with `input()` used as numbers**: `TypeError`, or `'5' * 2 == '55'` · ask: "What type does `input()` return?" · drill: predict `input() * 2` and `int(input()) * 2` for the input `5`
+10. **A numerical loop that waits for an exact float**: bisection or Newton never stops · ask: "When should the loop stop if the value never hits exactly zero?" · drill: trace three bisection steps with a tolerance and without one
+11. **A bare `except:` hiding the real error**: the program "works" but the result is wrong · ask: "Which errors does this `except` also swallow?" · drill: predict what a bare `except` catches when the code has a typo in a name
+
 ## Feedback
 Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. Python checklist, most severe first:
-- **Correctness**: mutable default arguments; `is` vs `==`; aliasing and shallow copies (`[[0] * n] * m`, `copy` vs `deepcopy`); modifying a list while iterating over it; `/` vs `//`; comparing floats with `==` (`math.isclose`); late-binding closures in loops; off-by-one in `range`; unbounded recursion (recursion limit); NumPy broadcasting and shape mismatches; integer dtype overflow; pandas chained assignment.
+- **Correctness**: the Common mistakes above (`MISTAKE-n`), then mutable default arguments; `is` vs `==`; aliasing and shallow copies (`[[0] * n] * m`, `copy` vs `deepcopy`); modifying a list while iterating over it; `/` vs `//`; comparing floats with `==` (`math.isclose`); late-binding closures in loops; off-by-one in `range`; unbounded recursion (recursion limit); NumPy broadcasting and shape mismatches; integer dtype overflow; pandas chained assignment.
 - **Numerics**: missing or wrong stopping criteria; catastrophic cancellation; ill-conditioned systems; no check of the method's convergence conditions; results without an error estimate.
 - **Statistics**: a test whose assumptions don't hold; p-values misread; sample vs population formulas (`ddof`).
 - **Design**: long functions mixing input, computation and output; global state; code repeated instead of a function.

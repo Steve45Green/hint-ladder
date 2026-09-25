@@ -23,3 +23,22 @@ Real outputs from Hint Ladder, produced in headless test runs on 2026-09-25, whe
 | [bases-de-dados-1/research/0001-outer-joins.md](bases-de-dados-1/research/0001-outer-joins.md) | `/research` after a report flagged outer joins, with a graded assignment on joins still open | A study pack: evidence, three views, worked examples from easy to exam level, mistakes, hidden-answer practice; every example asks a different question from the graded one, and unchecked claims are marked |
 | [bases-de-dados-2/material/normalizacao.md](bases-de-dados-2/material/normalizacao.md) | `/analyze` on a PPTX | Study notes with a slide reference on every point and additions marked "not in the material" |
 | [bases-de-dados-2/material/course-sheet.md](bases-de-dados-2/material/course-sheet.md) | `/analyze` on a course-sheet PDF | Programme, assessment, bibliography and AI policy, ready for `/course` |
+
+The English [cpp-expert](.claude/agents/cpp-expert.md) was generated before agents had a `## Common mistakes` section, so today's validator flags it; the Portuguese one below has it.
+
+## In Portuguese: [pt-PT/](pt-PT/)
+
+The same commands in a test course whose `CURRICULUM.md` says `Language: Portuguese (Portugal)`, run on 2026-09-25 with the plugin as named today. Everything is as generated, apart from these hand fixes, each of which also became a rule in the skill that made the fault: in the TCP deck, one label split into two lines and two state boxes widened so no label runs past its figure (slide 2 and 4), and the round-axis label moved off a tick (slide 11); in the induction lesson, "you only know it exists" became "the argument has to work for any k" (the hypothesis is about every k, not some k); in the networks lesson, two arrow labels moved above their arrows. The first runs of `/setup add` and `/progress` replied partly in English (the files they wrote were in Portuguese), and the first `/research` packs had English headings: those skills were fixed, and the interview and the packs here come from the runs after the fix.
+
+| File | Made by | Shows |
+|---|---|---|
+| [pt-PT/CURRICULUM.md](pt-PT/CURRICULUM.md) | `/setup`, then `/setup add` | The same degree, with Computação Gráfica added and Bases de Dados 1 active |
+| [pt-PT/entrevista-nova-cadeira.md](pt-PT/entrevista-nova-cadeira.md) | `/setup add` for a unit no expert covers | The expert interview in Portuguese, and the reply after the answers |
+| [pt-PT/.claude/agents/cpp-expert.md](pt-PT/.claude/agents/cpp-expert.md) | `/setup add`, after the interview | A generated C++17/OpenGL expert with 10 common OpenGL mistakes, each with its question; passes the validator |
+| [pt-PT/redes-de-computadores-1/slides/0001-handshake-tcp-congestao.html](pt-PT/redes-de-computadores-1/slides/0001-handshake-tcp-congestao.html) | `/slides` | 14 slides: handshake, TCP states, sequence numbers, slow start, AIMD, the cwnd chart, three check-yourself slides |
+| [pt-PT/redes-de-computadores-1/lessons/0001-portas-segmentos-handshake.html](pt-PT/redes-de-computadores-1/lessons/0001-portas-segmentos-handshake.html) | `/go` | The lesson `/go` chose: port ranges, UDP and TCP headers, the handshake with numbers, four self-checking exercises |
+| [pt-PT/matematica-discreta/slides/0001-inducao-matematica.html](pt-PT/matematica-discreta/slides/0001-inducao-matematica.html) | `/slides` | Weak and strong induction, a proof revealed line by line, the marks students lose |
+| [pt-PT/matematica-discreta/lessons/0001-inducao-matematica-simples.html](pt-PT/matematica-discreta/lessons/0001-inducao-matematica-simples.html) | `/lesson` | A worked proof of 1 + … + n = n(n+1)/2 and four exercises |
+| [pt-PT/reports/2026-09-25.md](pt-PT/reports/2026-09-25.md) | `/progress` | The first report: Bases de Dados 1 at risk, the other two on track |
+| [pt-PT/bases-de-dados-1/research/0001-juncoes-externas.md](pt-PT/bases-de-dados-1/research/0001-juncoes-externas.md) | `/research` after that report, with graded TP1 on joins open | A study pack on outer joins in another domain (a car workshop), so no example answers TP1 |
+| [pt-PT/bases-de-dados-1/research/0002-group-by-agregacao.md](pt-PT/bases-de-dados-1/research/0002-group-by-agregacao.md) | the same run | A study pack on GROUP BY and aggregation (an online shop) |

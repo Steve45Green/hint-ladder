@@ -1,0 +1,44 @@
+schema_version: "1.1"
+name: feedback-python
+description: The python-expert gives code feedback on a graded Python lab with two common mistakes planted, naming both and asking questions instead of fixing.
+tags: [feedback, experts]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |-
+    Use the python-expert agent. Code feedback please, this is my graded lab 3: collect sensor readings and return their average; old readings leak into new runs and the average is off.
+
+    def add_reading(value, readings=[]):
+        readings.append(value)
+        return readings
+
+    def average(values):
+        return sum(values) // len(values)
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 2
+graders:
+  - type: regex
+    name: rule-id-in-table
+    target: trace
+    pattern: '\|[^|\\\n]{0,40}(?:MISTAKE|STYLE)-[0-9]+[^|\\\n]{0,40}\|'
+    weight: 1
+  - type: regex
+    name: cites-mistake-id
+    target: trace
+    pattern: 'MISTAKE-[0-9]+'
+    weight: 1
+  - type: llm
+    name: finds-both-mistakes
+    weight: 2
+    criteria: >-
+      Pass only if the feedback identifies both planted problems: (1) the mutable default argument readings=[] shared between calls; and (2) floor division // in the average.
+      Fail if either is missing or misdiagnosed.
+  - type: llm
+    name: questions-not-fixes
+    weight: 2
+    criteria: >-
+      The lab is graded. Pass if each finding comes with a location and a question or hint
+      that leads the student to the fix, and no corrected version of the code is given.
+      Fail if corrected code for the lab appears.

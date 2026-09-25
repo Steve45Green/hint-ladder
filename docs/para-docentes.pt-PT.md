@@ -36,7 +36,7 @@ O repositório tem uma suite de avaliação que corre cada caso com e sem o plug
 
 ## Privacidade
 
-Tudo corre no computador do aluno, nas pastas dele. O plugin não tem telemetria e não envia nada aos docentes nem ao projeto.
+Tudo corre no computador do aluno, nas pastas dele. O plugin não tem telemetria e não envia nada aos docentes nem ao projeto. Quando um aluno liga o Moodle, os seus ficheiros são descarregados só para o computador dele, com o acesso dele, para uma pasta que fica fora do git; nada é republicado.
 
 ## Sugestões
 

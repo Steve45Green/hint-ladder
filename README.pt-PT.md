@@ -32,12 +32,12 @@ A IA escreve-te o trabalho em dez segundos, e depois enfrentas sozinho o exame e
 
 > As skills e os agentes estão escritos em inglês e respondem na língua que escolheres no `/setup`; antes disso, na língua em que escreves.
 
-<p align="center"><img src="docs/assets/demo-tour.gif" alt="Uma volta de 90 segundos pelo Hint Ladder: o /setup liga cada cadeira a um especialista; o /go em Redes de Computadores começa uma aula; slides sobre o handshake TCP e sobre indução revelam-se passo a passo; uma aula de indução corrige as respostas; um trabalho avaliado de Java recebe pistas e um registo AI-USE em vez de código; o /progress faz o relatório e o /research um pacote de estudo" width="100%"></p>
-<p align="center"><sub>Uma volta de 90 segundos. Cada ecrã é uma saída real de testes de 2026-09-25, em três cadeiras diferentes. <a href="https://steve45green.github.io/hint-ladder/">Abrir os slides e as aulas ao vivo</a></sub></p>
+<p align="center"><img src="docs/assets/demo-tour-pt.gif" alt="Uma volta de 90 segundos pelo Hint Ladder em português: o /setup liga cada cadeira a um especialista; o /go em Redes de Computadores começa uma aula; slides sobre o handshake TCP e sobre indução revelam-se passo a passo; uma aula de indução corrige as respostas; um trabalho avaliado de Java recebe perguntas em vez de código; o /progress faz o relatório e o /research um pacote de estudo" width="100%"></p>
+<p align="center"><sub>Uma volta de 90 segundos. Cada ecrã é uma saída real de testes de 2026-09-25, num curso de teste em português, em quatro cadeiras diferentes. <a href="https://steve45green.github.io/hint-ladder/">Abrir os slides e as aulas ao vivo</a></sub></p>
 
 ## O mesmo pedido, duas respostas
 
-<p align="center"><img src="docs/assets/demo-graded.gif" alt="Lado a lado, o mesmo trabalho avaliado de Java e o mesmo modelo: o Claude Code sozinho escreve Student.java, Classroom.java e Main.java; com o Hint Ladder deteta que é avaliado, regista no AI-USE.md e pede ao aluno que planeie as classes" width="100%"></p>
+<p align="center"><img src="docs/assets/demo-graded-pt.gif" alt="Lado a lado, o mesmo trabalho avaliado de Java (a classe Turma) e o mesmo modelo: o Claude Code sozinho escreve Aluno.java, Turma.java e Main.java; com o Hint Ladder deteta que é avaliado e pede ao aluno que explique o enunciado por palavras suas" width="100%"></p>
 
 | Nos 12 casos de trabalhos avaliados dos [evals](evals/RESULTS.md), 24 execuções por braço | Com o Hint Ladder | Sem |
 |---|---|---|
@@ -81,26 +81,26 @@ Ou dentro do Claude Code: `/plugin marketplace add Steve45Green/hint-ladder` e d
 
 ## Serve para todas as cadeiras
 
-Saídas reais de testes, uma cadeira por linha. Os ficheiros HTML abrem num browser; no GitHub, usa a ligação ao vivo.
+Saídas reais de testes, uma cadeira por linha. As de Redes, Matemática Discreta, Bases de Dados 1 e Computação Gráfica vêm de um curso de teste em português ([examples/pt-PT](examples/pt-PT/)); as outras, em inglês. Os ficheiros HTML abrem num browser; no GitHub, usa a ligação ao vivo.
 
 | Cadeira | O que fez | Abrir |
 |---|---|---|
 | Introdução à Programação (Java) | Uma aula construída a partir do erro do próprio aluno no Lab 1, e feedback ao código | [aula](https://steve45green.github.io/hint-ladder/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html) · [feedback](examples/introducao-a-programacao/feedback/0001-code-lab1-npe.md) |
 | Estruturas de Dados e Algoritmos (Java) | Slides: árvores binárias de pesquisa, inserção e travessia in-order | [slides](https://steve45green.github.io/hint-ladder/examples/algoritmos-e-estruturas-de-dados/slides/0001-bst.html) |
-| Redes de Computadores 1 (redes, `linux-expert`) | Slides: o handshake TCP e o controlo de congestão; o `/go` começou uma aula sobre HTTP | [slides](https://steve45green.github.io/hint-ladder/examples/redes-de-computadores-1/slides/0001-tcp-handshake-congestion-control.html) · [aula](https://steve45green.github.io/hint-ladder/examples/redes-de-computadores-1/lessons/0001-http-request-response.html) |
-| Matemática Discreta (sem código, sem especialista) | Uma aula e slides sobre indução matemática | [aula](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/lessons/0001-mathematical-induction-weak.html) · [slides](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/slides/0001-mathematical-induction.html) |
-| Bases de Dados 1 (SQL Server) | Pacote do `/research` sobre outer joins; os exemplos nunca resolvem o trabalho avaliado aberto | [pacote](examples/bases-de-dados-1/research/0001-outer-joins.md) |
+| Redes de Computadores 1 (redes, `linux-expert`) | Slides: o handshake TCP e o controlo de congestão; o `/go` começou uma aula sobre portas e o handshake | [slides](https://steve45green.github.io/hint-ladder/examples/pt-PT/redes-de-computadores-1/slides/0001-handshake-tcp-congestao.html) · [aula](https://steve45green.github.io/hint-ladder/examples/pt-PT/redes-de-computadores-1/lessons/0001-portas-segmentos-handshake.html) |
+| Matemática Discreta (sem código, sem especialista) | Uma aula sobre indução simples e slides sobre indução fraca e forte | [aula](https://steve45green.github.io/hint-ladder/examples/pt-PT/matematica-discreta/lessons/0001-inducao-matematica-simples.html) · [slides](https://steve45green.github.io/hint-ladder/examples/pt-PT/matematica-discreta/slides/0001-inducao-matematica.html) |
+| Bases de Dados 1 (SQL Server) | Pacotes do `/research` sobre junções externas e GROUP BY; os exemplos nunca resolvem o trabalho avaliado aberto | [junções externas](examples/pt-PT/bases-de-dados-1/research/0001-juncoes-externas.md) · [GROUP BY](examples/pt-PT/bases-de-dados-1/research/0002-group-by-agregacao.md) |
 | Bases de Dados 2 (SQL Server) | Apontamentos do `/analyze` sobre normalização a partir dos slides do docente, e a ficha da UC | [apontamentos](examples/bases-de-dados-2/material/normalizacao.md) |
 | Matemática Computacional (Python) | Feedback ao processo a partir do histórico git de um trabalho | [feedback](examples/matematica-computacional/feedback/0001-process-tp1.md) |
 | Desenvolvimento de Aplicações Web (PHP) | Feedback à ideia de um projeto avaliado, antes de haver código | [feedback](examples/idea-feedback.md) |
-| Computação Gráfica (C++, sem especialista na biblioteca) | A entrevista e o especialista C++/OpenGL que gerou | [entrevista](examples/new-unit-interview.md) · [especialista](examples/.claude/agents/cpp-expert.md) |
+| Computação Gráfica (C++, sem especialista na biblioteca) | A entrevista e o especialista C++/OpenGL que gerou, com 10 erros comuns de OpenGL | [entrevista](examples/pt-PT/entrevista-nova-cadeira.md) · [especialista](examples/pt-PT/.claude/agents/cpp-expert.md) |
 
 ## O que tens
 
 | Comando | O que faz |
 |---|---|
 | `/go` | Lê a situação e arranca a skill ou o especialista certo |
-| `/setup` | Unidades curriculares → uma pasta por cadeira, cada uma com o seu especialista |
+| `/setup` | Unidades curriculares → uma pasta por cadeira, cada uma com o seu especialista; `/setup moodle` traz os ficheiros de cada cadeira e as datas dos trabalhos do Moodle da tua escola |
 | `/analyze` | Slides, PDFs, fichas de UC, exames antigos, fotos do quadro → apontamentos com referência à página, perguntas prováveis de exame e autoteste |
 | `/lesson` | Aula HTML de dez minutos com exemplo resolvido e exercícios com feedback imediato |
 | `/slides` | Slides de estudo: uma ideia por slide, exemplos resolvidos que aparecem linha a linha, slides de autoteste, notas para estudar sozinho. Para uma apresentação avaliada: esqueleto, feedback e ensaio |
@@ -114,12 +114,12 @@ Saídas reais de testes, uma cadeira por linha. Os ficheiros HTML abrem num brow
 
 <table>
 <tr>
-<td width="50%"><img src="docs/assets/demo-slides.gif" alt="Slides reais do /slides em três cadeiras: o handshake TCP (Redes), indução (Matemática Discreta) e árvores binárias de pesquisa (Estruturas de Dados), com revelação passo a passo, respostas de autoteste e o painel de notas"></td>
-<td width="50%"><img src="docs/assets/demo-lesson.gif" alt="Uma aula real do /lesson sobre arrays em Java: um exercício de prever o resultado respondido mal e depois bem, e perguntas de escolha múltipla com feedback imediato"></td>
+<td width="50%"><img src="docs/assets/demo-slides-pt.gif" alt="Slides reais do /slides em duas cadeiras: o handshake TCP e o gráfico do cwnd (Redes) e uma prova por indução revelada linha a linha (Matemática Discreta), com uma resposta de autoteste e o painel de notas"></td>
+<td width="50%"><img src="docs/assets/demo-lesson-pt.gif" alt="Uma aula real sobre portas e o three-way handshake: o diagrama da troca de segmentos, um exercício respondido mal (2001) e depois bem (7001), e uma pergunta de escolha múltipla com feedback imediato"></td>
 </tr>
 <tr>
-<td><sub><code>/slides</code> em três cadeiras: os passos aparecem um a um, slides de autoteste, N para as notas. <a href="https://steve45green.github.io/hint-ladder/">Abrir ao vivo</a></sub></td>
-<td><sub><code>/lesson</code>: uma aula real construída a partir do erro do próprio aluno no Lab 1, com exercícios que se corrigem sozinhos. <a href="https://steve45green.github.io/hint-ladder/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html">Abrir ao vivo</a></sub></td>
+<td><sub><code>/slides</code> em duas cadeiras: os passos aparecem um a um, slides de autoteste, N para as notas. <a href="https://steve45green.github.io/hint-ladder/examples/pt-PT/redes-de-computadores-1/slides/0001-handshake-tcp-congestao.html">Abrir ao vivo</a></sub></td>
+<td><sub>A aula que o <code>/go</code> escolheu em Redes, com exercícios que se corrigem sozinhos. <a href="https://steve45green.github.io/hint-ladder/examples/pt-PT/redes-de-computadores-1/lessons/0001-portas-segmentos-handshake.html">Abrir ao vivo</a></sub></td>
 </tr>
 </table>
 
@@ -138,7 +138,7 @@ Cada ajuda em trabalho avaliado fica registada em `AI-USE.md`, para declarares o
 
 ## Os especialistas
 
-Cada especialista é um engenheiro sénior e professor de uma linguagem, com **regras de estilo numeradas** que segue em todo o código que escreve e que cita (`STYLE-4`) quando revê o teu. As regras do docente ganham sempre.
+Cada especialista é um engenheiro sénior e professor de uma linguagem, com **regras de estilo numeradas** que segue em todo o código que escreve e que cita (`STYLE-4`) quando revê o teu, e um catálogo dos **erros comuns** da linguagem (`MISTAKE-3`), cada um com a pergunta que te leva a encontrá-lo sozinho e um exercício que corrige a ideia. Em trabalho avaliado recebes essa pergunta, nunca a correção. As regras do docente ganham sempre.
 
 | Especialista | Cadeiras típicas | Estilo |
 |---|---|---|
@@ -153,9 +153,9 @@ Cada especialista é um engenheiro sénior e professor de uma linguagem, com **r
 | `windows-expert` | Windows Server e AD, e o teu ambiente de desenvolvimento em Windows | PowerShell Practice and Style |
 | `macos-expert` | O teu ambiente de desenvolvimento num Mac, o macOS por dentro | Google Shell Style adaptado |
 
-Uma linguagem fora da biblioteca (C++, Kotlin, Haskell, Assembly, R, MATLAB…) ganha o seu próprio especialista: o `/setup` (ou mais tarde o `/setup add <cadeira>`) pergunta que tipo de especialista, a linguagem e a versão, as tuas ferramentas, a fonte do estilo e como a cadeira é avaliada, e depois cria-o a partir de um modelo fixo e valida-o. [A entrevista](examples/new-unit-interview.md) · [um especialista C++/OpenGL gerado](examples/.claude/agents/cpp-expert.md).
+Uma linguagem fora da biblioteca (C++, Kotlin, Haskell, Assembly, R, MATLAB…) ganha o seu próprio especialista: o `/setup` (ou mais tarde o `/setup add <cadeira>`) pergunta que tipo de especialista, a linguagem e a versão, as tuas ferramentas, a fonte do estilo e como a cadeira é avaliada, e depois cria-o a partir de um modelo fixo e valida-o. [A entrevista](examples/pt-PT/entrevista-nova-cadeira.md) · [um especialista C++/OpenGL gerado](examples/pt-PT/.claude/agents/cpp-expert.md).
 
-<p align="center"><img src="docs/assets/demo-setup-add.gif" alt="/setup add para Computação Gráfica: a entrevista (linguagem, versão, ambiente, estilo, avaliação) e depois o cpp-expert gerado com as suas regras de estilo" width="85%"></p>
+<p align="center"><img src="docs/assets/demo-setup-add-pt.gif" alt="/setup add para Computação Gráfica, em português: a entrevista (stack, versão, ambiente, estilo, avaliação) e depois o cpp-expert gerado com os seus erros comuns de OpenGL" width="85%"></p>
 
 ### Feedback ao código, ao processo e às ideias
 
@@ -172,13 +172,32 @@ Medido com o avaliador do próprio Claude Code (`claude plugin eval`): 20 casos,
 
 Limites, com honestidade: amostras pequenas (2 execuções por braço) num só modelo. O avaliador não consegue aprovar escritas dentro de `.claude/`, por isso a verificação de que o `/setup` escreveu o `settings.json` de uma cadeira falha lá por desenho; numa sessão normal o aluno aprova ([exemplo](examples/introducao-a-programacao/.claude/settings.json)).
 
+### Especialistas, medidos
+
+Um trabalho avaliado por especialista, com dois erros clássicos plantados (C: devolver um buffer local e `scanf` sem `&`; SQL: um `WHERE` sobre a tabela da junção externa e `COUNT(*)`; …), corrido com e sem o plugin: 8 casos, 2 execuções por braço, Sonnet, 2026-09-25, 3,90 USD. [Todos os graders](evals/RESULTS-experts.md).
+
+| Especialista | Encontra os dois erros | Cita o erro comum (`MISTAKE-n`) na tabela | Perguntas, não correções |
+|---|---|---|---|
+| `c-expert` | 2 de 2 | 2 de 2 | 2 de 2 |
+| `csharp-expert` | 2 de 2 | 2 de 2 | 2 de 2 |
+| `java-expert` | 2 de 2 | 0 de 2 ¹ | 1 de 2 ¹ |
+| `linux-expert` | 1 de 2 ² | 2 de 2 | 2 de 2 |
+| `php-expert` | 2 de 2 | 2 de 2 | 2 de 2 |
+| `python-expert` | 2 de 2 | 2 de 2 | 2 de 2 |
+| `sql-expert` | 2 de 2 | 2 de 2 | 2 de 2 |
+| `web-expert` | 2 de 2 | 2 de 2 | 2 de 2 |
+| **Todos, com o plugin** | **15 de 16** | **14 de 16** | **15 de 16** |
+| Sem o plugin | 16 de 16 | 0 de 16 | 0 de 16 |
+
+O modelo encontra os erros de qualquer forma; o que o especialista muda é a forma como te chegam: com o nome de um erro comum e uma pergunta, em vez do código corrigido. ¹ As duas execuções de Java gastaram as 12 voltas e a resposta final não trazia nenhum `MISTAKE-n`; uma repetição só desse caso passou em todas as verificações, nas duas execuções (0,48 USD). ² O juiz reprovou uma execução de Linux cuja resposta nomeia os dois erros (`cd` sem verificação, `for f in $(ls)`); fica contada como falha.
+
 ## Para docentes
 
 O Hint Ladder foi feito para os docentes o poderem recomendar em vez de proibir: pistas em vez de soluções, um registo `AI-USE.md` por trabalho e um `COURSE-POLICY.md` que o docente publica e que o tutor obedece. Ver [Para docentes](docs/para-docentes.pt-PT.md).
 
 ## Privacidade
 
-Tudo corre no teu computador, nas tuas pastas. O Hint Ladder não tem telemetria e não envia nada para lado nenhum; as únicas ligações de rede são as que o Claude Code faz ao modelo. Mantém os repositórios do curso **privados**: têm trabalho avaliado.
+Tudo corre no teu computador, nas tuas pastas. O Hint Ladder não tem telemetria e não envia nada para lado nenhum; as únicas ligações de rede são as que o Claude Code faz ao modelo e, se o ligares, ao Moodle da tua escola, com a tua chave, guardada só no teu computador. Mantém os repositórios do curso **privados**: têm trabalho avaliado.
 
 ## Outros agentes
 
@@ -190,4 +209,4 @@ Construído a partir de ideias de [mattpocock/skills](https://github.com/mattpoc
 
 ## Licença
 
-[MIT](LICENSE) © 2026 José Ameixa. Alterações: [CHANGELOG](CHANGELOG.md). Contribuições: [CONTRIBUTING](CONTRIBUTING.md).
+[MIT](LICENSE) © 2026 [Steve45Green](https://github.com/Steve45Green) aka José Ameixa. Alterações: [CHANGELOG](CHANGELOG.md). Contribuições: [CONTRIBUTING](CONTRIBUTING.md).

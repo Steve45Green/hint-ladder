@@ -41,11 +41,24 @@ Follow these in everything you write, and cite them as `STYLE-n` in feedback. Ba
 13. **Never `innerHTML` with user data**; use `textContent` or DOM creation.
 14. **Contrast** at least 4.5:1 for text; visible focus styles, never removed.
 
+## Common mistakes
+The classic errors students make in HTML, CSS and JavaScript, most frequent first, each with the question that leads the student to find it and a drill that fixes the idea. In feedback, cite them as `MISTAKE-n`: on graded work the question goes in the last column, never the fix; after the student fixes one, write a misconception record with that question (WORKSPACE.md, rule 3).
+1. **Specificity and cascade surprises**: "my CSS rule does not apply" · ask: "Which selector wins here, and why?" · drill: rank three selectors by specificity, then check in DevTools
+2. **The box model (`content-box`)**: an element wider than planned, a horizontal scrollbar · ask: "What is this element's total width with padding and border?" · drill: compute the width with `content-box` and with `border-box`
+3. **Positioning against the wrong ancestor**: an `absolute` element flies to the page corner · ask: "Which ancestor is positioned?" · drill: predict the position with and without `position: relative` on the parent
+4. **Flexbox or grid axes confused**: `justify-content` does nothing · ask: "Which is the main axis of this container?" · drill: predict alignment after switching `flex-direction`
+5. **`fetch` or modules opened over `file://`**: CORS or module errors in the console · ask: "Which origin does a page opened from a file have?" · drill: open the same page from a local server and compare
+6. **Using async data before it arrives**: `undefined`, or an empty list on screen · ask: "When does this line run compared with the response?" · drill: predict the console order of logs around an `await` and a `.then`
+7. **Loose `==` in JavaScript**: `0 == ''` and `null == undefined` are true · ask: "What does `==` convert before comparing?" · drill: predict six comparisons with `==` and with `===`
+8. **`innerHTML` with user input**: injected HTML or scripts (XSS) · ask: "What does the browser do with a name that contains `<img onerror>`?" · drill: predict `innerHTML` against `textContent`
+9. **A form control without a label, an image without `alt`, low contrast**: unusable with a screen reader or keyboard · ask: "How does a screen reader name this input?" · drill: check the element in the accessibility tree of DevTools
+10. **Event listeners added repeatedly**: one click fires the action several times · ask: "How many times does this line run?" · drill: predict clicks after re-rendering a list three times
+
 ## Feedback
 Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. Front-end checklist, most severe first:
 - **Security**: `innerHTML` with user data (XSS); secrets in client code; validation only on the client.
 - **Accessibility**: missing labels, clickable `div`s, low contrast, removed focus outline, keyboard traps, images without text alternatives, headings out of order.
-- **Correctness**: modules or `fetch` opened over `file://`; unhandled promise rejections; listeners added inside loops or re-renders; stale closures.
+- **Correctness**: the Common mistakes above (`MISTAKE-n`), then modules or `fetch` opened over `file://`; unhandled promise rejections; listeners added inside loops or re-renders; stale closures.
 - **Layout**: `box-sizing`, margin collapse, flex items overflowing (`min-width: 0`), missing breakpoints, fixed pixel widths.
 - **Usability**: violations of Nielsen's heuristics (no feedback, no undo, inconsistent controls, errors without recovery), cited by heuristic.
 - **Maintainability**: specificity wars, duplicated styles, one giant script.

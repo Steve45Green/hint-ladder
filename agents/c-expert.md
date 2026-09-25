@@ -40,8 +40,23 @@ Follow these in every line of C you write, and cite them as `STYLE-n` in feedbac
 11. **Clean build** with `-std=c11 -Wall -Wextra -Wpedantic`: zero warnings.
 12. **Comments** say why; each function in a header gets a one-line description of its contract, including who frees what.
 
+## Common mistakes
+The classic errors students make in C, most frequent first, each with the question that leads the student to find it and a drill that fixes the idea. In feedback, cite them as `MISTAKE-n`: on graded work the question goes in the last column, never the fix; after the student fixes one, write a misconception record with that question (WORKSPACE.md, rule 3).
+1. **Missing `'\0'` or a string buffer one byte short**: garbage printed after the text, or a crash · ask: "How many bytes does "hello" need, and who writes the last one?" · drill: draw the array for `char s[5] = "hello";` and for `char s[6] = "hello";`
+2. **`scanf` without `&`, or `%s` without a width**: a crash on input, or memory overwritten · ask: "What does `scanf` need to write into your variable: its value or its address?" · drill: predict `scanf("%d", x)` against `scanf("%d", &x)`; `%s` into `char s[4]` with input `hello`
+3. **Returning a pointer to a local variable**: the value is right once, then garbage · ask: "When does this local variable stop existing?" · drill: stack diagram before and after the function returns
+4. **Reading an uninitialised variable or pointer**: results change from run to run · ask: "What value does this variable have before your first assignment?" · drill: run twice under Valgrind or `-fsanitize=address,undefined` and read the report
+5. **`=` instead of `==` in a condition**: the branch is always, or never, taken · ask: "What is the value of the expression `x = 0`?" · drill: predict `if (x = 0)` and `if (x == 0)` with `x = 5`
+6. **Off-by-one on array bounds**: a neighbouring variable changes by itself · ask: "What are the valid indices of `int a[n]`?" · drill: trace table for `for (i = 0; i <= n; i++)`, then read the AddressSanitizer report
+7. **`sizeof` on a pointer to get an array's length**: the length is 2 or 8 inside the function · ask: "What does the function actually receive when you pass it an array?" · drill: predict `sizeof a` in `main` and inside a function taking `int a[]`
+8. **`malloc` without `free`, double `free`, use after `free`**: a leak report, a crash, or corrupted data · ask: "Who owns this block, and on which line is it given back?" · drill: annotate each `malloc` with its `free`, then read a Valgrind leak summary
+9. **Integer overflow and integer division**: negative sums, averages rounded down · ask: "What is the type and the largest value of this expression?" · drill: predict `5 / 2`, `(double) 5 / 2` and why `INT_MAX + 1` is undefined
+10. **`fork` inside a loop, or no `wait`**: too many processes, or zombies in `ps` · ask: "How many processes exist after this loop runs twice?" · drill: draw the process tree for `for (i = 0; i < 2; i++) fork();`
+11. **A pipe end left open**: the reader waits forever · ask: "Which processes still hold the write end of this pipe?" · drill: table of each process's open file descriptors after `fork`
+
 ## Feedback
 Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. C checklist, most severe first:
+- **Common mistakes** above first (`MISTAKE-n`).
 - **Memory**: leaks, use after free, double free, buffer overflow, the missing `'\0'` (off-by-one on strings), uninitialised reads, returning a pointer to a local variable, `sizeof(pointer)` where the array size was meant.
 - **Undefined behaviour**: signed overflow, shifts past the width, unsequenced modifications (`i = i++`), strict-aliasing casts.
 - **Input**: `scanf("%s")` without a width, the newline left in the buffer, unchecked `scanf` results.

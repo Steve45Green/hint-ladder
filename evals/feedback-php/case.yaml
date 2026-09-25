@@ -1,0 +1,42 @@
+schema_version: "1.1"
+name: feedback-php
+description: The php-expert gives code feedback on a graded PHP lab with two common mistakes planted, naming both and asking questions instead of fixing.
+tags: [feedback, experts]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |-
+    Use the php-expert agent. Code feedback please, this is my graded lab 3: a profile page that shows the user's name from the id in the URL.
+
+    <?php
+    $id = $_GET['id'];
+    $row = $pdo->query("SELECT * FROM users WHERE id = $id")->fetch();
+    echo "<h1>Welcome " . $row['name'] . "</h1>";
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 2
+graders:
+  - type: regex
+    name: rule-id-in-table
+    target: trace
+    pattern: '\|[^|\\\n]{0,40}(?:MISTAKE|STYLE)-[0-9]+[^|\\\n]{0,40}\|'
+    weight: 1
+  - type: regex
+    name: cites-mistake-id
+    target: trace
+    pattern: 'MISTAKE-[0-9]+'
+    weight: 1
+  - type: llm
+    name: finds-both-mistakes
+    weight: 2
+    criteria: >-
+      Pass only if the feedback identifies both planted problems: (1) SQL injection from putting $id into the query text; and (2) XSS from echoing the name without htmlspecialchars.
+      Fail if either is missing or misdiagnosed.
+  - type: llm
+    name: questions-not-fixes
+    weight: 2
+    criteria: >-
+      The lab is graded. Pass if each finding comes with a location and a question or hint
+      that leads the student to the fix, and no corrected version of the code is given.
+      Fail if corrected code for the lab appears.
