@@ -4,7 +4,7 @@ description: /slides for study writes a self-contained deck with step reveals, c
 tags: [slides]
 execution:
   prompt: >-
-    /cs-tutor:slides Binary search trees: insertion and in-order traversal, for my
+    /hint-ladder:slides Binary search trees: insertion and in-order traversal, for my
     Algorithms and Data Structures unit. It is for my own revision, not graded.
     Save it as slides/0001-bst.html. Do not open a browser; just write the deck.
   max_turns: 20

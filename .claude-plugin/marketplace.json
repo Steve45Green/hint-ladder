@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "cs-tutor-skills",
+  "name": "hint-ladder",
   "owner": {
     "name": "José Ameixa",
     "url": "https://github.com/Steve45Green"
@@ -10,7 +10,7 @@
   },
   "plugins": [
     {
-      "name": "cs-tutor",
+      "name": "hint-ladder",
       "source": "./",
       "description": "Paste your course units and get a language agent per unit; lessons, spaced review, code/process/idea feedback, mock oral defences and exams — without doing graded work for you.",
       "version": "0.6.0"

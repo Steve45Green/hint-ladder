@@ -6,7 +6,7 @@
 
 ## The rule
 
-On graded work CS Tutor **teaches and reviews; you write**. It never hands over the graded solution, even if you insist, because you will defend it alone at the oral defence and meet the same topic in the exam. It tells you so in one line and offers the next hint instead.
+On graded work Hint Ladder **teaches and reviews; you write**. It never hands over the graded solution, even if you insist, because you will defend it alone at the oral defence and meet the same topic in the exam. It tells you so in one line and offers the next hint instead.
 
 It notices graded work by itself: a statement with a delivery date or marks, a file in `assignments/`, or the words "lab", "project", "TP". When in doubt it asks one question: "Does this count toward your grade?"
 
@@ -47,7 +47,7 @@ When your lecturer asks you to declare AI use, you copy it from there.
 
 ## When the rules are different
 
-- **The lecturer published rules for AI** (a `COURSE-POLICY.md` in the folder): CS Tutor follows them exactly, above everything else. Lecturers can use [this template](../COURSE-POLICY.template.md).
+- **The lecturer published rules for AI** (a `COURSE-POLICY.md` in the folder): Hint Ladder follows them exactly, above everything else. Lecturers can use [this template](../COURSE-POLICY.template.md).
 - **The course forbids AI**: it explains general concepts with its own examples, different from the assignment, and says why.
 - **The course allows AI-generated code** (written in `COURSE-POLICY.md` or confirmed in `MISSION.md`): it follows that rule and keeps the log.
 

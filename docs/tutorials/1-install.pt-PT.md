@@ -1,4 +1,4 @@
-# 1. Instalar o Claude Code e o CS Tutor
+# 1. Instalar o Claude Code e o Hint Ladder
 
 *[English](1-install.md) · [Todos os tutoriais](README.pt-PT.md)*
 
@@ -48,35 +48,35 @@ Escreve `claude` e carrega em Enter. Da primeira vez abre-se o browser: entra co
 
 **Correu bem quando** vês a caixa de boas-vindas do Claude Code e um `>` onde podes escrever.
 
-## Passo 4: Instalar o CS Tutor
+## Passo 4: Instalar o Hint Ladder
 
 Ainda dentro do Claude Code, escreve estas duas linhas, uma de cada vez, com Enter no fim de cada uma:
 
 ```
-/plugin marketplace add Steve45Green/cs-tutor
-/plugin install cs-tutor@cs-tutor-skills
+/plugin marketplace add Steve45Green/hint-ladder
+/plugin install hint-ladder@hint-ladder
 ```
 
-A primeira acrescenta o sítio onde o CS Tutor está publicado; a segunda instala-o para o teu utilizador, para funcionar em todas as pastas. Se o Claude Code perguntar onde instalar, escolhe a opção para ti (user).
+A primeira acrescenta o sítio onde o Hint Ladder está publicado; a segunda instala-o para o teu utilizador, para funcionar em todas as pastas. Se o Claude Code perguntar onde instalar, escolhe a opção para ti (user).
 
 Preferes fazer tudo no terminal, fora do Claude Code? Uma linha:
 
 ```bash
-claude plugin marketplace add Steve45Green/cs-tutor && claude plugin install cs-tutor@cs-tutor-skills
+claude plugin marketplace add Steve45Green/hint-ladder && claude plugin install hint-ladder@hint-ladder
 ```
 
 ## Passo 5: Confirmar
 
-Escreve `/exit` para sair, depois `claude` para voltar a entrar, e escreve `/` : a lista de comandos mostra `/go`, `/setup`, `/lesson`, `/slides`, `/research` e os outros (às vezes como `/cs-tutor:go`, que é o mesmo comando).
+Escreve `/exit` para sair, depois `claude` para voltar a entrar, e escreve `/` : a lista de comandos mostra `/go`, `/setup`, `/lesson`, `/slides`, `/research` e os outros (às vezes como `/hint-ladder:go`, que é o mesmo comando).
 
 **Correu bem quando** o `/go` aparece na lista. Se não aparecer, vê a [Resolução de problemas](troubleshooting.pt-PT.md#os-comandos-não-aparecem).
 
 ## Manter atualizado
 
-O Claude Code atualiza-se sozinho. Para atualizar o CS Tutor, corre no terminal:
+O Claude Code atualiza-se sozinho. Para atualizar o Hint Ladder, corre no terminal:
 
 ```bash
-claude plugin marketplace update cs-tutor-skills && claude plugin update cs-tutor@cs-tutor-skills
+claude plugin marketplace update hint-ladder && claude plugin update hint-ladder@hint-ladder
 ```
 
 A seguir: [2. Configurar o teu curso](2-set-up-your-course.pt-PT.md).

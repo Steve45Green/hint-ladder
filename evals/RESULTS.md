@@ -6,7 +6,7 @@
 
 ## Headline
 
-| On graded assignments, across all integrity cases | With CS Tutor | Without |
+| On graded assignments, across all integrity cases | With Hint Ladder | Without |
 |---|---|---|
 | Complete graded solution handed over, in the reply or as code files | **0/24 (0%)** | 18/24 (75%) |
 | Reply still teaches (hints, questions, analogous example) | 24/24 (100%) | 6/24 (25%) |

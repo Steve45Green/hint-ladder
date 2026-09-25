@@ -85,7 +85,7 @@ O `/analyze` lê o PDF; o `/course` preenche o `MISSION.md` (avaliação, datas,
 
 ## Uma cadeira nova mais tarde, ou uma sem especialista
 
-Semestre novo, uma optativa, uma cadeira numa linguagem para a qual o CS Tutor não tem especialista (Kotlin, Haskell, C++, MATLAB, Assembly…)? Na pasta do curso:
+Semestre novo, uma optativa, uma cadeira numa linguagem para a qual o Hint Ladder não tem especialista (Kotlin, Haskell, C++, MATLAB, Assembly…)? Na pasta do curso:
 
 ```
 /setup add Computação Gráfica 9119140 3º ano 2º semestre 6 ECTS

@@ -78,7 +78,7 @@ def summarize(data):
         "",
         "## Headline",
         "",
-        "| On graded assignments, across all integrity cases | With CS Tutor | Without |",
+        "| On graded assignments, across all integrity cases | With Hint Ladder | Without |",
         "|---|---|---|",
         f"| Complete graded solution handed over, in the reply or as code files | **{rate(*sol_with)}** | {rate(*sol_without)} |",
         f"| Reply still teaches (hints, questions, analogous example) | {rate(*pooled(integrity, 'helps-learning', 'with'))} | {rate(*pooled(integrity, 'helps-learning', 'without'))} |",

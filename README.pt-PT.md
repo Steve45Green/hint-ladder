@@ -1,13 +1,13 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
-    <img src="docs/assets/banner-light.svg" alt="CS Tutor — o tutor de IA para alunos de Engenharia Informática. Ensina-te, dá-te feedback e nunca te faz o trabalho avaliado." width="100%">
+    <img src="docs/assets/banner-light.svg" alt="Hint Ladder — o tutor de IA para alunos de Engenharia Informática. Ensina-te, dá-te feedback e nunca te faz o trabalho avaliado." width="100%">
   </picture>
 </p>
 
 <p align="center">
-  <!-- Badge de CI: voltar a pôr quando o repositório for público e se chamar cs-tutor (docs/launch.md, passo 3):
-  <a href="https://github.com/Steve45Green/cs-tutor/actions/workflows/ci.yml"><img src="https://github.com/Steve45Green/cs-tutor/actions/workflows/ci.yml/badge.svg" alt="CI"></a> -->
+  <!-- Badge de CI: voltar a pôr quando o repositório for público e se chamar hint-ladder (docs/launch.md, passo 3):
+  <a href="https://github.com/Steve45Green/hint-ladder/actions/workflows/ci.yml"><img src="https://github.com/Steve45Green/hint-ladder/actions/workflows/ci.yml/badge.svg" alt="CI"></a> -->
   <a href="LICENSE"><img src="https://img.shields.io/badge/licen%C3%A7a-MIT-blue" alt="Licença MIT"></a>
   <img src="https://img.shields.io/badge/vers%C3%A3o-0.6.0-informational" alt="Versão 0.6.0">
   <img src="https://img.shields.io/badge/Claude%20Code-plugin-d97757" alt="Plugin do Claude Code">
@@ -17,7 +17,7 @@
 <p align="center">
   <b><a href="README.md">English</a></b> ·
   <b><a href="docs/tutorials/README.pt-PT.md">Tutoriais</a></b> ·
-  <b><a href="https://steve45green.github.io/cs-tutor/">Demos ao vivo</a></b> ·
+  <b><a href="https://steve45green.github.io/hint-ladder/">Demos ao vivo</a></b> ·
   <a href="docs/GUIA.pt-PT.md">Guia</a> ·
   <a href="docs/para-docentes.pt-PT.md">Para docentes</a> ·
   <a href="examples/">Exemplos</a> ·
@@ -28,18 +28,18 @@
 
 **Cola as tuas unidades curriculares. Fica com um especialista por cadeira. Aprende em vez de delegar.**
 
-A IA escreve-te o trabalho em dez segundos, e depois enfrentas sozinho o exame e a defesa oral. O CS Tutor transforma o Claude Code num tutor que está do teu lado nesses dias: explica, pergunta, dá feedback ao teu código, ao teu processo de trabalho e às tuas ideias, agenda as tuas revisões e ensaia contigo a defesa e o exame. Em trabalho avaliado fica-se pelas pistas: a solução é sempre tua.
+A IA escreve-te o trabalho em dez segundos, e depois enfrentas sozinho o exame e a defesa oral. O Hint Ladder transforma o Claude Code num tutor que está do teu lado nesses dias: explica, pergunta, dá feedback ao teu código, ao teu processo de trabalho e às tuas ideias, agenda as tuas revisões e ensaia contigo a defesa e o exame. Em trabalho avaliado fica-se pelas pistas: a solução é sempre tua.
 
 > As skills e os agentes estão escritos em inglês e respondem na língua que escolheres no `/setup`; antes disso, na língua em que escreves.
 
-<p align="center"><img src="docs/assets/demo-tour.gif" alt="Uma volta de 90 segundos pelo CS Tutor: o /setup liga cada cadeira a um especialista; o /go em Redes de Computadores começa uma aula; slides sobre o handshake TCP e sobre indução revelam-se passo a passo; uma aula de indução corrige as respostas; um trabalho avaliado de Java recebe pistas e um registo AI-USE em vez de código; o /progress faz o relatório e o /research um pacote de estudo" width="100%"></p>
-<p align="center"><sub>Uma volta de 90 segundos. Cada ecrã é uma saída real de testes de 2026-09-25, em três cadeiras diferentes. <a href="https://steve45green.github.io/cs-tutor/">Abrir os slides e as aulas ao vivo</a></sub></p>
+<p align="center"><img src="docs/assets/demo-tour.gif" alt="Uma volta de 90 segundos pelo Hint Ladder: o /setup liga cada cadeira a um especialista; o /go em Redes de Computadores começa uma aula; slides sobre o handshake TCP e sobre indução revelam-se passo a passo; uma aula de indução corrige as respostas; um trabalho avaliado de Java recebe pistas e um registo AI-USE em vez de código; o /progress faz o relatório e o /research um pacote de estudo" width="100%"></p>
+<p align="center"><sub>Uma volta de 90 segundos. Cada ecrã é uma saída real de testes de 2026-09-25, em três cadeiras diferentes. <a href="https://steve45green.github.io/hint-ladder/">Abrir os slides e as aulas ao vivo</a></sub></p>
 
 ## O mesmo pedido, duas respostas
 
-<p align="center"><img src="docs/assets/demo-graded.gif" alt="Lado a lado, o mesmo trabalho avaliado de Java e o mesmo modelo: o Claude Code sozinho escreve Student.java, Classroom.java e Main.java; com o CS Tutor deteta que é avaliado, regista no AI-USE.md e pede ao aluno que planeie as classes" width="100%"></p>
+<p align="center"><img src="docs/assets/demo-graded.gif" alt="Lado a lado, o mesmo trabalho avaliado de Java e o mesmo modelo: o Claude Code sozinho escreve Student.java, Classroom.java e Main.java; com o Hint Ladder deteta que é avaliado, regista no AI-USE.md e pede ao aluno que planeie as classes" width="100%"></p>
 
-| Nos 12 casos de trabalhos avaliados dos [evals](evals/RESULTS.md), 24 execuções por braço | Com o CS Tutor | Sem |
+| Nos 12 casos de trabalhos avaliados dos [evals](evals/RESULTS.md), 24 execuções por braço | Com o Hint Ladder | Sem |
 |---|---|---|
 | Solução avaliada entregue, na resposta ou em ficheiros de código | **0 de 24** | 18 de 24 (75%) |
 | A resposta continua a ensinar (pistas, perguntas, exemplo análogo) | 24 de 24 | 6 de 24 |
@@ -49,7 +49,7 @@ A IA escreve-te o trabalho em dez segundos, e depois enfrentas sozinho o exame e
 
 | És… | Lê primeiro |
 |---|---|
-| Curioso, sem formação técnica | [O que é o CS Tutor?](docs/tutorials/0-what-is-it.pt-PT.md) — 3 minutos |
+| Curioso, sem formação técnica | [O que é o Hint Ladder?](docs/tutorials/0-what-is-it.pt-PT.md) — 3 minutos |
 | Aluno e queres usá-lo | [Instalar](docs/tutorials/1-install.pt-PT.md) → [Configurar o curso](docs/tutorials/2-set-up-your-course.pt-PT.md) → [Um dia de estudo](docs/tutorials/3-a-study-day.pt-PT.md) |
 | Docente | [Para docentes](docs/para-docentes.pt-PT.md) |
 | Encravado | [Resolução de problemas](docs/tutorials/troubleshooting.pt-PT.md) |
@@ -63,19 +63,19 @@ A IA escreve-te o trabalho em dez segundos, e depois enfrentas sozinho o exame e
 
 ## Instalação
 
-Precisas de Windows, macOS ou Linux, e de um plano pago do Claude (Pro ou superior) ou de uma conta Anthropic Console; o CS Tutor em si é gratuito. Primeira vez com um terminal ou com o Claude Code? Segue o [Tutorial 1](docs/tutorials/1-install.pt-PT.md), passo a passo.
+Precisas de Windows, macOS ou Linux, e de um plano pago do Claude (Pro ou superior) ou de uma conta Anthropic Console; o Hint Ladder em si é gratuito. Primeira vez com um terminal ou com o Claude Code? Segue o [Tutorial 1](docs/tutorials/1-install.pt-PT.md), passo a passo.
 
 Com o [Claude Code](https://code.claude.com/docs/en/setup) instalado, num terminal:
 
 ```bash
-claude plugin marketplace add Steve45Green/cs-tutor && claude plugin install cs-tutor@cs-tutor-skills
+claude plugin marketplace add Steve45Green/hint-ladder && claude plugin install hint-ladder@hint-ladder
 ```
 
-Ou dentro do Claude Code: `/plugin marketplace add Steve45Green/cs-tutor` e depois `/plugin install cs-tutor@cs-tutor-skills`.
+Ou dentro do Claude Code: `/plugin marketplace add Steve45Green/hint-ladder` e depois `/plugin install hint-ladder@hint-ladder`.
 
 ## Começar em três passos
 
-1. **`/setup`**: escolhe onde fica o curso (uma pasta no teu computador ou um repositório privado no GitHub, criado automaticamente) e cola as unidades curriculares tal como aparecem no portal da tua escola. O CS Tutor deduz a linguagem de cada cadeira, só pergunta o que é ambíguo ("Programação I: C, Java ou Python?") e cria uma pasta por cadeira, cada uma ligada ao seu especialista.
+1. **`/setup`**: escolhe onde fica o curso (uma pasta no teu computador ou um repositório privado no GitHub, criado automaticamente) e cola as unidades curriculares tal como aparecem no portal da tua escola. O Hint Ladder deduz a linguagem de cada cadeira, só pergunta o que é ambíguo ("Programação I: C, Java ou Python?") e cria uma pasta por cadeira, cada uma ligada ao seu especialista.
 2. **`cd <pasta do curso>/<cadeira> && claude`**: a sessão já corre como o especialista da cadeira (`sql-expert` em Bases de Dados, `java-expert` em POO…).
 3. **`/go`**: o único comando a decorar. Vê onde estás e arranca o que faz sentido: a revisão de hoje, a próxima aula, feedback antes de entregares, um exame simulado quando o exame está perto.
 
@@ -85,10 +85,10 @@ Saídas reais de testes, uma cadeira por linha. Os ficheiros HTML abrem num brow
 
 | Cadeira | O que fez | Abrir |
 |---|---|---|
-| Introdução à Programação (Java) | Uma aula construída a partir do erro do próprio aluno no Lab 1, e feedback ao código | [aula](https://steve45green.github.io/cs-tutor/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html) · [feedback](examples/introducao-a-programacao/feedback/0001-code-lab1-npe.md) |
-| Estruturas de Dados e Algoritmos (Java) | Slides: árvores binárias de pesquisa, inserção e travessia in-order | [slides](https://steve45green.github.io/cs-tutor/examples/algoritmos-e-estruturas-de-dados/slides/0001-bst.html) |
-| Redes de Computadores 1 (redes, `linux-expert`) | Slides: o handshake TCP e o controlo de congestão; o `/go` começou uma aula sobre HTTP | [slides](https://steve45green.github.io/cs-tutor/examples/redes-de-computadores-1/slides/0001-tcp-handshake-congestion-control.html) · [aula](https://steve45green.github.io/cs-tutor/examples/redes-de-computadores-1/lessons/0001-http-request-response.html) |
-| Matemática Discreta (sem código, sem especialista) | Uma aula e slides sobre indução matemática | [aula](https://steve45green.github.io/cs-tutor/examples/matematica-discreta/lessons/0001-mathematical-induction-weak.html) · [slides](https://steve45green.github.io/cs-tutor/examples/matematica-discreta/slides/0001-mathematical-induction.html) |
+| Introdução à Programação (Java) | Uma aula construída a partir do erro do próprio aluno no Lab 1, e feedback ao código | [aula](https://steve45green.github.io/hint-ladder/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html) · [feedback](examples/introducao-a-programacao/feedback/0001-code-lab1-npe.md) |
+| Estruturas de Dados e Algoritmos (Java) | Slides: árvores binárias de pesquisa, inserção e travessia in-order | [slides](https://steve45green.github.io/hint-ladder/examples/algoritmos-e-estruturas-de-dados/slides/0001-bst.html) |
+| Redes de Computadores 1 (redes, `linux-expert`) | Slides: o handshake TCP e o controlo de congestão; o `/go` começou uma aula sobre HTTP | [slides](https://steve45green.github.io/hint-ladder/examples/redes-de-computadores-1/slides/0001-tcp-handshake-congestion-control.html) · [aula](https://steve45green.github.io/hint-ladder/examples/redes-de-computadores-1/lessons/0001-http-request-response.html) |
+| Matemática Discreta (sem código, sem especialista) | Uma aula e slides sobre indução matemática | [aula](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/lessons/0001-mathematical-induction-weak.html) · [slides](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/slides/0001-mathematical-induction.html) |
 | Bases de Dados 1 (SQL Server) | Pacote do `/research` sobre outer joins; os exemplos nunca resolvem o trabalho avaliado aberto | [pacote](examples/bases-de-dados-1/research/0001-outer-joins.md) |
 | Bases de Dados 2 (SQL Server) | Apontamentos do `/analyze` sobre normalização a partir dos slides do docente, e a ficha da UC | [apontamentos](examples/bases-de-dados-2/material/normalizacao.md) |
 | Matemática Computacional (Python) | Feedback ao processo a partir do histórico git de um trabalho | [feedback](examples/matematica-computacional/feedback/0001-process-tp1.md) |
@@ -118,8 +118,8 @@ Saídas reais de testes, uma cadeira por linha. Os ficheiros HTML abrem num brow
 <td width="50%"><img src="docs/assets/demo-lesson.gif" alt="Uma aula real do /lesson sobre arrays em Java: um exercício de prever o resultado respondido mal e depois bem, e perguntas de escolha múltipla com feedback imediato"></td>
 </tr>
 <tr>
-<td><sub><code>/slides</code> em três cadeiras: os passos aparecem um a um, slides de autoteste, N para as notas. <a href="https://steve45green.github.io/cs-tutor/">Abrir ao vivo</a></sub></td>
-<td><sub><code>/lesson</code>: uma aula real construída a partir do erro do próprio aluno no Lab 1, com exercícios que se corrigem sozinhos. <a href="https://steve45green.github.io/cs-tutor/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html">Abrir ao vivo</a></sub></td>
+<td><sub><code>/slides</code> em três cadeiras: os passos aparecem um a um, slides de autoteste, N para as notas. <a href="https://steve45green.github.io/hint-ladder/">Abrir ao vivo</a></sub></td>
+<td><sub><code>/lesson</code>: uma aula real construída a partir do erro do próprio aluno no Lab 1, com exercícios que se corrigem sozinhos. <a href="https://steve45green.github.io/hint-ladder/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html">Abrir ao vivo</a></sub></td>
 </tr>
 </table>
 
@@ -174,15 +174,15 @@ Limites, com honestidade: amostras pequenas (2 execuções por braço) num só m
 
 ## Para docentes
 
-O CS Tutor foi feito para os docentes o poderem recomendar em vez de proibir: pistas em vez de soluções, um registo `AI-USE.md` por trabalho e um `COURSE-POLICY.md` que o docente publica e que o tutor obedece. Ver [Para docentes](docs/para-docentes.pt-PT.md).
+O Hint Ladder foi feito para os docentes o poderem recomendar em vez de proibir: pistas em vez de soluções, um registo `AI-USE.md` por trabalho e um `COURSE-POLICY.md` que o docente publica e que o tutor obedece. Ver [Para docentes](docs/para-docentes.pt-PT.md).
 
 ## Privacidade
 
-Tudo corre no teu computador, nas tuas pastas. O CS Tutor não tem telemetria e não envia nada para lado nenhum; as únicas ligações de rede são as que o Claude Code faz ao modelo. Mantém os repositórios do curso **privados**: têm trabalho avaliado.
+Tudo corre no teu computador, nas tuas pastas. O Hint Ladder não tem telemetria e não envia nada para lado nenhum; as únicas ligações de rede são as que o Claude Code faz ao modelo. Mantém os repositórios do curso **privados**: têm trabalho avaliado.
 
 ## Outros agentes
 
-As skills seguem o formato Agent Skills: `npx skills add Steve45Green/cs-tutor` instala-as no Codex, Cursor, Gemini CLI e outros. Os especialistas por pasta e o `/save-chat` são funcionalidades do Claude Code; ver [AGENTS.md](AGENTS.md).
+As skills seguem o formato Agent Skills: `npx skills add Steve45Green/hint-ladder` instala-as no Codex, Cursor, Gemini CLI e outros. Os especialistas por pasta e o `/save-chat` são funcionalidades do Claude Code; ver [AGENTS.md](AGENTS.md).
 
 ## Créditos
 

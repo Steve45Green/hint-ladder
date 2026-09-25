@@ -14,14 +14,14 @@ O plano gratuito do Claude não inclui o Claude Code. Precisas do Pro ou superio
 
 ## O `/plugin marketplace add` falha: repositório não encontrado
 
-- Confirma a escrita: `Steve45Green/cs-tutor`.
+- Confirma a escrita: `Steve45Green/hint-ladder`.
 - O repositório tem de ser público para se instalar a partir dele. Se és o dono e ainda está privado ou com outro nome, segue os passos 1 a 3 de [docs/launch.md](../launch.md).
 
 ## Os comandos não aparecem
 
 - Escreve `/exit` e volta a abrir o `claude`: os plugins carregam quando a sessão começa.
-- Escreve `/plugin` e confirma que o `cs-tutor` está instalado e ativo. No terminal: `claude plugin list`.
-- Experimenta o nome longo: `/cs-tutor:go`. Se esse funcionar e o `/go` não, há outro plugin ou skill com o mesmo nome; o nome longo funciona sempre.
+- Escreve `/plugin` e confirma que o `hint-ladder` está instalado e ativo. No terminal: `claude plugin list`.
+- Experimenta o nome longo: `/hint-ladder:go`. Se esse funcionar e o `/go` não, há outro plugin ou skill com o mesmo nome; o nome longo funciona sempre.
 
 ## A sessão não abre como o especialista da cadeira
 
@@ -47,8 +47,8 @@ O `/compact` resume-a e continua. Para começar do zero, `/clear`; os teus fiche
 
 ## Quanto custa?
 
-O CS Tutor é gratuito e open source. O Claude Code gasta o uso do teu plano Claude (ou os teus créditos de API, se entrares com uma conta Console); sessões longas e relatórios em segundo plano gastam mais.
+O Hint Ladder é gratuito e open source. O Claude Code gasta o uso do teu plano Claude (ou os teus créditos de API, se entrares com uma conta Console); sessões longas e relatórios em segundo plano gastam mais.
 
 ## Continuas encravado
 
-Abre uma issue com o que escreveste e o que viste (tira tudo o que for privado): [issues](https://github.com/Steve45Green/cs-tutor/issues).
+Abre uma issue com o que escreveste e o que viste (tira tudo o que for privado): [issues](https://github.com/Steve45Green/hint-ladder/issues).

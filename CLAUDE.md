@@ -1,4 +1,4 @@
-# cs-tutor
+# hint-ladder
 
 A Claude Code plugin that tutors any Computer Engineering student: they paste their course units, `/setup` wires each unit to a language agent, and the skills teach and give feedback without ever doing graded work for them. Portuguese higher education is the default locale (0–20 grading, regular/resit/special seasons); other locales come from `CURRICULUM.md`.
 

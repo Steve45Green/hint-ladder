@@ -1,4 +1,4 @@
-# Guide: how to use CS Tutor
+# Guide: how to use Hint Ladder
 
 *[Português](GUIA.pt-PT.md)*
 
@@ -109,11 +109,11 @@ Three ways to use them:
 ## Add-ons and conflicts
 
 Optional add-ons `/go` uses when they are installed:
-- `grilling` and `diagnosing-bugs` from [mattpocock/skills](https://github.com/mattpocock/skills). If you also installed its `research`, type `/cs-tutor:research` for this pack's;
+- `grilling` and `diagnosing-bugs` from [mattpocock/skills](https://github.com/mattpocock/skills). If you also installed its `research`, type `/hint-ladder:research` for this pack's;
 - [rtk](https://github.com/rtk-ai/rtk) (`rtk init -g`): compresses command output and saves tokens.
 
 Watch out for:
 - **Always-on plugins** that enforce "code first, little explanation", such as [ponytail](https://github.com/dietrichgebert/ponytail): they clash with the tutor's hints and explanations. Turn them off in your course folders.
 - **Skills that write code on their own** for any logic request (for example addyosmani's `test-driven-development`): on graded work they compete with the tutor.
-- **Too many auto-invoked skills.** Claude Code reserves 1% of the context window for the skill list (about 8,000 characters at 200k tokens). Above that it shortens descriptions, and skills trigger less reliably. CS Tutor has a single auto-invoked skill (`tutor`); check your total with `/context`.
+- **Too many auto-invoked skills.** Claude Code reserves 1% of the context window for the skill list (about 8,000 characters at 200k tokens). Above that it shortens descriptions, and skills trigger less reliably. Hint Ladder has a single auto-invoked skill (`tutor`); check your total with `/context`.
 - **Duplicate names**: mattpocock's `code-review` has the same name as Claude Code's built-in `/code-review`.

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to CS Tutor. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [semantic versioning](https://semver.org/).
+All notable changes to Hint Ladder (called CS Tutor until 0.6.0). The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [semantic versioning](https://semver.org/).
 
 ## [0.6.0] — 2026-09-25
 
@@ -16,6 +16,7 @@ All notable changes to CS Tutor. The format follows [Keep a Changelog](https://k
 - `/slides`: study decks in one self-contained HTML file (fixed 16:9 stage that scales to any screen, step-by-step reveals, check-yourself slides, notes on the N key, one slide per page when printed to PDF); for graded talks, a skeleton with gaps, feedback on the student's own deck, and a rehearsal. Idea of a zero-dependency fixed stage credited to zarazhangrui/frontend-slides.
 
 ### Changed
+- Renamed to **Hint Ladder** (was CS Tutor): repository `Steve45Green/hint-ladder`, plugin and marketplace `hint-ladder`, long command names `/hint-ladder:<skill>`. Its core idea gives the name: a ladder of hints with no rung six.
 - Integrity evals judge the final reply and check the trace for code files written; a run counts as a hand-over when it fails either. Full run: 0 of 24 with the plugin, 18 of 24 without.
 - `/slides` re-derives every proof and answer before keeping it, and numbers decks from the files already in `slides/`.
 

@@ -4,7 +4,7 @@ description: /setup classifies a pasted curriculum, asks nothing already answere
 tags: [setup]
 execution:
   prompt: >-
-    /cs-tutor:setup Here are my course units. Answers to your questions, so do not
+    /hint-ladder:setup Here are my course units. Answers to your questions, so do not
     ask: create the course in this folder (option 3); all units below are active this semester; Introdução à Programação and
     Programação Orientada por Objetos use Java; Tecnologias Web uses PHP; DBMS is
     SQL Server; my computer runs Windows; locale Portugal; language English; AI

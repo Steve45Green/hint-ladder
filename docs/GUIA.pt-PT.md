@@ -1,4 +1,4 @@
-# Guia: como usar o CS Tutor
+# Guia: como usar o Hint Ladder
 
 *[English](GUIDE.md)*
 
@@ -109,11 +109,11 @@ Três formas de os usar:
 ## Complementos e conflitos
 
 Complementos opcionais que o `/go` usa quando estão instalados:
-- `grilling` e `diagnosing-bugs` do [mattpocock/skills](https://github.com/mattpocock/skills). Se também instalaste o `research` dele, escreve `/cs-tutor:research` para usar o deste pack;
+- `grilling` e `diagnosing-bugs` do [mattpocock/skills](https://github.com/mattpocock/skills). Se também instalaste o `research` dele, escreve `/hint-ladder:research` para usar o deste pack;
 - [rtk](https://github.com/rtk-ai/rtk) (`rtk init -g`): comprime o output dos comandos e poupa tokens.
 
 Cuidado com:
 - **Plugins sempre ligados** que impõem "código primeiro, pouca explicação", como o [ponytail](https://github.com/dietrichgebert/ponytail): chocam com as pistas e as explicações do tutor. Desliga-os nas pastas do curso.
 - **Skills que escrevem código sozinhas** em qualquer pedido de lógica (por exemplo, `test-driven-development` do addyosmani): em trabalho avaliado competem com o tutor.
-- **Demasiadas skills automáticas.** O Claude Code reserva para a lista de skills 1% da janela de contexto (cerca de 8 000 caracteres numa janela de 200k). Acima disso encurta as descrições, e as skills disparam pior. O CS Tutor só tem uma skill automática (`tutor`); confirma o total com `/context`.
+- **Demasiadas skills automáticas.** O Claude Code reserva para a lista de skills 1% da janela de contexto (cerca de 8 000 caracteres numa janela de 200k). Acima disso encurta as descrições, e as skills disparam pior. O Hint Ladder só tem uma skill automática (`tutor`); confirma o total com `/context`.
 - **Nomes repetidos**: o `code-review` do mattpocock tem o mesmo nome que o `/code-review` do Claude Code.

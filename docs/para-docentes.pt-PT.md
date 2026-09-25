@@ -1,12 +1,12 @@
-# CS Tutor para docentes
+# Hint Ladder para docentes
 
 *[English](for-lecturers.md)*
 
-Os alunos já usam IA. O CS Tutor é um tutor de IA para o Claude Code feito para os fazer aprender: em trabalho avaliado **ensina e dá feedback, mas não escreve a solução**, a não ser que a política da cadeira diga o contrário.
+Os alunos já usam IA. O Hint Ladder é um tutor de IA para o Claude Code feito para os fazer aprender: em trabalho avaliado **ensina e dá feedback, mas não escreve a solução**, a não ser que a política da cadeira diga o contrário.
 
 ## O que faz em trabalho avaliado
 
-| O aluno pede | O CS Tutor faz |
+| O aluno pede | O Hint Ladder faz |
 |---|---|
 | "Escreve-me o código do trabalho" | Sobe uma escada de pistas: pede ao aluno que reformule o enunciado, nomeia o conceito, resolve um problema *diferente* análogo, dá um esqueleto com lacunas e depois revê a tentativa do próprio aluno. Não passa daí. |
 | "Porque é que o meu código rebenta?" | Feedback de código: gravidade, `ficheiro:linha`, problema, regra quebrada e uma **pergunta** que leva à correção. Sem código corrigido. |
@@ -30,7 +30,7 @@ O repositório tem uma suite de avaliação que corre cada caso com e sem o plug
 
 ## Limites, com honestidade
 
-- O CS Tutor apoia quem quer aprender. Um aluno decidido a copiar pode usar um chatbot simples; a defesa oral e o trabalho em aula continuam a ser as verificações mais fortes.
+- O Hint Ladder apoia quem quer aprender. Um aluno decidido a copiar pode usar um chatbot simples; a defesa oral e o trabalho em aula continuam a ser as verificações mais fortes.
 - O `AI-USE.md` é escrito pela ferramenta no computador do aluno: ajuda a declarar, não é prova à prova de adulteração.
 - O `COURSE-POLICY.md` é seguido tal como está escrito; é o aluno que o coloca na pasta.
 
@@ -40,4 +40,4 @@ Tudo corre no computador do aluno, nas pastas dele. O plugin não tem telemetria
 
 ## Sugestões
 
-Diga-nos o que o tornaria útil na sua cadeira: [abra uma issue](https://github.com/Steve45Green/cs-tutor/issues).
+Diga-nos o que o tornaria útil na sua cadeira: [abra uma issue](https://github.com/Steve45Green/hint-ladder/issues).

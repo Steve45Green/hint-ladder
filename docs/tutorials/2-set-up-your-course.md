@@ -85,7 +85,7 @@ Put the unit's course sheet (*ficha da unidade curricular*, a PDF) in the folder
 
 ## A new unit later, or one with no expert
 
-New semester, an optional, a unit in a language CS Tutor has no expert for (Kotlin, Haskell, C++, MATLAB, Assembly…)? In the course folder:
+New semester, an optional, a unit in a language Hint Ladder has no expert for (Kotlin, Haskell, C++, MATLAB, Assembly…)? In the course folder:
 
 ```
 /setup add Computação Gráfica 9119140 3rd year 2nd semester 6 ECTS

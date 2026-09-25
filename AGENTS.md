@@ -2,9 +2,9 @@
 
 Instructions for AI coding agents (Codex, Cursor, Gemini CLI, Copilot and others) working with this repository or using its skills.
 
-## Using CS Tutor from an agent other than Claude Code
+## Using Hint Ladder from an agent other than Claude Code
 
-- The skills in `skills/<name>/SKILL.md` follow the Agent Skills format. Install them with `npx skills add Steve45Green/cs-tutor`, or copy the folders into your agent's skills directory.
+- The skills in `skills/<name>/SKILL.md` follow the Agent Skills format. Install them with `npx skills add Steve45Green/hint-ladder`, or copy the folders into your agent's skills directory.
 - Start with `setup` (paste the course units), then use `go` as the single entry point.
 - The language agents in `agents/*.md` are Claude Code subagents. Other agents can use each file as a persona: load it as the system instructions for work in that language, together with `skills/tutor/SKILL.md`.
 - Two things are Claude Code-only: the per-folder `.claude/settings.json` `agent` setting that `/setup` writes, and `/save-chat`, which reads Claude Code's session transcripts. Elsewhere, start the persona by hand and save chats with your tool's own export.

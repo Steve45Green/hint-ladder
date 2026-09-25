@@ -1,4 +1,4 @@
-# Contributing to CS Tutor
+# Contributing to Hint Ladder
 
 Thanks for helping students learn instead of outsourcing. The most useful contributions:
 
@@ -11,8 +11,8 @@ Every contribution must keep the core promise: **on graded work the tutor teache
 ## Setup
 
 ```bash
-git clone https://github.com/Steve45Green/cs-tutor
-cd cs-tutor
+git clone https://github.com/Steve45Green/hint-ladder
+cd hint-ladder
 claude --plugin-dir .          # run Claude Code with your working copy of the plugin
 ```
 

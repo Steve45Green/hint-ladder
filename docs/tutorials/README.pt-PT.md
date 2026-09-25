@@ -6,8 +6,8 @@ Passo a passo, do "o que é isto?" até à rotina de cada semana. Cada tutorial 
 
 | # | Tutorial | Para | Tempo |
 |---|---|---|---|
-| 0 | [O que é o CS Tutor?](0-what-is-it.pt-PT.md) | qualquer pessoa, sem conhecimentos técnicos | 3 min |
-| 1 | [Instalar o Claude Code e o CS Tutor](1-install.pt-PT.md) | alunos, em Windows, macOS ou Linux | 10 min |
+| 0 | [O que é o Hint Ladder?](0-what-is-it.pt-PT.md) | qualquer pessoa, sem conhecimentos técnicos | 3 min |
+| 1 | [Instalar o Claude Code e o Hint Ladder](1-install.pt-PT.md) | alunos, em Windows, macOS ou Linux | 10 min |
 | 2 | [Configurar o teu curso](2-set-up-your-course.pt-PT.md) | alunos, uma vez por ano | 10 min |
 | 3 | [Um dia de estudo](3-a-study-day.pt-PT.md) | alunos, todos os dias | 15–30 min |
 | 4 | [Trabalhos avaliados: o que faz e o que não faz](4-graded-work.pt-PT.md) | alunos com um trabalho, projeto ou apresentação | 10 min |

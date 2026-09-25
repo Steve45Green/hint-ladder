@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Please report security issues privately through [GitHub private vulnerability reporting](https://github.com/Steve45Green/cs-tutor/security/advisories/new), not in public issues. You will get a reply within 7 days.
+Please report security issues privately through [GitHub private vulnerability reporting](https://github.com/Steve45Green/hint-ladder/security/advisories/new), not in public issues. You will get a reply within 7 days.
 
 ## What counts
 

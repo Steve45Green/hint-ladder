@@ -1,12 +1,12 @@
-# CS Tutor for lecturers
+# Hint Ladder for lecturers
 
 *[Português](para-docentes.pt-PT.md)*
 
-Your students already use AI. CS Tutor is an AI tutor for Claude Code that is built to make them learn: on graded work it **teaches and gives feedback, and does not write the solution**, unless your course policy says otherwise.
+Your students already use AI. Hint Ladder is an AI tutor for Claude Code that is built to make them learn: on graded work it **teaches and gives feedback, and does not write the solution**, unless your course policy says otherwise.
 
 ## What it does on graded work
 
-| The student asks | CS Tutor does |
+| The student asks | Hint Ladder does |
 |---|---|
 | "Write the code for my lab" | Climbs a hint ladder: asks the student to restate the task, names the concept, solves a *different* analogous problem, gives a skeleton with gaps, then reviews the student's own attempt. It never goes past that. |
 | "Why does my code crash?" | Code feedback: severity, `file:line`, problem, rule broken and a **question** that leads to the fix. No corrected code. |
@@ -30,7 +30,7 @@ The repository has an eval suite that runs each case with and without the plugin
 
 ## Limits, honestly
 
-- CS Tutor supports students who want to learn. A student determined to cheat can use a plain chatbot instead; oral defences and in-class work stay the strongest checks.
+- Hint Ladder supports students who want to learn. A student determined to cheat can use a plain chatbot instead; oral defences and in-class work stay the strongest checks.
 - `AI-USE.md` is written by the tool on the student's machine; it is a declaration aid, not tamper-proof evidence.
 - `COURSE-POLICY.md` is followed as written; the student is the one who places it in the folder.
 
@@ -40,4 +40,4 @@ Everything runs on the student's computer, in their own folders. The plugin has 
 
 ## Feedback
 
-Tell us what would make it useful in your course: [open an issue](https://github.com/Steve45Green/cs-tutor/issues).
+Tell us what would make it useful in your course: [open an issue](https://github.com/Steve45Green/hint-ladder/issues).

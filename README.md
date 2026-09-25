@@ -1,13 +1,13 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.svg">
-    <img src="docs/assets/banner-light.svg" alt="CS Tutor — the AI tutor for Computer Engineering students. It teaches you, gives feedback, and never does your graded work." width="100%">
+    <img src="docs/assets/banner-light.svg" alt="Hint Ladder — the AI tutor for Computer Engineering students. It teaches you, gives feedback, and never does your graded work." width="100%">
   </picture>
 </p>
 
 <p align="center">
-  <!-- CI badge: add it back once the repository is public and named cs-tutor (docs/launch.md, step 3):
-  <a href="https://github.com/Steve45Green/cs-tutor/actions/workflows/ci.yml"><img src="https://github.com/Steve45Green/cs-tutor/actions/workflows/ci.yml/badge.svg" alt="CI"></a> -->
+  <!-- CI badge: add it back once the repository is public and named hint-ladder (docs/launch.md, step 3):
+  <a href="https://github.com/Steve45Green/hint-ladder/actions/workflows/ci.yml"><img src="https://github.com/Steve45Green/hint-ladder/actions/workflows/ci.yml/badge.svg" alt="CI"></a> -->
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/version-0.6.0-informational" alt="Version 0.6.0">
   <img src="https://img.shields.io/badge/Claude%20Code-plugin-d97757" alt="Claude Code plugin">
@@ -17,7 +17,7 @@
 <p align="center">
   <b><a href="README.pt-PT.md">Português</a></b> ·
   <b><a href="docs/tutorials/README.md">Tutorials</a></b> ·
-  <b><a href="https://steve45green.github.io/cs-tutor/">Live demos</a></b> ·
+  <b><a href="https://steve45green.github.io/hint-ladder/">Live demos</a></b> ·
   <a href="docs/GUIDE.md">Guide</a> ·
   <a href="docs/for-lecturers.md">For lecturers</a> ·
   <a href="examples/">Examples</a> ·
@@ -28,16 +28,16 @@
 
 **Paste your course units. Get a language expert for every course. Learn — don't outsource.**
 
-AI can write your lab in ten seconds, and then you meet the exam and the oral defence alone. CS Tutor turns Claude Code into a tutor that is on your side for those days: it explains, asks, gives feedback on your code, your work process and your ideas, schedules your reviews, and rehearses the defence and the exam with you. On graded work it stops at hints — the solution is always yours.
+AI can write your lab in ten seconds, and then you meet the exam and the oral defence alone. Hint Ladder turns Claude Code into a tutor that is on your side for those days: it explains, asks, gives feedback on your code, your work process and your ideas, schedules your reviews, and rehearses the defence and the exam with you. On graded work it stops at hints — the solution is always yours.
 
-<p align="center"><img src="docs/assets/demo-tour.gif" alt="A 90-second tour of CS Tutor: /setup maps every course unit to an expert; /go in Computer Networks starts a lesson; a TCP handshake deck and an induction deck reveal step by step; an induction lesson checks answers; a graded Java lab gets hints and an AI-USE log instead of code; /progress reports every unit and /research builds a study pack" width="100%"></p>
-<p align="center"><sub>A 90-second tour. Every screen is a real output from test runs on 2026-09-25, in three different course units. <a href="https://steve45green.github.io/cs-tutor/">Open the decks and lessons live</a></sub></p>
+<p align="center"><img src="docs/assets/demo-tour.gif" alt="A 90-second tour of Hint Ladder: /setup maps every course unit to an expert; /go in Computer Networks starts a lesson; a TCP handshake deck and an induction deck reveal step by step; an induction lesson checks answers; a graded Java lab gets hints and an AI-USE log instead of code; /progress reports every unit and /research builds a study pack" width="100%"></p>
+<p align="center"><sub>A 90-second tour. Every screen is a real output from test runs on 2026-09-25, in three different course units. <a href="https://steve45green.github.io/hint-ladder/">Open the decks and lessons live</a></sub></p>
 
 ## Same prompt, two answers
 
-<p align="center"><img src="docs/assets/demo-graded.gif" alt="Side by side, the same graded Java lab and the same model: Claude Code alone writes Student.java, Classroom.java and Main.java; with CS Tutor it detects graded work, logs it in AI-USE.md and asks the student to plan the classes" width="100%"></p>
+<p align="center"><img src="docs/assets/demo-graded.gif" alt="Side by side, the same graded Java lab and the same model: Claude Code alone writes Student.java, Classroom.java and Main.java; with Hint Ladder it detects graded work, logs it in AI-USE.md and asks the student to plan the classes" width="100%"></p>
 
-| Across the 12 graded-assignment cases of the [evals](evals/RESULTS.md), 24 runs per arm | With CS Tutor | Without |
+| Across the 12 graded-assignment cases of the [evals](evals/RESULTS.md), 24 runs per arm | With Hint Ladder | Without |
 |---|---|---|
 | Graded solution handed over, in the reply or as code files | **0 of 24** | 18 of 24 (75%) |
 | The reply still teaches (hints, questions, an analogous example) | 24 of 24 | 6 of 24 |
@@ -47,7 +47,7 @@ AI can write your lab in ten seconds, and then you meet the exam and the oral de
 
 | You are… | Read this first |
 |---|---|
-| Curious what this is, no technical background | [What is CS Tutor?](docs/tutorials/0-what-is-it.md) — 3 minutes |
+| Curious what this is, no technical background | [What is Hint Ladder?](docs/tutorials/0-what-is-it.md) — 3 minutes |
 | A student who wants to use it | [Install](docs/tutorials/1-install.md) → [Set up your course](docs/tutorials/2-set-up-your-course.md) → [A study day](docs/tutorials/3-a-study-day.md) |
 | A lecturer | [For lecturers](docs/for-lecturers.md) |
 | Stuck | [Troubleshooting](docs/tutorials/troubleshooting.md) |
@@ -61,19 +61,19 @@ AI can write your lab in ten seconds, and then you meet the exam and the oral de
 
 ## Install
 
-You need Windows, macOS or Linux, and a paid Claude plan (Pro or higher) or an Anthropic Console account; CS Tutor itself is free. First time with a terminal or with Claude Code? Follow [Tutorial 1](docs/tutorials/1-install.md), step by step.
+You need Windows, macOS or Linux, and a paid Claude plan (Pro or higher) or an Anthropic Console account; Hint Ladder itself is free. First time with a terminal or with Claude Code? Follow [Tutorial 1](docs/tutorials/1-install.md), step by step.
 
 With [Claude Code](https://code.claude.com/docs/en/setup) installed, in a terminal:
 
 ```bash
-claude plugin marketplace add Steve45Green/cs-tutor && claude plugin install cs-tutor@cs-tutor-skills
+claude plugin marketplace add Steve45Green/hint-ladder && claude plugin install hint-ladder@hint-ladder
 ```
 
-Or inside Claude Code: `/plugin marketplace add Steve45Green/cs-tutor`, then `/plugin install cs-tutor@cs-tutor-skills`.
+Or inside Claude Code: `/plugin marketplace add Steve45Green/hint-ladder`, then `/plugin install hint-ladder@hint-ladder`.
 
 ## Start in three steps
 
-1. **`/setup`** — choose where your course lives (a folder on your computer, or a private GitHub repository created for you), then paste your course units exactly as your university portal shows them. CS Tutor works out the language of each unit, asks only what is ambiguous ("Programming I: C, Java or Python?"), and creates one folder per unit, each wired to its expert.
+1. **`/setup`** — choose where your course lives (a folder on your computer, or a private GitHub repository created for you), then paste your course units exactly as your university portal shows them. Hint Ladder works out the language of each unit, asks only what is ambiguous ("Programming I: C, Java or Python?"), and creates one folder per unit, each wired to its expert.
 2. **`cd <course folder>/<unit> && claude`** — the session already runs as that unit's expert (`sql-expert` in Databases, `java-expert` in OOP…).
 3. **`/go`** — the only command to remember. It reads where you are and starts the right thing: today's review, the next lesson, feedback before you submit, a mock exam when one is close.
 
@@ -83,10 +83,10 @@ Real outputs from test runs, one course unit per row. HTML files open in a brows
 
 | Course unit | What it made | Open |
 |---|---|---|
-| Introduction to Programming (Java) | A lesson built around the student's own Lab 1 crash, and code feedback on it | [lesson](https://steve45green.github.io/cs-tutor/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html) · [feedback](examples/introducao-a-programacao/feedback/0001-code-lab1-npe.md) |
-| Data Structures and Algorithms (Java) | Slides: binary search trees, insertion and in-order traversal | [deck](https://steve45green.github.io/cs-tutor/examples/algoritmos-e-estruturas-de-dados/slides/0001-bst.html) |
-| Computer Networks 1 (networking, `linux-expert`) | Slides: the TCP handshake and congestion control; `/go` started a lesson on HTTP | [deck](https://steve45green.github.io/cs-tutor/examples/redes-de-computadores-1/slides/0001-tcp-handshake-congestion-control.html) · [lesson](https://steve45green.github.io/cs-tutor/examples/redes-de-computadores-1/lessons/0001-http-request-response.html) |
-| Discrete Mathematics (no code, no expert) | A lesson and slides on mathematical induction | [lesson](https://steve45green.github.io/cs-tutor/examples/matematica-discreta/lessons/0001-mathematical-induction-weak.html) · [deck](https://steve45green.github.io/cs-tutor/examples/matematica-discreta/slides/0001-mathematical-induction.html) |
+| Introduction to Programming (Java) | A lesson built around the student's own Lab 1 crash, and code feedback on it | [lesson](https://steve45green.github.io/hint-ladder/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html) · [feedback](examples/introducao-a-programacao/feedback/0001-code-lab1-npe.md) |
+| Data Structures and Algorithms (Java) | Slides: binary search trees, insertion and in-order traversal | [deck](https://steve45green.github.io/hint-ladder/examples/algoritmos-e-estruturas-de-dados/slides/0001-bst.html) |
+| Computer Networks 1 (networking, `linux-expert`) | Slides: the TCP handshake and congestion control; `/go` started a lesson on HTTP | [deck](https://steve45green.github.io/hint-ladder/examples/redes-de-computadores-1/slides/0001-tcp-handshake-congestion-control.html) · [lesson](https://steve45green.github.io/hint-ladder/examples/redes-de-computadores-1/lessons/0001-http-request-response.html) |
+| Discrete Mathematics (no code, no expert) | A lesson and slides on mathematical induction | [lesson](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/lessons/0001-mathematical-induction-weak.html) · [deck](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/slides/0001-mathematical-induction.html) |
 | Databases 1 (SQL Server) | `/research` pack on outer joins; its examples never solve the open graded assignment | [pack](examples/bases-de-dados-1/research/0001-outer-joins.md) |
 | Databases 2 (SQL Server) | `/analyze` notes on normalisation from the lecturer's slides, and the course sheet | [notes](examples/bases-de-dados-2/material/normalizacao.md) |
 | Computational Mathematics (Python) | Process feedback from the git history of an assignment | [feedback](examples/matematica-computacional/feedback/0001-process-tp1.md) |
@@ -116,8 +116,8 @@ Real outputs from test runs, one course unit per row. HTML files open in a brows
 <td width="50%"><img src="docs/assets/demo-lesson.gif" alt="A real /lesson on Java arrays: a memory diagram, a predict-the-output exercise answered wrong then right, and multiple-choice questions with instant feedback"></td>
 </tr>
 <tr>
-<td><sub><code>/slides</code> in three units: steps reveal one at a time, check-yourself slides, N for notes. <a href="https://steve45green.github.io/cs-tutor/">Open them live</a></sub></td>
-<td><sub><code>/lesson</code>: a real lesson built around the student's own Lab 1 bug, with exercises that correct themselves. <a href="https://steve45green.github.io/cs-tutor/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html">Open it live</a></sub></td>
+<td><sub><code>/slides</code> in three units: steps reveal one at a time, check-yourself slides, N for notes. <a href="https://steve45green.github.io/hint-ladder/">Open them live</a></sub></td>
+<td><sub><code>/lesson</code>: a real lesson built around the student's own Lab 1 bug, with exercises that correct themselves. <a href="https://steve45green.github.io/hint-ladder/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html">Open it live</a></sub></td>
 </tr>
 </table>
 
@@ -204,15 +204,15 @@ Limits, honestly: small samples (2 runs per arm) on one model. The eval harness 
 
 ## For lecturers
 
-CS Tutor is meant to be a tool you can recommend instead of ban: hints instead of solutions, an `AI-USE.md` log per assignment, and a `COURSE-POLICY.md` you publish that it obeys. See [For lecturers](docs/for-lecturers.md).
+Hint Ladder is meant to be a tool you can recommend instead of ban: hints instead of solutions, an `AI-USE.md` log per assignment, and a `COURSE-POLICY.md` you publish that it obeys. See [For lecturers](docs/for-lecturers.md).
 
 ## Privacy
 
-Everything runs on your computer, in your folders. CS Tutor has no telemetry and sends nothing anywhere; the only network calls are the ones Claude Code makes to the model. Keep course repositories **private**: they hold graded work.
+Everything runs on your computer, in your folders. Hint Ladder has no telemetry and sends nothing anywhere; the only network calls are the ones Claude Code makes to the model. Keep course repositories **private**: they hold graded work.
 
 ## Other agents
 
-The skills follow the Agent Skills format, so `npx skills add Steve45Green/cs-tutor` installs them in Codex, Cursor, Gemini CLI and other agents. The per-folder experts and `/save-chat` are Claude Code features; see [AGENTS.md](AGENTS.md).
+The skills follow the Agent Skills format, so `npx skills add Steve45Green/hint-ladder` installs them in Codex, Cursor, Gemini CLI and other agents. The per-folder experts and `/save-chat` are Claude Code features; see [AGENTS.md](AGENTS.md).
 
 ## Credits
 

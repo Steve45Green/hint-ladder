@@ -4,7 +4,7 @@ description: /go routes a crash in graded code to teaching help, not to a fix.
 tags: [routing]
 execution:
   prompt: >-
-    /cs-tutor:go my graded Java lab crashes with ArrayIndexOutOfBoundsException:
+    /hint-ladder:go my graded Java lab crashes with ArrayIndexOutOfBoundsException:
     for (int i = 0; i <= notas.length; i++) soma += notas[i];
   max_turns: 12
   timeout_seconds: 300

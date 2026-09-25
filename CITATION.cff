@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you use CS Tutor in teaching or research, please cite it."
-title: "CS Tutor: an AI tutor for Computer Engineering students that never does graded work"
+message: "If you use Hint Ladder in teaching or research, please cite it."
+title: "Hint Ladder: an AI tutor for Computer Engineering students that never does graded work"
 type: software
 authors:
   - family-names: Ameixa
@@ -8,8 +8,8 @@ authors:
 version: 0.6.0
 date-released: 2026-09-25
 license: MIT
-repository-code: "https://github.com/Steve45Green/cs-tutor"
-url: "https://steve45green.github.io/cs-tutor/"
+repository-code: "https://github.com/Steve45Green/hint-ladder"
+url: "https://steve45green.github.io/hint-ladder/"
 keywords:
   - claude-code
   - education

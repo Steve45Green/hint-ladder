@@ -6,7 +6,7 @@ context:
   scaffold_script: scaffold.sh
 execution:
   prompt: >-
-    /cs-tutor:research Save the pack as research/0001-outer-joins.md. No web access
+    /hint-ladder:research Save the pack as research/0001-outer-joins.md. No web access
     today: use the course files and what you know.
   max_turns: 20
   timeout_seconds: 600

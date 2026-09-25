@@ -1,12 +1,12 @@
 {
-  "name": "cs-tutor",
+  "name": "hint-ladder",
   "version": "0.6.0",
   "description": "Computer Engineering tutor for Claude Code: paste your course units, get one workspace per unit wired to a language agent (Java, C, C#, Python, SQL, PHP, Web, Linux) with its own style rules. Teaches and gives feedback on code, process and ideas; never does graded work for you.",
   "author": {
     "name": "José Ameixa"
   },
-  "homepage": "https://github.com/Steve45Green/cs-tutor",
-  "repository": "https://github.com/Steve45Green/cs-tutor",
+  "homepage": "https://github.com/Steve45Green/hint-ladder",
+  "repository": "https://github.com/Steve45Green/hint-ladder",
   "keywords": [
     "education",
     "tutor",
