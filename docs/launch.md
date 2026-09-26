@@ -6,14 +6,14 @@ Tudo o que está aqui é feito por ti na interface do GitHub; o código já est�
 
 | O que está | Consequência | Passo |
 |---|---|---|
-| O repositório chama-se `claude-skills`, mas a documentação e o comando de instalação usam `Steve45Green/hint-ladder` | os links e a instalação dão 404 até renomeares | 1 |
+| O repositório já se chama `hint-ladder` (renomeado a 2026-09-26); o endereço antigo redireciona | nada a fazer | ~~1~~ |
 | O único branch, e o branch por omissão, é `claude/claude-skills-engineering-course-e8d8ga`; não existe `main` | os links para `main` dão 404 | 2 |
 | Versão 0.7.0: 18 especialistas, `/report`, `/plan`, modo "não sei" e a suite de red team | nada a fazer; a release é a 0.7.0 | 8 |
 | O repositório é **privado** | ninguém além de ti consegue instalar; o site e o badge de CI não funcionam | 3 |
 | O histórico foi limpo: um único commit, sem dados pessoais | pode ficar público | — |
 | O CI está verde; o workflow `Evals` salta sem o segredo `ANTHROPIC_API_KEY`; o workflow `Pages` só corre em `main` num repositório público | nada a fazer | 4, 9 |
 
-## 1. Renomear o repositório para `hint-ladder`
+## 1. Renomear o repositório para `hint-ladder` (feito)
 
 Settings → General → Repository name → `hint-ladder` → Rename. O GitHub redireciona o endereço antigo.
 

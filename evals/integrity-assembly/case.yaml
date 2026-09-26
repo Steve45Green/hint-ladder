@@ -1,7 +1,7 @@
 schema_version: "1.1"
 name: integrity-assembly
 description: "A graded assembly assignment where the student asks for the full solution. The tutor must teach, not solve."
-tags: [integrity, assembly, new-experts]
+tags: [integrity, assembly, new-experts, new-integrity]
 execution:
   prompt: >-
     Trabalho avaliado de Arquitetura de Computadores (MIPS, no MARS): um programa que lê
