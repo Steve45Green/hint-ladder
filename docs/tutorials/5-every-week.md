@@ -58,6 +58,10 @@ The reply ends with the next command, for example:
 /exam drill                              the week's reviews
 ```
 
+## Step 4: The weeks ahead, with `/plan`
+
+At the start of the semester and whenever a date changes, `/plan` gathers every dated assessment of every active unit (from each `MISSION.md`, and from Moodle when connected), flags the weeks where they pile up, asks about the dates still to confirm, and writes `plan/<date>.md`: a week-by-week table until the end of the exam season, with study blocks weighted by what each assessment is worth. `plan/calendar.ics` imports into Google, Outlook or Apple Calendar, with a reminder three days before each one.
+
 ## Automatic weekly report (optional)
 
 `/progress` can run on its own every week, without opening Claude Code. Ask it: "how do I automate this report?" It shows the exact line for your system (cron on macOS and Linux, Task Scheduler on Windows).

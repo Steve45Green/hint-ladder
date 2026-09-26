@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: setup-classification
-description: /setup classifies a pasted curriculum, asks nothing already answered, and wires each active unit to the right agent.
+description: /setup classifies a pasted curriculum, asks nothing already answered, and wires each active unit to the right agent (maths to math-expert).
 tags: [setup]
 execution:
   prompt: >-
@@ -46,10 +46,9 @@ graders:
     pattern: "Segurança em Redes[^\\n]*linux-expert"
     weight: 1
   - type: regex
-    name: math-no-agent
+    name: math-to-math-expert
     target: {source: file, path: CURRICULUM.md}
-    pattern: "Análise Matemática[^\\n]*-expert"
-    match: not_contains
+    pattern: "Análise Matemática[^\\n]*math-expert"
     weight: 1
   - type: regex
     name: platform-recorded

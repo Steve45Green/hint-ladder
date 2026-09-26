@@ -12,8 +12,8 @@
     {
       "name": "hint-ladder",
       "source": "./",
-      "description": "Paste your course units and get a language agent per unit; lessons, spaced review, code/process/idea feedback, mock oral defences and exams — without doing graded work for you.",
-      "version": "0.6.0"
+      "description": "Paste your course units and get a language expert per unit (18 of them, from Java and SQL to Haskell, Assembly, VHDL and maths); lessons, spaced review, code/process/idea/report feedback, exam-season plans, mock oral defences and exams — without doing graded work for you.",
+      "version": "0.7.0"
     }
   ]
 }

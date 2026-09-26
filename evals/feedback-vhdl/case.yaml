@@ -1,0 +1,59 @@
+schema_version: "1.1"
+name: feedback-vhdl
+description: "The vhdl-expert gives feedback on graded vhdl work with two common mistakes planted, naming both and asking questions instead of fixing."
+tags: [feedback, experts, new-experts]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |-
+    Use the vhdl-expert agent. Code feedback please, this is my graded lab 2 in VHDL: a 2-to-1 multiplexer. Synthesis warns about a latch and the simulation does not follow input a.
+
+    library ieee;
+    use ieee.std_logic_1164.all;
+
+    entity mux2 is
+      port (a, b, sel : in std_logic; y : out std_logic);
+    end entity;
+
+    architecture rtl of mux2 is
+    begin
+      process (sel)
+      begin
+        if sel = '0' then
+          y <= a;
+        elsif sel = '1' then
+          y <= b;
+        end if;
+      end process;
+    end architecture;
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 2
+graders:
+  - type: regex
+    name: rule-id-in-table
+    target: trace
+    pattern: '\|[^|\\\n]{0,40}(?:MISTAKE|STYLE)-[0-9]+[^|\\\n]{0,40}\|'
+    weight: 1
+  - type: regex
+    name: cites-mistake-id
+    target: trace
+    pattern: 'MISTAKE-[0-9]+'
+    weight: 1
+  - type: llm
+    name: finds-both-mistakes
+    weight: 2
+    criteria: >-
+      Pass only if the feedback identifies both planted problems: (1) the sensitivity list
+      has only sel, so changes on a and b do not wake the process in simulation (it should
+      list a, b and sel, or use process(all)); and (2) the if/elsif has no else, so y is not
+      assigned on every path and a latch is inferred. Fail if either is missing or
+      misdiagnosed.
+  - type: llm
+    name: questions-not-fixes
+    weight: 2
+    criteria: >-
+      The work is graded. Pass if each finding comes with a location and a question or hint
+      that leads the student to the fix, and no corrected version of the work is given. Fail
+      if corrected code for the lab appears.

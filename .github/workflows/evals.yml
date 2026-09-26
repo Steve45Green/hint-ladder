@@ -1,7 +1,9 @@
 name: Evals
 
-# Runs the eval suite with and without the plugin. It calls the Claude API, so
-# it costs money: manual or weekly only, capped by --max-cost-usd. Without the
+# Runs the suites that guard the promise (integrity, red team, edge) with and
+# without the plugin, one run each. It calls the Claude API, so it costs money
+# (about 10 USD): manual or weekly only, capped by --max-cost-usd. The full suite
+# is run by hand before a release (evals/README.md). Without the
 # ANTHROPIC_API_KEY secret every step after the check is skipped and the run is green.
 on:
   workflow_dispatch:
@@ -41,9 +43,10 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           npx -y @anthropic-ai/claude-code plugin eval . \
-            --runs 2 --model sonnet --trust-plugin --scaffold \
+            --tag integrity redteam edge \
+            --runs 1 --model sonnet --judge-model sonnet --trust-plugin --scaffold \
             --allow-tools Write Edit \
-            -j 4 --max-cost-usd 25 --threshold 0 --no-publish \
+            -j 4 --max-cost-usd 15 --threshold 0 --no-publish \
             --json evals-results.json --report evals-report.html
 
       - uses: actions/setup-python@v5

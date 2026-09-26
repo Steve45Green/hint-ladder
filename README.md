@@ -9,7 +9,7 @@
   <!-- CI badge: add it back once the repository is public and named hint-ladder (docs/launch.md, step 3):
   <a href="https://github.com/Steve45Green/hint-ladder/actions/workflows/ci.yml"><img src="https://github.com/Steve45Green/hint-ladder/actions/workflows/ci.yml/badge.svg" alt="CI"></a> -->
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/version-0.6.0-informational" alt="Version 0.6.0">
+  <img src="https://img.shields.io/badge/version-0.7.0-informational" alt="Version 0.7.0">
   <img src="https://img.shields.io/badge/Claude%20Code-plugin-d97757" alt="Claude Code plugin">
   <a href="evals/RESULTS.md"><img src="https://img.shields.io/badge/evals-with%20vs%20without-8a63d2" alt="Evals"></a>
 </p>
@@ -86,12 +86,12 @@ Real outputs from test runs, one course unit per row. HTML files open in a brows
 | Introduction to Programming (Java) | A lesson built around the student's own Lab 1 crash, and code feedback on it | [lesson](https://steve45green.github.io/hint-ladder/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html) · [feedback](examples/introducao-a-programacao/feedback/0001-code-lab1-npe.md) |
 | Data Structures and Algorithms (Java) | Slides: binary search trees, insertion and in-order traversal | [deck](https://steve45green.github.io/hint-ladder/examples/algoritmos-e-estruturas-de-dados/slides/0001-bst.html) |
 | Computer Networks 1 (networking, `linux-expert`) | Slides: the TCP handshake and congestion control; `/go` started a lesson on HTTP | [deck](https://steve45green.github.io/hint-ladder/examples/redes-de-computadores-1/slides/0001-tcp-handshake-congestion-control.html) · [lesson](https://steve45green.github.io/hint-ladder/examples/redes-de-computadores-1/lessons/0001-http-request-response.html) |
-| Discrete Mathematics (no code, no expert) | A lesson and slides on mathematical induction | [lesson](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/lessons/0001-mathematical-induction-weak.html) · [deck](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/slides/0001-mathematical-induction.html) |
+| Discrete Mathematics (no code; an example from before `math-expert`) | A lesson and slides on mathematical induction | [lesson](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/lessons/0001-mathematical-induction-weak.html) · [deck](https://steve45green.github.io/hint-ladder/examples/matematica-discreta/slides/0001-mathematical-induction.html) |
 | Databases 1 (SQL Server) | `/research` pack on outer joins; its examples never solve the open graded assignment | [pack](examples/bases-de-dados-1/research/0001-outer-joins.md) |
 | Databases 2 (SQL Server) | `/analyze` notes on normalisation from the lecturer's slides, and the course sheet | [notes](examples/bases-de-dados-2/material/normalizacao.md) |
 | Computational Mathematics (Python) | Process feedback from the git history of an assignment | [feedback](examples/matematica-computacional/feedback/0001-process-tp1.md) |
 | Web Application Development (PHP) | Idea feedback on a graded project, before any code | [feedback](examples/idea-feedback.md) |
-| Computer Graphics (C++, no expert in the library) | The expert interview, and the C++/OpenGL expert it generated | [interview](examples/new-unit-interview.md) · [expert](examples/.claude/agents/cpp-expert.md) |
+| Computer Graphics (C++, before C++ joined the library) | The expert interview, and the C++/OpenGL expert it generated | [interview](examples/new-unit-interview.md) · [expert](examples/.claude/agents/cpp-expert.md) |
 | Moodle (Portuguese run, simulated Moodle) | A lecturer posts slides and moves a test: the desktop notification, Claude opening the session with the news, `/moodle` bringing it in | [the run](examples/pt-PT/moodle-novidades.md) |
 
 ## What you get
@@ -105,12 +105,14 @@ Real outputs from test runs, one course unit per row. HTML files open in a brows
 | `/slides` | A study deck: one idea per slide, worked examples revealed line by line, check-yourself slides, notes for studying alone. For a graded talk: a skeleton, feedback and a rehearsal instead |
 | `/critique` | Runs your code with the strictest compiler, tests and linters, then gives code feedback |
 | `/exam drill · oral · mock` | Daily spaced review, a mock oral defence of your project, a mock exam graded on your scale |
+| `/report` | Your lab or project report: an outline built from the statement's grading criteria (questions and evidence per section, no ready-made text), then feedback on your draft |
 | `/progress` | Where you stand in every unit, what you did, what the experts told you, and the next three actions |
+| `/plan` | Every deadline, test and exam of every unit in one week-by-week plan until the end of the exam season: clashes flagged, study blocks by weight, and a calendar file for Google, Outlook or Apple Calendar |
 | `/research` | After `/progress`: for each weak topic, other explanations, worked examples from easy to exam level, practice with hidden answers, and checked sources |
 | `/course` | Deepens one unit: assessment dates, AI policy, syllabus, sources, weekly pace |
 | `/save-chat` | Saves a conversation to the unit folder with its link, a summary, and secrets redacted |
 | `/moodle` | What lecturers posted or changed on Moodle (new slides, announcements, moved deadlines): downloaded, summarised, dated, with a next step. `/moodle watch` checks every hour and notifies you on the desktop; every session opened in the course starts with the news |
-| `tutor` | Always on: classifies each request as graded, practice or off-topic, and climbs the hint ladder on graded work |
+| `tutor` | Always on: classifies each request as graded, practice, off-topic or a test in progress, climbs the hint ladder on graded work, and when you say "I don't know" it shrinks the step and points you to the exact slide or page of your lecturer's material |
 
 <table>
 <tr>
@@ -150,10 +152,22 @@ Each expert is a senior engineer and teacher of one language, with **numbered st
 | `php-expert` | Web Technologies, Web Applications | PSR-12 |
 | `web-expert` | Human-Computer Interaction, front-end | Google HTML/CSS + WCAG |
 | `linux-expert` | Operating Systems, Networks, Security, System Administration | Google Shell Style |
+| `cpp-expert` | Programming and Data Structures in C++, OOP, Computer Graphics (OpenGL) | C++ Core Guidelines |
+| `kotlin-expert` | Programming in Kotlin, Mobile Development (Android, Compose), Web Applications | Kotlin coding conventions |
+| `haskell-expert` | Functional Programming, Principles of Programming, Program Calculation | Community style + HLint |
+| `prolog-expert` | Logic for Programming, Functional and Logic Programming, AI labs | Covington et al. |
+| `assembly-expert` | Computer Architecture: MIPS, RISC-V, ARM, x86, PEPE | The ISA's manual, Patterson & Hennessy |
+| `vhdl-expert` | Digital Systems, Digital Systems Design (VHDL, Verilog, FPGA) | RTL design guidelines |
+| `matlab-expert` | Numerical Methods, Numerical Analysis (MATLAB, Octave) | MATLAB Style Guidelines 2.0 |
+| `r-expert` | Probability and Statistics, Data Analysis | tidyverse style guide |
+| `uml-expert` | Software Engineering, Requirements, the modelling side of Databases | Ambler's Elements of UML 2.0 Style |
+| `math-expert` | Calculus, Linear Algebra, Discrete Mathematics, Logic, Physics | Velleman / Hammack on writing proofs |
 | `windows-expert` | Windows Server and AD, and your dev setup on Windows | PowerShell Practice and Style |
 | `macos-expert` | Your dev setup on a Mac, macOS internals | Google Shell Style, adapted |
 
-A language outside the library (C++, Kotlin, Haskell, Assembly, R, MATLAB…) gets its own expert: `/setup` (or `/setup add <unit>` later) asks what kind of expert, the language and version, your tools, the style source and how the unit is assessed, then builds it from a fixed template and validates it. [The interview](examples/new-unit-interview.md) · [a generated C++/OpenGL expert](examples/.claude/agents/cpp-expert.md).
+The library was chosen by [comparing the study plans of Portuguese Computer Engineering degrees](docs/curricula.md) (FEUP, IST, UMinho, FCUL, NOVA, ISEL, UA, ISEP, UC and polytechnics): which units they share and which language each school teaches them in.
+
+A language outside the library (OCaml, Dart, Swift, Go…) gets its own expert: `/setup` (or `/setup add <unit>` later) asks what kind of expert, the language and version, your tools, the style source and how the unit is assessed, then builds it from a fixed template and validates it. [The interview](examples/new-unit-interview.md) · [a C++/OpenGL expert generated before C++ joined the library](examples/.claude/agents/cpp-expert.md).
 
 <p align="center"><img src="docs/assets/demo-setup-add.gif" alt="/setup add for Computação Gráfica: the expert interview (stack, version, environment, style, assessment), then the generated cpp-expert with its style rules" width="85%"></p>
 

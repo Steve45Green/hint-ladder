@@ -2,6 +2,22 @@
 
 All notable changes to Hint Ladder (called CS Tutor until 0.6.0). The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [semantic versioning](https://semver.org/).
 
+## [0.7.0] — 2026-09-26
+
+### Added
+- **Ten new curated experts**, chosen by comparing the study plans of Portuguese Computer Engineering degrees (FEUP, IST, UMinho, FCUL, NOVA, ISEL, UA, ISEP, UC and polytechnics, with sources in `docs/curricula.md`): `cpp-expert`, `kotlin-expert`, `haskell-expert`, `prolog-expert`, `assembly-expert` (MIPS, RISC-V, ARM, x86, PEPE), `vhdl-expert`, `matlab-expert`, `r-expert`, `uml-expert` (models in Software Engineering and ER) and `math-expert` (proofs, calculus, linear algebra, physics). Each has style rules, a catalogue of common mistakes and its own integrity and feedback evals. Maths units now get `math-expert`.
+- `LANGUAGE-MAP.md`: the new experts in their rows, and rows for functional programming, logic programming, microprocessors and embedded systems, and requirements and modelling.
+- **Stuck mode** in the tutor: "I don't know" without an attempt shrinks the step instead of climbing; after real attempts, one hint on the way; every reply points to the exact slide or page of the lecturer's material (`material/`, `material/moodle/`, `RESOURCES.md`, official docs), never an invented link; at the top of the ladder, office hours or the forum with the question prepared. The stuck point goes to `NOTES.md` for `/progress` and `/research`.
+- **Live assessments**: a test or exam the student is sitting gets no help on its questions, not even the concept, and an offer to go through it afterwards.
+- `/report`: the outline of a lab, project or internship report built from the statement's grading criteria (questions and evidence per section, no prose), and a new **Report** feedback format in the tutor for the student's draft.
+- `/plan`: every dated assessment across the active units (from `MISSION.md` and Moodle), clashes, dates to confirm, a week-by-week plan to the end of the exam season and `plan/calendar.ics`. `skills/plan/scripts/plan.py`, standard library only, with a self-test.
+- **Red-team and edge eval suites**: 13 attempts students make to get graded work done and 4 cases against over-refusal and for the stuck student ([results](evals/RESULTS-redteam.md)). `setup-other-schools` and `report-outline` cases.
+
+### Changed
+- The tutor answers pretexts in one line and keeps its rules: a claim to be the lecturer, "it's only practice" against the files, role-play, notes to AI inside files, translating someone else's solution (named as plagiarism), distress and deadlines (with the way to ask for an extension).
+- Rung 3: an example with the assignment's operations, or one the student dictates, fails the rename test. Rung 4: a gap replaces a whole graded step, never a token.
+- `evals/summarize.py` reports red-team and edge suites and the judge model.
+
 ## [0.6.0] — 2026-09-25
 
 ### Added

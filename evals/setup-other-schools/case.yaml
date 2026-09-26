@@ -1,0 +1,88 @@
+schema_version: "1.1"
+name: setup-other-schools
+description: /setup on unit names from other Portuguese schools (UMinho, IST, FEUP) wires each unit to a curated expert and generates none.
+tags: [setup]
+execution:
+  prompt: >-
+    /hint-ladder:setup Here are my course units. Answers to your questions, so do not
+    ask: create the course in this folder (option 3); all units below are active this
+    semester; Introdução à Arquitetura de Computadores uses MIPS in MARS; Sistemas
+    Digitais uses VHDL; Engenharia de Software uses Java; Métodos Numéricos uses MATLAB;
+    Probabilidades e Estatística uses R; Computação Gráfica uses C++ with OpenGL;
+    Programação de Dispositivos Móveis uses Kotlin; my computer runs Linux; locale
+    Portugal; language English; AI policy unknown.
+    Programação Funcional 1º ano 1º semestre 5 ECTS ;
+    Lógica para Programação 1º ano 2º semestre 6 ECTS ;
+    Introdução à Arquitetura de Computadores 1º ano 2º semestre 6 ECTS ;
+    Sistemas Digitais 1º ano 1º semestre 6 ECTS ;
+    Álgebra Linear 1º ano 1º semestre 6 ECTS ;
+    Engenharia de Software 2º ano 2º semestre 6 ECTS ;
+    Métodos Numéricos 2º ano 1º semestre 6 ECTS ;
+    Probabilidades e Estatística 2º ano 1º semestre 6 ECTS ;
+    Computação Gráfica 3º ano 1º semestre 6 ECTS ;
+    Programação de Dispositivos Móveis 3º ano 1º semestre 6 ECTS
+  max_turns: 60
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+runs: 1
+graders:
+  - type: file_exists
+    name: curriculum-written
+    path: CURRICULUM.md
+    weight: 1
+  - type: regex
+    name: functional-to-haskell
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Programação Funcional[^\\n]*haskell-expert"
+    weight: 1
+  - type: regex
+    name: logic-to-prolog
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Lógica para Programação[^\\n]*prolog-expert"
+    weight: 1
+  - type: regex
+    name: architecture-to-assembly
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Arquitetura de Computadores[^\\n]*assembly-expert"
+    weight: 1
+  - type: regex
+    name: digital-to-vhdl
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Sistemas Digitais[^\\n]*vhdl-expert"
+    weight: 1
+  - type: regex
+    name: algebra-to-math
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Álgebra Linear[^\\n]*math-expert"
+    weight: 1
+  - type: regex
+    name: software-engineering-with-uml
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Engenharia de Software[^\\n]*java-expert[^\\n]*uml-expert|Engenharia de Software[^\\n]*uml-expert[^\\n]*java-expert"
+    weight: 1
+  - type: regex
+    name: numerical-to-matlab
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Métodos Numéricos[^\\n]*matlab-expert"
+    weight: 1
+  - type: regex
+    name: statistics-to-r
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Probabilidades e Estatística[^\\n]*r-expert"
+    weight: 1
+  - type: regex
+    name: graphics-to-cpp
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Computação Gráfica[^\\n]*cpp-expert"
+    weight: 1
+  - type: regex
+    name: mobile-to-kotlin
+    target: {source: file, path: CURRICULUM.md}
+    pattern: "Dispositivos Móveis[^\\n]*kotlin-expert"
+    weight: 1
+  - type: regex
+    name: no-agent-generated
+    target: trace
+    pattern: '"name":"(Write|Edit)","input":\{[^{}]{0,80}"file_path":"[^"]*\.claude/agents/'
+    match: not_contains
+    weight: 1

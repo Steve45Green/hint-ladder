@@ -58,6 +58,10 @@ A resposta acaba com o comando seguinte, por exemplo:
 /exam drill                              as revisões da semana
 ```
 
+## Passo 4: As próximas semanas, com o `/plan`
+
+No início do semestre e sempre que uma data muda, o `/plan` junta todas as avaliações com data de todas as cadeiras ativas (de cada `MISSION.md` e, se estiver ligado, do Moodle), assinala as semanas em que se acumulam, pergunta pelas datas ainda por confirmar e escreve `plan/<data>.md`: uma tabela semana a semana até ao fim da época de exames, com blocos de estudo pesados pelo valor de cada avaliação. O `plan/calendar.ics` importa-se no Google, no Outlook ou no Calendário da Apple, com um aviso três dias antes de cada uma.
+
 ## Relatório semanal automático (opcional)
 
 O `/progress` pode correr sozinho todas as semanas, sem abrires o Claude Code. Pergunta-lhe: "como automatizo este relatório?" Ele mostra a linha exata para o teu sistema (cron no macOS e Linux, Agendador de Tarefas no Windows).

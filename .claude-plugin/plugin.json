@@ -1,7 +1,7 @@
 {
   "name": "hint-ladder",
-  "version": "0.6.0",
-  "description": "Computer Engineering tutor for Claude Code: paste your course units, get one workspace per unit wired to a language agent (Java, C, C#, Python, SQL, PHP, Web, Linux) with its own style rules. Teaches and gives feedback on code, process and ideas; never does graded work for you.",
+  "version": "0.7.0",
+  "description": "Computer Engineering tutor for Claude Code: paste your course units, get one workspace per unit wired to one of 18 language experts (Java, C, C++, C#, Python, SQL, PHP, Web, Linux, Kotlin, Haskell, Prolog, Assembly, VHDL, MATLAB, R, UML, Maths) with its own style rules and common mistakes. Teaches, gives feedback on code, process, ideas and reports, plans the exam season; never does graded work for you.",
   "author": {
     "name": "José Ameixa"
   },

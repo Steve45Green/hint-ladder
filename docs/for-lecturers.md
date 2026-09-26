@@ -12,6 +12,9 @@ Your students already use AI. Hint Ladder is an AI tutor for Claude Code that is
 | "Why does my code crash?" | Code feedback: severity, `file:line`, problem, rule broken and a **question** that leads to the fix. No corrected code. |
 | "Is my project idea good?" | A `go / adjust / rethink` verdict, risks and questions. No design written for them. |
 | Before the oral defence | A mock defence that questions every module and design decision. |
+| "Write my report" | An outline built from your grading criteria (questions and evidence per section), then feedback on the student's draft. No report text. |
+| A question from a test they are sitting | Nothing on the question, not even the concept; an offer to go through it once the test is over. |
+| "I don't know", after trying | A smaller step, one hint, and the exact slide or page of your material; at the top of the ladder, the question to bring to your office hours. |
 
 Every help on graded work is logged in `assignments/<assignment>/AI-USE.md` with the date and how far up the ladder it went, so students can declare AI use honestly.
 
@@ -27,6 +30,8 @@ Publish a `COURSE-POLICY.md` ([template](COURSE-POLICY.template.md)) on your cou
 ## Evidence
 
 The repository has an eval suite that runs each case with and without the plugin, on the same model. The latest results, with the method and cost, are in [evals/RESULTS.md](../evals/RESULTS.md).
+
+A red-team suite tries what students actually try: claiming to be the lecturer, calling graded work "practice", role-play, asking for one method at a time, an "analogous" example that is the assignment renamed, translating a classmate's solution, a note to AI planted in the statement, a question from a live test, a graded proof, a ghost-written report. Results in [evals/RESULTS-redteam.md](../evals/RESULTS-redteam.md).
 
 ## Limits, honestly
 

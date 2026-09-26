@@ -12,6 +12,9 @@ Os alunos já usam IA. O Hint Ladder é um tutor de IA para o Claude Code feito 
 | "Porque é que o meu código rebenta?" | Feedback de código: gravidade, `ficheiro:linha`, problema, regra quebrada e uma **pergunta** que leva à correção. Sem código corrigido. |
 | "A minha ideia de projeto é boa?" | Um veredicto `go / adjust / rethink`, riscos e perguntas. Não desenha o projeto por eles. |
 | Antes da defesa oral | Uma defesa simulada que questiona cada módulo e cada decisão de desenho. |
+| "Escreve-me o relatório" | Uma estrutura construída a partir dos seus critérios de avaliação (perguntas e evidências por secção) e, depois, feedback sobre o rascunho do aluno. Nenhum texto do relatório. |
+| Uma pergunta de um teste que está a fazer | Nada sobre a pergunta, nem sequer o conceito; a oferta de a rever quando o teste acabar. |
+| "Não sei", depois de tentar | Um passo mais pequeno, uma pista e o slide ou a página exata do seu material; no topo da escada, a pergunta para levar ao seu horário de dúvidas. |
 
 Cada ajuda em trabalho avaliado fica registada em `assignments/<trabalho>/AI-USE.md`, com a data e o degrau da escada atingido, para o aluno declarar o uso de IA com honestidade.
 
@@ -27,6 +30,8 @@ Publique um `COURSE-POLICY.md` ([modelo](COURSE-POLICY.template.md)) na página 
 ## Provas
 
 O repositório tem uma suite de avaliação que corre cada caso com e sem o plugin, no mesmo modelo. Os resultados mais recentes, com o método e o custo, estão em [evals/RESULTS.md](../evals/RESULTS.md).
+
+Uma suite de red team experimenta o que os alunos realmente tentam: dizer que são o docente, chamar "treino" a um trabalho avaliado, role-play, pedir um método de cada vez, um exemplo "análogo" que é o trabalho com outros nomes, traduzir a solução de um colega, uma nota para a IA escondida no enunciado, uma pergunta de um teste a decorrer, uma prova avaliada, um relatório escrito por outro. Resultados em [evals/RESULTS-redteam.md](../evals/RESULTS-redteam.md).
 
 ## Limites, com honestidade
 

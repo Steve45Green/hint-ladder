@@ -44,7 +44,7 @@ Extract, per unit: code, name (exactly as given), year, semester, ECTS, total ho
 
 Match every unit against `LANGUAGE-MAP.md`: domain, candidate stacks, primary agent, support agents. Course sheets (fichas de unidade curricular) in the folder beat the map: read them to confirm the language. A unit with one candidate is settled; several candidates make it ambiguous; no matching row → classify from the discipline's usual content and mark it `inferred`.
 
-Library agents: `c-expert`, `csharp-expert`, `java-expert`, `linux-expert`, `php-expert`, `python-expert`, `sql-expert`, `web-expert`, plus the platform agents `windows-expert` and `macos-expert` (chosen by the student's operating system, not by unit name: they set up and fix the toolchain of every unit on that machine). A stack outside the library gets an agent generated in Step 4.
+Library agents: `assembly-expert`, `c-expert`, `cpp-expert`, `csharp-expert`, `haskell-expert`, `java-expert`, `kotlin-expert`, `linux-expert`, `math-expert`, `matlab-expert`, `php-expert`, `prolog-expert`, `python-expert`, `r-expert`, `sql-expert`, `uml-expert`, `vhdl-expert`, `web-expert`, plus the platform agents `windows-expert` and `macos-expert` (chosen by the student's operating system, not by unit name: they set up and fix the toolchain of every unit on that machine). A stack outside the library gets an agent generated in Step 4.
 
 ## Step 3: One round of questions
 
@@ -63,7 +63,7 @@ Done when every question has an answer; a "don't know" takes the map's default, 
 
 ## Expert interview: a unit no library agent covers
 
-A unit needs a new expert when `LANGUAGE-MAP.md` gives it a stack outside the library, or no row matches and the unit involves code or a tool (not only maths, law or soft skills). Before writing that agent, ask these questions, each with your recommended answer from the map, the course sheet or `material/`; skip the ones those already answer:
+A unit needs a new expert when `LANGUAGE-MAP.md` gives it a stack outside the library, or no row matches and the unit involves code or a tool (not maths, which has `math-expert`, nor law or soft skills). Before writing that agent, ask these questions, each with your recommended answer from the map, the course sheet or `material/`; skip the ones those already answer:
 
 1. **Kind of expert**: a programming language (Haskell, Kotlin), an assembly for an ISA (MIPS, ARM, RISC-V), a tool or environment (MATLAB, R, Arduino, Unity, Excel with VBA), a modelling notation (UML, BPMN, ER diagrams), or none, when the unit has no code or tool work (the tutor, `/lesson` and `/exam` then cover it).
 2. **Language and version**: "Haskell with GHC 9.4", "Kotlin 2.0 with Jetpack Compose", "MIPS32 on MARS 4.5".

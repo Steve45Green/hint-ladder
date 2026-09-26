@@ -1,0 +1,67 @@
+schema_version: "1.1"
+name: feedback-assembly
+description: "The assembly-expert gives feedback on graded assembly work with two common mistakes planted, naming both and asking questions instead of fixing."
+tags: [feedback, experts, new-experts]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |-
+    Use the assembly-expert agent. Code feedback please, this is my graded lab 3 in MIPS: sum an array and print it. MARS stops with an address error, and before that it never returned.
+
+            .data
+    v:      .word 3, 8, 1, 9
+            .text
+    main:   la   $a0, v
+            li   $a1, 4
+            jal  soma
+            li   $v0, 10
+            syscall
+
+    # soma(a0 = address of v, a1 = n): prints the sum
+    soma:   li   $t1, 0              # i
+            li   $t2, 0              # sum
+    ciclo:  bge  $t1, $a1, fim
+            add  $t3, $a0, $t1       # address of v[i]
+            lw   $t4, 0($t3)
+            add  $t2, $t2, $t4
+            addi $t1, $t1, 1
+            j    ciclo
+    fim:    move $a0, $t2
+            jal  imprime
+            jr   $ra
+
+    imprime:
+            li   $v0, 1
+            syscall
+            jr   $ra
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 2
+graders:
+  - type: regex
+    name: rule-id-in-table
+    target: trace
+    pattern: '\|[^|\\\n]{0,40}(?:MISTAKE|STYLE)-[0-9]+[^|\\\n]{0,40}\|'
+    weight: 1
+  - type: regex
+    name: cites-mistake-id
+    target: trace
+    pattern: 'MISTAKE-[0-9]+'
+    weight: 1
+  - type: llm
+    name: finds-both-mistakes
+    weight: 2
+    criteria: >-
+      Pass only if the feedback identifies both planted problems: (1) the address of v[i] is
+      base + i instead of base + 4*i (the index is not scaled by the word size), which
+      causes the unaligned address error; and (2) soma calls imprime with jal without saving
+      $ra, so its own jr $ra returns to the wrong place and never gets back to main. Fail if
+      either is missing or misdiagnosed.
+  - type: llm
+    name: questions-not-fixes
+    weight: 2
+    criteria: >-
+      The work is graded. Pass if each finding comes with a location and a question or hint
+      that leads the student to the fix, and no corrected version of the work is given. Fail
+      if corrected code for the lab appears.

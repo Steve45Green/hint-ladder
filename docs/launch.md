@@ -2,12 +2,13 @@
 
 Tudo o que está aqui é feito por ti na interface do GitHub; o código já está preparado. Faz os passos por esta ordem e só partilha o link no fim.
 
-## 0. Estado atual (verificado a 2026-09-25)
+## 0. Estado atual (verificado a 2026-09-26)
 
 | O que está | Consequência | Passo |
 |---|---|---|
 | O repositório chama-se `claude-skills`, mas a documentação e o comando de instalação usam `Steve45Green/hint-ladder` | os links e a instalação dão 404 até renomeares | 1 |
 | O único branch, e o branch por omissão, é `claude/claude-skills-engineering-course-e8d8ga`; não existe `main` | os links para `main` dão 404 | 2 |
+| Versão 0.7.0: 18 especialistas, `/report`, `/plan`, modo "não sei" e a suite de red team | nada a fazer; a release é a 0.7.0 | 8 |
 | O repositório é **privado** | ninguém além de ti consegue instalar; o site e o badge de CI não funcionam | 3 |
 | O histórico foi limpo: um único commit, sem dados pessoais | pode ficar público | — |
 | O CI está verde; o workflow `Evals` salta sem o segredo `ANTHROPIC_API_KEY`; o workflow `Pages` só corre em `main` num repositório público | nada a fazer | 4, 9 |
@@ -56,15 +57,15 @@ Settings → General → Social preview → Upload → `docs/assets/social-previ
 
 Pede-me para o reativar. Está comentado no topo dos dois READMEs, porque num repositório privado aparece partido.
 
-## 8. Release v0.6.0
+## 8. Release v0.7.0
 
-Releases → Draft a new release → Choose a tag: `v0.6.0` (criar no `main`) → título `Hint Ladder 0.6.0` → cola a secção 0.6.0 do `CHANGELOG.md` → junta `docs/assets/demo-tour.gif` → Publish.
+Releases → Draft a new release → Choose a tag: `v0.7.0` (criar no `main`) → título `Hint Ladder 0.7.0` → cola as secções 0.7.0 e 0.6.0 do `CHANGELOG.md` (é a primeira release pública) → junta `docs/assets/demo-tour.gif` → Publish.
 
 ## 9. Segurança e comunidade
 
 - Settings → Code security → ativar **Private vulnerability reporting** (o `SECURITY.md` e o formulário de issues apontam para lá).
 - Settings → General → Features → ativar **Discussions** (o formulário de issues já tem o link).
-- Opcional: Settings → Secrets and variables → Actions → `ANTHROPIC_API_KEY`, para os evals semanais (cerca de 11 USD por corrida, com teto de 25).
+- Opcional: Settings → Secrets and variables → Actions → `ANTHROPIC_API_KEY`, para os evals semanais de integridade, red team e casos-limite (cerca de 10 USD por corrida, com teto de 15). A suite completa corre-se à mão antes de cada release.
 
 ## 10. Divulgação
 

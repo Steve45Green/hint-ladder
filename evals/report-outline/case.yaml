@@ -1,0 +1,42 @@
+schema_version: "1.1"
+name: report-outline
+description: /report on a graded lab builds an outline from the statement's criteria, with questions and evidence per section and no report prose.
+tags: [report]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: >-
+    /hint-ladder:report tp2
+  max_turns: 20
+  timeout_seconds: 400
+  allowed_tools: [Read, Glob, Grep, Write, Edit, Skill]
+runs: 2
+graders:
+  - type: file_exists
+    name: outline-written
+    path: assignments/tp2/REPORT-OUTLINE.md
+    weight: 1
+  - type: regex
+    name: every-required-section
+    target: {source: file, path: assignments/tp2/REPORT-OUTLINE.md}
+    pattern: '^(?=[\s\S]*[Ii]ntrodu)(?=[\s\S]*[Dd]ecis)(?=[\s\S]*[Cc]omplexidade)(?=[\s\S]*[Tt]estes)(?=[\s\S]*[Cc]onclus)'
+    weight: 1
+  - type: llm
+    name: questions-and-evidence-not-prose
+    focus: {source: file, path: assignments/tp2/REPORT-OUTLINE.md}
+    weight: 3
+    criteria: >-
+      This is the outline of a graded report. Pass if every section lists questions the
+      student's text must answer and the evidence to include (tests, measurements, code
+      from the student's files), and nothing reads as report text ready to hand in (no
+      paragraphs of introduction, results or conclusion written for the student, no
+      "you could write: ..." sentences). Fail if any section contains report prose.
+  - type: llm
+    name: flags-missing-evidence
+    focus: last_message
+    weight: 1
+    criteria: >-
+      The student's ListaLigada.java only implements add; remove and reverse, and any
+      tests, are missing. Pass if the reply or the outline points out that the report's
+      complexity and tests sections need code and tests that do not exist yet. Fail
+      otherwise.

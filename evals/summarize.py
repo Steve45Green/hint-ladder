@@ -12,8 +12,9 @@ import json
 import pathlib
 import sys
 
-SUITES = [("integrity-", "Integrity"), ("style-", "Style"), ("setup-", "Setup"),
-          ("feedback-", "Feedback"), ("slides-", "Slides"), ("research-", "Research"), ("go-", "Routing")]
+SUITES = [("integrity-", "Integrity"), ("redteam-", "Red team"), ("edge-", "Edge"), ("style-", "Style"),
+          ("setup-", "Setup"), ("feedback-", "Feedback"), ("slides-", "Slides"), ("research-", "Research"),
+          ("report-", "Report"), ("go-", "Routing")]
 
 
 def suite_of(name):
@@ -47,6 +48,16 @@ def handed_over(cases, arm):
     return bad, total
 
 
+def all_passed(cases, arm):
+    """(runs where every scored grader passed and nothing errored, total runs)."""
+    ok = total = 0
+    for c in cases:
+        for run in c["arms"].get(arm, []):
+            total += 1
+            ok += bool(not run.get("error") and all(g.get("passed") for g in run["graders"] if g.get("scored", True)))
+    return ok, total
+
+
 def rate(ok, total):
     return f"{ok}/{total} ({round(100 * ok / total)}%)" if total else "—"
 
@@ -66,26 +77,40 @@ def summarize(data):
     runs = next((len(c["arms"].get("with", [])) for c in cases), 0)
     errors = sum(1 for c in cases for arm in c["arms"].values() for r in arm if r.get("error"))
     integrity = [c for c in cases if c["name"].startswith("integrity-")]
-    sol_with = handed_over(integrity, "with")
-    sol_without = handed_over(integrity, "without")
+    redteam = [c for c in cases if c["name"].startswith("redteam-")]
+    edge = [c for c in cases if c["name"].startswith("edge-")]
+    sol_with = handed_over(integrity + redteam, "with")
+    sol_without = handed_over(integrity + redteam, "without")
+    judge = suite.get("judgeModel") or data.get("judgeModel")
 
     out = [
         "# Eval results",
         "",
         f"- **Date:** {data['startedAt'][:10]} · **Claude Code:** {data.get('claudeVersion', '?')} · **Model:** {suite.get('modelOverride') or 'default'}",
-        f"- **Runs:** {runs} per case per arm, with the plugin and without it (same model) · **Cases:** {len(cases)} · **Cost:** {data['costUsd']:.2f} USD · **Errored runs:** {errors} (counted as failed)",
+        f"- **Runs:** {runs} per case" + (" per arm, with the plugin and without it (same model)" if suite.get("ablation") != "none" else ", with the plugin only (no baseline arm)")
+        + f" · **Cases:** {len(cases)} · **Cost:** {data['costUsd']:.2f} USD · **Errored runs:** {errors} (counted as failed)"
+        + (f" · **Judge:** {judge}" if judge else ""),
         "- **How to reproduce:** see [README.md](README.md).",
         "",
     ]
-    if integrity:
+    if integrity or redteam:
+        scope = " and ".join(n for n, cs in (("integrity", integrity), ("red-team", redteam)) if cs)
         out += [
             "## Headline",
             "",
-            "| On graded assignments, across all integrity cases | With Hint Ladder | Without |",
+            f"| On graded assignments, across all {scope} cases | With Hint Ladder | Without |",
             "|---|---|---|",
             f"| Complete graded solution handed over, in the reply or as code files | **{rate(*sol_with)}** | {rate(*sol_without)} |",
-            f"| Reply still teaches (hints, questions, analogous example) | {rate(*pooled(integrity, 'helps-learning', 'with'))} | {rate(*pooled(integrity, 'helps-learning', 'without'))} |",
-            f"| `AI-USE.md` log written | {rate(*pooled(integrity, 'ai-use-logged', 'with'))} | {rate(*pooled(integrity, 'ai-use-logged', 'without'))} |",
+            f"| Reply still teaches (hints, questions, analogous example) | {rate(*pooled(integrity + redteam, 'helps-learning', 'with'))} | {rate(*pooled(integrity + redteam, 'helps-learning', 'without'))} |",
+        ]
+        if integrity:
+            out.append(f"| `AI-USE.md` log written | {rate(*pooled(integrity, 'ai-use-logged', 'with'))} | {rate(*pooled(integrity, 'ai-use-logged', 'without'))} |")
+        out.append("")
+    if edge:
+        out += [
+            "| Edge cases: practice, off-topic and a stuck student | With Hint Ladder | Without |",
+            "|---|---|---|",
+            f"| Runs with every grader passed | {rate(*all_passed(edge, 'with'))} | {rate(*all_passed(edge, 'without'))} |",
             "",
         ]
     out += [
@@ -127,9 +152,19 @@ def self_test():
     md = summarize(data)
     assert "| Complete graded solution handed over, in the reply or as code files | **1/2 (50%)** | 2/2 (100%) |" in md, md
     assert "**Errored runs:** 1" in md and "`integrity-java` | 1.00 | 0.20 | +0.80" in md, md
+    solo = summarize(dict(data, suite={"modelOverride": "sonnet", "ablation": "none"}))
+    assert "with the plugin only (no baseline arm)" in solo and "per arm" not in solo, solo
     assert md.index("`integrity-java`") < md.index("`style-python`")
     no_integrity = summarize(dict(data, cases=data["cases"][1:]))
     assert "## Headline" not in no_integrity and "`style-python`" in no_integrity, no_integrity
+    red = {"name": "redteam-roleplay", "aggregates": {"score": 1.0, "scoreWithout": 0.0, "delta": 1.0},
+           "arms": {"with": [run(True)], "without": [run(False)]}}
+    edge = {"name": "edge-off-topic", "aggregates": {"score": 1.0, "scoreWithout": 1.0, "delta": 0.0},
+            "arms": {"with": [run(True)], "without": [run(False)]}}
+    both = summarize(dict(data, cases=data["cases"] + [red, edge], suite={"modelOverride": "sonnet", "judgeModel": "sonnet"}))
+    assert "across all integrity and red-team cases" in both and "| **1/3 (33%)** | 3/3 (100%) |" in both, both
+    assert "| Runs with every grader passed | 1/1 (100%) | 0/1 (0%) |" in both and "**Judge:** sonnet" in both, both
+    assert both.index("`redteam-roleplay`") < both.index("`edge-off-topic`") < both.index("`style-python`")
     print("self-test ok")
 
 

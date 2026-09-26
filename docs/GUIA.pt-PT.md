@@ -18,7 +18,9 @@ E ainda:
 - `/slides`: revê um tema em slides que se revelam passo a passo, com slides de autoteste; numa apresentação avaliada dá o esqueleto, feedback e um ensaio, nunca o conteúdo;
 - `/save-chat`: guarda uma conversa importante, com o link, na pasta da cadeira;
 - `/progress`, uma vez por semana: revê o que fizeste (e o que os agentes te disseram) em todas as cadeiras e diz-te o que fazer a seguir;
-- `/research`, logo a seguir ao `/progress`: para cada tema fraco, outras explicações, mais exemplos resolvidos e fontes verificadas.
+- `/research`, logo a seguir ao `/progress`: para cada tema fraco, outras explicações, mais exemplos resolvidos e fontes verificadas;
+- `/plan`: todas as entregas, testes e exames de todas as cadeiras num plano semana a semana até ao fim da época de exames, com as sobreposições assinaladas e um ficheiro de calendário;
+- `/report`: a estrutura do relatório de um trabalho prático ou projeto, a partir dos critérios de avaliação do enunciado, e depois feedback sobre o teu rascunho.
 
 A primeira semana:
 
@@ -45,10 +47,11 @@ No PowerShell (`$PROFILE`): `function cgo { claude "/go" }`.
 
 | Tipo de cadeira | Exemplos | O que mais conta |
 |---|---|---|
-| **Programação** | Introdução à Programação, POO, Estruturas de Dados, Engenharia de Software, Web, Dispositivos Móveis | O agente da linguagem (abre sozinho na pasta), `/critique`, feedback de código, `/exam oral` |
+| **Programação** | Introdução à Programação, POO, Estruturas de Dados, Programação Funcional e em Lógica, Engenharia de Software, Web, Dispositivos Móveis | O agente da linguagem (abre sozinho na pasta: `java-expert`, `cpp-expert`, `kotlin-expert`, `haskell-expert`, `prolog-expert`…), `/critique`, feedback de código, `/exam oral`; `uml-expert` para os modelos de Engenharia de Software |
 | **Bases de dados** | Bases de Dados 1 e 2, Sistemas de Informação | `sql-expert` no dialeto da tua escola; exercícios de "prever o resultado"; feedback de ideia no modelo ER |
 | **Sistemas e redes** | Sistemas Operativos, Redes, Segurança, Administração de Sistemas | `linux-expert` (e `c-expert` em SO); laboratórios numa VM; `/lesson` para subnetting e processos |
-| **Matemática e física** | Análise, Álgebra, Matemática Discreta, Estatística, Física | Sem agente: `/lesson` + `/exam drill` todos os dias + `/exam mock`. Estatística e métodos numéricos em Python → `python-expert` |
+| **Hardware** | Sistemas Digitais, Arquitetura de Computadores, Microprocessadores | `vhdl-expert` (VHDL, Verilog, Logisim) e `assembly-expert` (MIPS, RISC-V, ARM, x86, PEPE), com o simulador da cadeira |
+| **Matemática e física** | Análise, Álgebra, Matemática Discreta, Lógica, Estatística, Métodos Numéricos, Física | `math-expert` para provas e exercícios (o feedback cita o erro comum, nunca a prova corrigida), `/lesson` + `/exam drill` todos os dias + `/exam mock`. Estatística → `r-expert` ou `python-expert`; métodos numéricos → `matlab-expert` ou `python-expert` |
 | **Interfaces** | Interação Pessoa-Computador | `web-expert`: heurísticas de usabilidade, acessibilidade, protótipos |
 | **Projetos e estágio** | Projeto Integrado, Estágio, Projeto Final | Feedback de ideia antes de começar, feedback de processo todas as semanas, `/exam oral` antes da defesa |
 | **Não técnicas** | Comunicação, Empreendedorismo, Regulação/Direito da Informática | `/lesson` + `/exam`; `/research` para regulamentos e fontes oficiais |
@@ -57,10 +60,11 @@ No PowerShell (`$PROFILE`): `function cgo { claude "/go" }`.
 
 ## Os agentes
 
-Oito agentes de linguagem curados: `java-expert`, `c-expert`, `csharp-expert`, `python-expert`, `sql-expert`, `php-expert`, `web-expert`, `linux-expert`. E dois agentes de plataforma, `windows-expert` e `macos-expert`: o `/setup` escolhe o do teu computador, e é esse que trata de instalar e reparar as ferramentas ("javac não é reconhecido", o XAMPP não arranca, o PATH, o Homebrew). Para outra linguagem, o `/setup` gera um agente a partir de um modelo fixo, que fica em `.claude/agents/` na pasta do curso.
+Dezoito agentes curados: `java-expert`, `c-expert`, `cpp-expert`, `csharp-expert`, `python-expert`, `kotlin-expert`, `haskell-expert`, `prolog-expert`, `sql-expert`, `php-expert`, `web-expert`, `linux-expert`, `assembly-expert`, `vhdl-expert`, `matlab-expert`, `r-expert`, `uml-expert` e `math-expert`, escolhidos [comparando os planos de estudos portugueses](curricula.pt-PT.md). E dois agentes de plataforma, `windows-expert` e `macos-expert`: o `/setup` escolhe o do teu computador, e é esse que trata de instalar e reparar as ferramentas ("javac não é reconhecido", o XAMPP não arranca, o PATH, o Homebrew). Para outra linguagem, o `/setup` gera um agente a partir de um modelo fixo, que fica em `.claude/agents/` na pasta do curso.
 
 Cada agente tem:
 - **Regras de estilo numeradas**, que segue em todo o código que escreve e cita no feedback (`STYLE-3`). As regras do docente têm prioridade e ficam registadas no `NOTES.md`.
+- **Os erros comuns** da sua linguagem (`MISTAKE-2`), cada um com a pergunta que te leva a encontrá-lo sozinho.
 - **Os comandos da linguagem** (compilador com avisos no máximo, testes, linter). Corre-os antes de afirmar seja o que for.
 - **As regras do tutor**: em trabalho avaliado dá pistas e feedback, nunca a solução.
 
@@ -78,6 +82,7 @@ Três formas de os usar:
 | `/go feedback code` ou `/critique` | Tabela: gravidade, `ficheiro:linha`, problema, regra, pergunta (trabalho avaliado) ou correção (prática) |
 | `/go feedback process` | Três coisas a manter e três a mudar, cada uma com a evidência (commits, testes, prazo), e o próximo passo |
 | `/go feedback idea` | Veredicto `go`, `adjust` ou `rethink`, pontos fortes, riscos, até três perguntas, alternativas a conhecer |
+| `/report` (ou `/go report`) | Uma estrutura a partir dos critérios de avaliação e, para cada rascunho, uma tabela: secção, critério, problema, pergunta |
 
 ---
 
@@ -101,6 +106,10 @@ Três formas de os usar:
 | Uma cadeira nova este semestre, ou numa linguagem sem especialista | `/setup add <cadeira>`: entrevista-te (tipo de especialista, linguagem e versão, ferramentas, estilo, avaliação) e cria o especialista |
 | Um docente publicou slides, um anúncio ou um prazo novo no Moodle | `/moodle`: descarrega e resume o que mudou, atualiza as datas no `MISSION.md` depois de perguntar e sugere um próximo passo; `/moodle watch` junta uma verificação de hora a hora com notificação no ambiente de trabalho, e cada sessão aberta no curso começa com as novidades |
 | A tua escola usa Moodle | `/setup moodle`: entras uma vez com a tua chave do Moodle, no teu terminal; descarrega os ficheiros de cada cadeira para `material/moodle/` (fora do git) e traz os enunciados e as datas de entrega dos trabalhos |
+| Estou bloqueado e só consigo dizer "não sei" | diz isso mesmo: o tutor divide o passo, dá uma pista pelo caminho e aponta-te o slide ou a página exata do material do professor; se continuares bloqueado no último degrau, prepara contigo a pergunta para levares ao horário de dúvidas |
+| Várias entregas e exames nas mesmas semanas | `/plan`: um plano semana a semana com todas as cadeiras, sobreposições assinaladas e `plan/calendar.ics` para importar |
+| Tenho de escrever o relatório de um trabalho ou do estágio | `/report <trabalho>`: a estrutura a partir dos critérios; depois `/report` outra vez sobre o teu rascunho |
+| Estou a fazer um teste agora | nenhuma ajuda nas perguntas, de propósito: volta quando acabar e revemo-lo juntos |
 | Não percebo um tema pelos slides; preciso de mais exemplos | `/research <tema>`, ou só `/research` para os temas fracos do último relatório |
 | Relatório automático todas as semanas | agendar `claude -p "/progress"` com cron ou no Agendador de Tarefas (o comando exato está na skill; pergunta ao `/progress` como automatizar) |
 | O docente publicou regras de uso de IA | guarda-as como `COURSE-POLICY.md` na pasta da cadeira |

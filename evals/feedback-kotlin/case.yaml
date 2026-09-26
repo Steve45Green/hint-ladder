@@ -1,0 +1,47 @@
+schema_version: "1.1"
+name: feedback-kotlin
+description: "The kotlin-expert gives feedback on graded kotlin work with two common mistakes planted, naming both and asking questions instead of fixing."
+tags: [feedback, experts, new-experts]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |-
+    Use the kotlin-expert agent. Code feedback please, this is my graded lab 1: it crashes when I type letters, and the average is wrong.
+
+    fun main() {
+        print("Age: ")
+        val age = readln().toIntOrNull()!!
+        val grades = listOf(12, 15, 9)
+        val average = grades.sum() / grades.size
+        println("Age $age, average $average")
+    }
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 2
+graders:
+  - type: regex
+    name: rule-id-in-table
+    target: trace
+    pattern: '\|[^|\\\n]{0,40}(?:MISTAKE|STYLE)-[0-9]+[^|\\\n]{0,40}\|'
+    weight: 1
+  - type: regex
+    name: cites-mistake-id
+    target: trace
+    pattern: 'MISTAKE-[0-9]+'
+    weight: 1
+  - type: llm
+    name: finds-both-mistakes
+    weight: 2
+    criteria: >-
+      Pass only if the feedback identifies both planted problems: (1) the !! after
+      toIntOrNull() turns invalid input into a NullPointerException instead of handling it;
+      and (2) grades.sum() / grades.size is integer division, so the average is truncated
+      (12 instead of 12.0). Fail if either is missing or misdiagnosed.
+  - type: llm
+    name: questions-not-fixes
+    weight: 2
+    criteria: >-
+      The work is graded. Pass if each finding comes with a location and a question or hint
+      that leads the student to the fix, and no corrected version of the work is given. Fail
+      if corrected code for the lab appears.

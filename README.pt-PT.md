@@ -9,7 +9,7 @@
   <!-- Badge de CI: voltar a pôr quando o repositório for público e se chamar hint-ladder (docs/launch.md, passo 3):
   <a href="https://github.com/Steve45Green/hint-ladder/actions/workflows/ci.yml"><img src="https://github.com/Steve45Green/hint-ladder/actions/workflows/ci.yml/badge.svg" alt="CI"></a> -->
   <a href="LICENSE"><img src="https://img.shields.io/badge/licen%C3%A7a-MIT-blue" alt="Licença MIT"></a>
-  <img src="https://img.shields.io/badge/vers%C3%A3o-0.6.0-informational" alt="Versão 0.6.0">
+  <img src="https://img.shields.io/badge/vers%C3%A3o-0.7.0-informational" alt="Versão 0.7.0">
   <img src="https://img.shields.io/badge/Claude%20Code-plugin-d97757" alt="Plugin do Claude Code">
   <a href="evals/RESULTS.md"><img src="https://img.shields.io/badge/evals-com%20vs%20sem-8a63d2" alt="Evals"></a>
 </p>
@@ -88,12 +88,12 @@ Saídas reais de testes, uma cadeira por linha. As de Redes, Matemática Discret
 | Introdução à Programação (Java) | Uma aula construída a partir do erro do próprio aluno no Lab 1, e feedback ao código | [aula](https://steve45green.github.io/hint-ladder/examples/introducao-a-programacao/lessons/0001-arrays-and-for-loops.html) · [feedback](examples/introducao-a-programacao/feedback/0001-code-lab1-npe.md) |
 | Estruturas de Dados e Algoritmos (Java) | Slides: árvores binárias de pesquisa, inserção e travessia in-order | [slides](https://steve45green.github.io/hint-ladder/examples/algoritmos-e-estruturas-de-dados/slides/0001-bst.html) |
 | Redes de Computadores 1 (redes, `linux-expert`) | Slides: o handshake TCP e o controlo de congestão; o `/go` começou uma aula sobre portas e o handshake | [slides](https://steve45green.github.io/hint-ladder/examples/pt-PT/redes-de-computadores-1/slides/0001-handshake-tcp-congestao.html) · [aula](https://steve45green.github.io/hint-ladder/examples/pt-PT/redes-de-computadores-1/lessons/0001-portas-segmentos-handshake.html) |
-| Matemática Discreta (sem código, sem especialista) | Uma aula sobre indução simples e slides sobre indução fraca e forte | [aula](https://steve45green.github.io/hint-ladder/examples/pt-PT/matematica-discreta/lessons/0001-inducao-matematica-simples.html) · [slides](https://steve45green.github.io/hint-ladder/examples/pt-PT/matematica-discreta/slides/0001-inducao-matematica.html) |
+| Matemática Discreta (sem código; exemplo anterior ao `math-expert`) | Uma aula sobre indução simples e slides sobre indução fraca e forte | [aula](https://steve45green.github.io/hint-ladder/examples/pt-PT/matematica-discreta/lessons/0001-inducao-matematica-simples.html) · [slides](https://steve45green.github.io/hint-ladder/examples/pt-PT/matematica-discreta/slides/0001-inducao-matematica.html) |
 | Bases de Dados 1 (SQL Server) | Pacotes do `/research` sobre junções externas e GROUP BY; os exemplos nunca resolvem o trabalho avaliado aberto | [junções externas](examples/pt-PT/bases-de-dados-1/research/0001-juncoes-externas.md) · [GROUP BY](examples/pt-PT/bases-de-dados-1/research/0002-group-by-agregacao.md) |
 | Bases de Dados 2 (SQL Server) | Apontamentos do `/analyze` sobre normalização a partir dos slides do docente, e a ficha da UC | [apontamentos](examples/bases-de-dados-2/material/normalizacao.md) |
 | Matemática Computacional (Python) | Feedback ao processo a partir do histórico git de um trabalho | [feedback](examples/matematica-computacional/feedback/0001-process-tp1.md) |
 | Desenvolvimento de Aplicações Web (PHP) | Feedback à ideia de um projeto avaliado, antes de haver código | [feedback](examples/idea-feedback.md) |
-| Computação Gráfica (C++, sem especialista na biblioteca) | A entrevista e o especialista C++/OpenGL que gerou, com 10 erros comuns de OpenGL | [entrevista](examples/pt-PT/entrevista-nova-cadeira.md) · [especialista](examples/pt-PT/.claude/agents/cpp-expert.md) |
+| Computação Gráfica (C++, antes de o C++ entrar na biblioteca) | A entrevista e o especialista C++/OpenGL que gerou, com 10 erros comuns de OpenGL | [entrevista](examples/pt-PT/entrevista-nova-cadeira.md) · [especialista](examples/pt-PT/.claude/agents/cpp-expert.md) |
 | Moodle (Moodle simulado) | Um docente publica slides e adia um teste: a notificação no ambiente de trabalho, o Claude a abrir a sessão com as novidades, o `/moodle` a tratar de tudo | [a execução](examples/pt-PT/moodle-novidades.md) |
 
 ## O que tens
@@ -107,12 +107,14 @@ Saídas reais de testes, uma cadeira por linha. As de Redes, Matemática Discret
 | `/slides` | Slides de estudo: uma ideia por slide, exemplos resolvidos que aparecem linha a linha, slides de autoteste, notas para estudar sozinho. Para uma apresentação avaliada: esqueleto, feedback e ensaio |
 | `/critique` | Corre o teu código com o compilador, os testes e os linters mais exigentes e dá feedback de código |
 | `/exam drill · oral · mock` | Revisão espaçada diária, defesa oral simulada do teu projeto, exame simulado na escala da tua escola |
+| `/report` | O relatório do teu trabalho prático ou projeto: uma estrutura montada a partir dos critérios de avaliação do enunciado (perguntas e evidências por secção, sem texto feito) e, depois, feedback sobre o teu rascunho |
 | `/progress` | Onde estás em cada cadeira, o que fizeste, o que os especialistas te disseram e as próximas três ações |
+| `/plan` | Todas as entregas, testes e exames de todas as cadeiras num plano semana a semana até ao fim da época de exames: sobreposições assinaladas, blocos de estudo pelo peso de cada avaliação e um ficheiro de calendário para o Google, o Outlook ou o Calendário da Apple |
 | `/research` | Depois do `/progress`: para cada tema fraco, outras explicações, exemplos resolvidos do fácil ao nível de exame, exercícios com a resposta escondida e fontes verificadas |
 | `/course` | Aprofunda uma cadeira: datas de avaliação, política de IA, programa, fontes, ritmo semanal |
 | `/save-chat` | Guarda uma conversa na pasta da cadeira, com o link, um resumo e os segredos apagados |
 | `/moodle` | O que os docentes publicaram ou mudaram no Moodle (slides novos, anúncios, prazos alterados): descarregado, resumido, com as datas atualizadas e um próximo passo. `/moodle watch` verifica de hora a hora e avisa-te no ambiente de trabalho; cada sessão aberta no curso começa com as novidades |
-| `tutor` | Sempre ligado: classifica cada pedido como avaliado, prática ou fora do curso, e sobe a escada de pistas em trabalho avaliado |
+| `tutor` | Sempre ligado: classifica cada pedido como avaliado, prática, fora do curso ou teste a decorrer, sobe a escada de pistas em trabalho avaliado e, quando dizes "não sei", divide o passo e aponta-te o slide ou a página exata do material do professor |
 
 <table>
 <tr>
@@ -152,10 +154,22 @@ Cada especialista é um engenheiro sénior e professor de uma linguagem, com **r
 | `php-expert` | Tecnologias Web, Aplicações Web | PSR-12 |
 | `web-expert` | Interação Pessoa-Computador, front-end | Google HTML/CSS + WCAG |
 | `linux-expert` | Sistemas Operativos, Redes, Segurança, Administração de Sistemas | Google Shell Style |
+| `cpp-expert` | Programação e Estruturas de Dados em C++, POO, Computação Gráfica (OpenGL) | C++ Core Guidelines |
+| `kotlin-expert` | Programação em Kotlin, Computação Móvel (Android, Compose), Aplicações Web | Convenções de Kotlin |
+| `haskell-expert` | Programação Funcional, Princípios de Programação, Cálculo de Programas | Estilo da comunidade + HLint |
+| `prolog-expert` | Lógica para Programação, Programação Funcional e em Lógica, trabalhos de IA | Covington et al. |
+| `assembly-expert` | Arquitetura de Computadores: MIPS, RISC-V, ARM, x86, PEPE | O manual da ISA, Patterson & Hennessy |
+| `vhdl-expert` | Sistemas Digitais, Conceção de Sistemas Digitais (VHDL, Verilog, FPGA) | Regras de desenho RTL |
+| `matlab-expert` | Métodos Numéricos, Análise Numérica (MATLAB, Octave) | MATLAB Style Guidelines 2.0 |
+| `r-expert` | Probabilidades e Estatística, Análise de Dados | Guia de estilo tidyverse |
+| `uml-expert` | Engenharia de Software, Requisitos, a modelação em Bases de Dados | Elements of UML 2.0 Style (Ambler) |
+| `math-expert` | Análise Matemática, Álgebra Linear, Matemática Discreta, Lógica, Física | Velleman / Hammack sobre escrever provas |
 | `windows-expert` | Windows Server e AD, e o teu ambiente de desenvolvimento em Windows | PowerShell Practice and Style |
 | `macos-expert` | O teu ambiente de desenvolvimento num Mac, o macOS por dentro | Google Shell Style adaptado |
 
-Uma linguagem fora da biblioteca (C++, Kotlin, Haskell, Assembly, R, MATLAB…) ganha o seu próprio especialista: o `/setup` (ou mais tarde o `/setup add <cadeira>`) pergunta que tipo de especialista, a linguagem e a versão, as tuas ferramentas, a fonte do estilo e como a cadeira é avaliada, e depois cria-o a partir de um modelo fixo e valida-o. [A entrevista](examples/pt-PT/entrevista-nova-cadeira.md) · [um especialista C++/OpenGL gerado](examples/pt-PT/.claude/agents/cpp-expert.md).
+A biblioteca foi escolhida [comparando os planos de estudos das licenciaturas portuguesas de Engenharia Informática](docs/curricula.pt-PT.md) (FEUP, IST, UMinho, FCUL, NOVA, ISEL, UA, ISEP, UC e politécnicos): que cadeiras têm em comum e em que linguagem cada escola as ensina.
+
+Uma linguagem fora da biblioteca (OCaml, Dart, Swift, Go…) ganha o seu próprio especialista: o `/setup` (ou mais tarde o `/setup add <cadeira>`) pergunta que tipo de especialista, a linguagem e a versão, as tuas ferramentas, a fonte do estilo e como a cadeira é avaliada, e depois cria-o a partir de um modelo fixo e valida-o. [A entrevista](examples/pt-PT/entrevista-nova-cadeira.md) · [um especialista C++/OpenGL gerado antes de o C++ entrar na biblioteca](examples/pt-PT/.claude/agents/cpp-expert.md).
 
 <p align="center"><img src="docs/assets/demo-setup-add-pt.gif" alt="/setup add para Computação Gráfica, em português: a entrevista (stack, versão, ambiente, estilo, avaliação) e depois o cpp-expert gerado com os seus erros comuns de OpenGL" width="85%"></p>
 

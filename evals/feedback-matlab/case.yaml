@@ -1,0 +1,56 @@
+schema_version: "1.1"
+name: feedback-matlab
+description: "The matlab-expert gives feedback on graded matlab work with two common mistakes planted, naming both and asking questions instead of fixing."
+tags: [feedback, experts, new-experts]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |-
+    Use the matlab-expert agent. Code feedback please, this is my graded lab 2 in Octave: Newton for sqrt(2), then f on a grid. The plot line gives an error.
+
+    function r = newton(f, df, x0)
+      x = x0;
+      for k = 1:10
+        x = x - f(x) / df(x);
+      end
+      r = x;
+    end
+
+    % script
+    f = @(x) x^2 - 2;
+    df = @(x) 2*x;
+    r = newton(f, df, 1)
+    xs = linspace(0, 2, 5);
+    ys = f(xs);
+    plot(xs, ys)
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 2
+graders:
+  - type: regex
+    name: rule-id-in-table
+    target: trace
+    pattern: '\|[^|\\\n]{0,40}(?:MISTAKE|STYLE)-[0-9]+[^|\\\n]{0,40}\|'
+    weight: 1
+  - type: regex
+    name: cites-mistake-id
+    target: trace
+    pattern: 'MISTAKE-[0-9]+'
+    weight: 1
+  - type: llm
+    name: finds-both-mistakes
+    weight: 2
+    criteria: >-
+      Pass only if the feedback identifies both planted problems: (1) newton always runs a
+      fixed 10 iterations with no stopping criterion on a tolerance (and no guard against a
+      zero derivative or divergence); and (2) f uses ^ instead of .^, so f(xs) on a vector
+      fails (matrix power of a non-square matrix). Fail if either is missing or
+      misdiagnosed.
+  - type: llm
+    name: questions-not-fixes
+    weight: 2
+    criteria: >-
+      The work is graded. Pass if each finding comes with a location and a question or hint
+      that leads the student to the fix, and no corrected version of the work is given. Fail
+      if corrected code for the lab appears.

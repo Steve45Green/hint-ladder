@@ -2,7 +2,7 @@
 name: go
 description: One entry point for everything - read the situation, pick the single best skill or language agent, and start it.
 disable-model-invocation: true
-argument-hint: "[what you want, or: setup | progress | analyze | slides | save-chat | drill | lesson | critique | feedback | oral | mock | course | idea | bug | research | review]"
+argument-hint: "[what you want, or: setup | progress | plan | analyze | slides | save-chat | drill | lesson | critique | feedback | report | oral | mock | course | idea | bug | research | review]"
 ---
 
 # Go
@@ -10,8 +10,8 @@ argument-hint: "[what you want, or: setup | progress | analyze | slides | save-c
 The student wants to remember one command: this one. Work out the situation, pick **one** skill or agent, and start it now. You route; you do not answer the request yourself, not even as an aside: on graded work a one-line "it should be `i < n`" is the solution. Reply in the language recorded as `Language:` in `MISSION.md` or `CURRICULUM.md`; when none is recorded, the language the student writes in (English if unclear).
 
 What you can route to:
-- this pack's skills: `setup`, `progress`, `research`, `analyze`, `slides`, `save-chat`, `tutor`, `course`, `lesson`, `critique`, `exam`;
-- this pack's language agents: `c-expert`, `csharp-expert`, `java-expert`, `linux-expert`, `php-expert`, `python-expert`, `sql-expert`, `web-expert`, the platform agents `windows-expert` and `macos-expert`, plus any agent `/setup` generated in the study root's `.claude/agents/`;
+- this pack's skills: `setup`, `progress`, `research`, `analyze`, `slides`, `save-chat`, `tutor`, `course`, `lesson`, `critique`, `exam`, `report`, `plan`, `moodle`;
+- this pack's language agents: `assembly-expert`, `c-expert`, `cpp-expert`, `csharp-expert`, `haskell-expert`, `java-expert`, `kotlin-expert`, `linux-expert`, `math-expert`, `matlab-expert`, `php-expert`, `prolog-expert`, `python-expert`, `r-expert`, `sql-expert`, `uml-expert`, `vhdl-expert`, `web-expert`, the platform agents `windows-expert` and `macos-expert`, plus any agent `/setup` generated in the study root's `.claude/agents/`;
 - optional complementary skills, when installed: `grilling`, `diagnosing-bugs`;
 - Claude Code's built-in commands.
 
@@ -36,6 +36,8 @@ When the argument starts with one of these keywords, skip Step 2:
 | `idea` | idea feedback when it is coursework; `grilling` for anything else |
 | `bug` | graded course code → `critique`; otherwise `diagnosing-bugs` |
 | `research [topic]` | `research` |
+| `report [assignment]` | `report` |
+| `plan [semester\|exams]` | `plan` |
 | `review` | graded course code → `critique`; otherwise `/code-review` |
 
 ## Step 2: Read the situation
@@ -69,6 +71,8 @@ Settle it from the environment, cheapest check first, and ask nothing you can lo
 | New or empty course workspace | `course` |
 | The session opened with a Moodle notice (new files, announcements, moved deadlines), or "what's new on Moodle?" | `moodle` |
 | "What have I done / where do I stand?" | `progress` |
+| "What is due when?", the exam season, several deadlines in the same week, planning the weeks ahead | `plan` |
+| A report or write-up to structure, or a draft to review | `report` |
 | Weak topics, "I need more examples", a better explanation than the slides | `research` |
 | Slides, PDFs, course sheet, past exams to read | `analyze` |
 | Study a topic as slides, or prepare a presentation | `slides` |

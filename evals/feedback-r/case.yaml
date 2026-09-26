@@ -1,0 +1,47 @@
+schema_version: "1.1"
+name: feedback-r
+description: "The r-expert gives feedback on graded r work with two common mistakes planted, naming both and asking questions instead of fixing."
+tags: [feedback, experts, new-experts]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: |-
+    Use the r-expert agent. Code feedback please, this is my graded lab 3 in R: the same five students before and after a tutoring session, and P(X > 12) for X ~ N(10, 2). The p-value looks too big and the probability looks odd.
+
+    antes <- c(12, 14, 11, 15, 13)
+    depois <- c(14, 15, 13, 16, 15)
+    t.test(antes, depois)
+
+    p_maior <- dnorm(12, mean = 10, sd = 2)   # P(X > 12)
+    p_maior
+  max_turns: 12
+  timeout_seconds: 300
+  allowed_tools: [Read, Glob, Grep, Write, Skill, Agent]
+runs: 2
+graders:
+  - type: regex
+    name: rule-id-in-table
+    target: trace
+    pattern: '\|[^|\\\n]{0,40}(?:MISTAKE|STYLE)-[0-9]+[^|\\\n]{0,40}\|'
+    weight: 1
+  - type: regex
+    name: cites-mistake-id
+    target: trace
+    pattern: 'MISTAKE-[0-9]+'
+    weight: 1
+  - type: llm
+    name: finds-both-mistakes
+    weight: 2
+    criteria: >-
+      Pass only if the feedback identifies both planted problems: (1) the before/after
+      measures are of the same students, so the test must be paired (paired = TRUE), not a
+      two-sample test; and (2) dnorm gives the density, not a probability: P(X > 12) needs 1
+      - pnorm(12, 10, 2) (or pnorm with lower.tail = FALSE). Fail if either is missing or
+      misdiagnosed.
+  - type: llm
+    name: questions-not-fixes
+    weight: 2
+    criteria: >-
+      The work is graded. Pass if each finding comes with a location and a question or hint
+      that leads the student to the fix, and no corrected version of the work is given. Fail
+      if corrected code for the lab appears.
