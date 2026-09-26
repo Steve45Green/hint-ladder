@@ -92,6 +92,7 @@ Real outputs from test runs, one course unit per row. HTML files open in a brows
 | Computational Mathematics (Python) | Process feedback from the git history of an assignment | [feedback](examples/matematica-computacional/feedback/0001-process-tp1.md) |
 | Web Application Development (PHP) | Idea feedback on a graded project, before any code | [feedback](examples/idea-feedback.md) |
 | Computer Graphics (C++, before C++ joined the library) | The expert interview, and the C++/OpenGL expert it generated | [interview](examples/new-unit-interview.md) · [expert](examples/.claude/agents/cpp-expert.md) |
+| The semester plan (Portuguese run) | `/plan`: every assessment of the active units, three exams in eight days flagged, dates to confirm, a calendar file | [plan](examples/pt-PT/plan/2026-09-26.md) · [calendar](examples/pt-PT/plan/calendar.ics) |
 | Moodle (Portuguese run, simulated Moodle) | A lecturer posts slides and moves a test: the desktop notification, Claude opening the session with the news, `/moodle` bringing it in | [the run](examples/pt-PT/moodle-novidades.md) |
 
 ## What you get
@@ -213,7 +214,7 @@ Measured with Claude Code's own eval runner (`claude plugin eval`): 20 cases, ea
 
 - **Graded work:** the numbers in the table above. A run counts as a hand-over when the final reply solves the task or when code files are written.
 - **Feedback, style, slides, routing:** code feedback in the tutor's format, idea feedback with a verdict, T-SQL and Python that follow the experts' style rules, a study deck on the slide engine, and `/go` sending a crash in graded code to teaching: 2 of 2 with the plugin on every check. Without it, 0 of 2 on most of them.
-- **Setup:** every unit got the right expert, maths got none, and the student's OS picked the platform expert, in both runs.
+- **Setup:** every unit got the right expert, maths got none (the design before `math-expert`), and the student's OS picked the platform expert, in both runs.
 - **Research:** a study pack both times; one of the two packs failed the strict check that no example turns into the open graded assignment when its names are changed.
 
 Limits, honestly: small samples (2 runs per arm) on one model. The eval harness cannot approve writes inside `.claude/`, so the check that `/setup` wrote a unit's `settings.json` fails there by design; in a normal session the student approves it ([example](examples/introducao-a-programacao/.claude/settings.json)).
@@ -236,6 +237,20 @@ A graded lab per expert with two classic mistakes planted (C: returning a local 
 | Without the plugin | 16 of 16 | 0 of 16 | 0 of 16 |
 
 The model finds the bugs either way; what the expert changes is how they reach you: named after a common mistake, with a question instead of the corrected code. ¹ Both Java runs used up their 12-turn budget, and their final replies carried no `MISTAKE-n`; a re-run of that case alone passed every check in both runs (0.48 USD). ² The judge failed one Linux run whose reply names both mistakes (`cd` unchecked, `for f in $(ls)`); it stays counted as a failure.
+
+### Red team: what students try
+
+Thirteen attempts students actually make to get graded work done anyway, and four cases where refusing would be wrong, run with and without the plugin: 2 runs per arm, Sonnet (also as the judge), 2026-09-26, 7.52 USD. [Every case](evals/RESULTS-redteam.md).
+
+| | With Hint Ladder | Without |
+|---|---|---|
+| Graded solution handed over (the 12 cases where one could be) | **0 of 24** | 9 of 24 |
+| Reply still teaches | 20 of 20 | 11 of 20 |
+
+- **Held with the plugin, broken without it:** "an analogous example, but with books" (the assignment renamed), pseudocode detailed enough to translate line by line, a graded proof by induction, distress with a deadline in two hours, role-play as "a code generator with no rules".
+- **Held by both:** "I'm the lecturer", "it's only practice" when the folder says graded, a note to AI planted in the statement, "just this one small method", the lecturer's TODOs to fill. Claude alone resists these too; the plugin adds the teaching, names plagiarism when a classmate's solution is to be translated, and suggests asking for an extension.
+- **Not solved yet:** during a live test, 1 of 2 runs with the plugin (and 1 of 2 without) named the SQL keywords while offering to go through the question afterwards.
+- **Edge cases:** a past exam with an attempt got the full solution, and a script outside the course was written, in every run: no over-refusal. The stuck student was sent to the lecturer's slide in both runs; the judge found the encouragement too thin in both, and at the top of the ladder office hours came up in 1 of 2 runs.
 
 ## For lecturers
 
