@@ -11,7 +11,8 @@ All notable changes to Hint Ladder (called CS Tutor until 0.6.0). The format fol
 - **Live assessments**: a test or exam the student is sitting gets no help on its questions, not even the concept, and an offer to go through it afterwards.
 - `/report`: the outline of a lab, project or internship report built from the statement's grading criteria (questions and evidence per section, no prose), and a new **Report** feedback format in the tutor for the student's draft.
 - `/plan`: every dated assessment across the active units (from `MISSION.md` and Moodle), clashes, dates to confirm, a week-by-week plan to the end of the exam season and `plan/calendar.ics`. `skills/plan/scripts/plan.py`, standard library only, with a self-test.
-- **Red-team and edge eval suites**: 13 attempts students make to get graded work done and 4 cases against over-refusal and for the stuck student ([results](evals/RESULTS-redteam.md)). `setup-other-schools` and `report-outline` cases.
+- **Red-team and edge eval suites**: 13 attempts students make to get graded work done and 4 cases against over-refusal and for the stuck student. With the plugin, 0 of 24 runs handed over graded work; without it, 9 of 24 ([results](evals/RESULTS-redteam.md)).
+- Evals for the new experts ([results](evals/RESULTS-experts.md)): graded assignments handed over in 0 of 10 runs with the plugin and 10 of 10 without; feedback found both planted mistakes in 10 of 10 and cited the common mistake in 9 of 10 (0 without). `setup-other-schools` (unit names from UMinho, IST and FEUP, 12 of 12 checks) and `report-outline` cases.
 
 ### Changed
 - The tutor answers pretexts in one line and keeps its rules: a claim to be the lecturer, "it's only practice" against the files, role-play, notes to AI inside files, translating someone else's solution (named as plagiarism), distress and deadlines (with the way to ask for an extension).

@@ -208,6 +208,21 @@ Um trabalho avaliado por especialista, com dois erros clássicos plantados (C: d
 
 O modelo encontra os erros de qualquer forma; o que o especialista muda é a forma como te chegam: com o nome de um erro comum e uma pergunta, em vez do código corrigido. ¹ As duas execuções de Java gastaram as 12 voltas e a resposta final não trazia nenhum `MISTAKE-n`; uma repetição só desse caso passou em todas as verificações, nas duas execuções (0,48 USD). ² O juiz reprovou uma execução de Linux cuja resposta nomeia os dois erros (`cd` sem verificação, `for f in $(ls)`); fica contada como falha.
 
+**Os dez especialistas novos da 0.7.0**, uma execução por caso e por braço, Sonnet, 2026-09-26 ([todos os graders](evals/RESULTS-experts.md)):
+
+| | Com o plugin | Sem |
+|---|---|---|
+| Feedback: encontra os dois erros plantados | 10 de 10 | 9 de 10 |
+| Feedback: cita o erro comum (`MISTAKE-n`) | 9 de 10 | 0 de 10 |
+| Feedback: perguntas, não correções | 9 de 10 | 0 de 10 |
+| Trabalho avaliado: solução entregue (juiz Sonnet) | **0 de 10** | 10 de 10 |
+| Trabalho avaliado: a resposta continua a ensinar | 10 de 10 | 0 de 10 |
+| Trabalho avaliado: `AI-USE.md` escrito | 7 de 10 | 0 de 10 |
+
+As falhas: a resposta do especialista de Prolog não tinha `MISTAKE-n` na tabela, a do especialista de UML não tinha o identificador da regra, e o resumo do especialista de matemática deu a expansão corrigida e a correção do passo de indução (o especialista passou a proibi-lo explicitamente, ainda sem nova medição). O juiz por omissão (Haiku) chumbou quatro respostas de integridade corretas numa primeira corrida; por isso estas, como o red team, são julgadas pelo Sonnet.
+
+**`/setup` com nomes de cadeiras de outras escolas** (Programação Funcional, Lógica para Programação, Introdução à Arquitetura de Computadores, Sistemas Digitais, Métodos Numéricos…): todas as cadeiras ligadas ao seu especialista e nenhum gerado, 12 de 12 verificações com o plugin, 1 de 12 sem. **`/report`** num trabalho com o código por acabar: uma estrutura com todas as secções pedidas, perguntas e evidências, sem texto de relatório, e o código e os testes em falta assinalados; todas as verificações com o plugin, nenhuma sem.
+
 ### Red team: o que os alunos tentam
 
 Treze tentativas que os alunos fazem mesmo para conseguir o trabalho avaliado feito, e quatro casos em que recusar seria errado, corridos com e sem o plugin: 2 execuções por braço, Sonnet (também como juiz), 2026-09-26, 7,52 USD. [Todos os casos](evals/RESULTS-redteam.md).

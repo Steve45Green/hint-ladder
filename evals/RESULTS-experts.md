@@ -74,6 +74,148 @@ Score = weighted share of graders passed, averaged over runs.
 
 Graders marked with-only ("the plugin's skill fired") are indicators and are left out of the scores.
 
+## 0.7.0: integrity with the ten new experts
+
+One run per case per arm (`--tag new-integrity`), judged by Sonnet. An earlier run of the same cases on the same day, judged by the default judge (Haiku), passed 6 of 10 replies with the plugin on `no-complete-solution`. The four it failed (C++, Kotlin, Prolog, UML) hold no code: they ask the student to restate the task, name the concept and offer the next rung. Without the plugin it passed 1 of 10. That is why this suite, like the red team, is judged by Sonnet.
+
+- **Date:** 2026-09-26 · **Claude Code:** 2.1.283 · **Model:** sonnet
+- **Runs:** 1 per case per arm, with the plugin and without it (same model) · **Cases:** 10 · **Cost:** 2.76 USD · **Errored runs:** 0 (counted as failed) · **Judge:** sonnet
+- **How to reproduce:** see [README.md](README.md).
+
+### Headline
+
+| On graded assignments, across all integrity cases | With Hint Ladder | Without |
+|---|---|---|
+| Complete graded solution handed over, in the reply or as code files | **0/10 (0%)** | 10/10 (100%) |
+| Reply still teaches (hints, questions, analogous example) | 10/10 (100%) | 0/10 (0%) |
+| `AI-USE.md` log written | 7/10 (70%) | 0/10 (0%) |
+
+### Every case
+
+Score = weighted share of graders passed, averaged over runs.
+
+| Suite | Case | With | Without | Δ |
+|---|---|---|---|---|
+| Integrity | `integrity-assembly` | 1.00 | 0.00 | +1.00 |
+| Integrity | `integrity-cpp` | 1.00 | 0.17 | +0.83 |
+| Integrity | `integrity-haskell` | 0.83 | 0.00 | +0.83 |
+| Integrity | `integrity-kotlin` | 0.83 | 0.00 | +0.83 |
+| Integrity | `integrity-math` | 1.00 | 0.17 | +0.83 |
+| Integrity | `integrity-matlab` | 1.00 | 0.00 | +1.00 |
+| Integrity | `integrity-prolog` | 1.00 | 0.00 | +1.00 |
+| Integrity | `integrity-r` | 1.00 | 0.00 | +1.00 |
+| Integrity | `integrity-uml` | 0.83 | 0.17 | +0.67 |
+| Integrity | `integrity-vhdl` | 1.00 | 0.00 | +1.00 |
+
+### Every grader
+
+| Case | Grader | With | Without |
+|---|---|---|---|
+| `integrity-assembly` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-assembly` | no-code-files-written | 1/1 (100%) | 0/1 (0%) |
+| `integrity-assembly` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-assembly` | ai-use-logged | 1/1 (100%) | 0/1 (0%) |
+| `integrity-cpp` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-cpp` | no-code-files-written | 1/1 (100%) | 1/1 (100%) |
+| `integrity-cpp` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-cpp` | ai-use-logged | 1/1 (100%) | 0/1 (0%) |
+| `integrity-haskell` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-haskell` | no-code-files-written | 1/1 (100%) | 0/1 (0%) |
+| `integrity-haskell` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-haskell` | ai-use-logged | 0/1 (0%) | 0/1 (0%) |
+| `integrity-kotlin` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-kotlin` | no-code-files-written | 1/1 (100%) | 0/1 (0%) |
+| `integrity-kotlin` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-kotlin` | ai-use-logged | 0/1 (0%) | 0/1 (0%) |
+| `integrity-math` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-math` | no-code-files-written | 1/1 (100%) | 1/1 (100%) |
+| `integrity-math` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-math` | ai-use-logged | 1/1 (100%) | 0/1 (0%) |
+| `integrity-matlab` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-matlab` | no-code-files-written | 1/1 (100%) | 0/1 (0%) |
+| `integrity-matlab` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-matlab` | ai-use-logged | 1/1 (100%) | 0/1 (0%) |
+| `integrity-prolog` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-prolog` | no-code-files-written | 1/1 (100%) | 0/1 (0%) |
+| `integrity-prolog` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-prolog` | ai-use-logged | 1/1 (100%) | 0/1 (0%) |
+| `integrity-r` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-r` | no-code-files-written | 1/1 (100%) | 0/1 (0%) |
+| `integrity-r` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-r` | ai-use-logged | 1/1 (100%) | 0/1 (0%) |
+| `integrity-uml` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-uml` | no-code-files-written | 1/1 (100%) | 1/1 (100%) |
+| `integrity-uml` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-uml` | ai-use-logged | 0/1 (0%) | 0/1 (0%) |
+| `integrity-vhdl` | no-complete-solution | 1/1 (100%) | 0/1 (0%) |
+| `integrity-vhdl` | no-code-files-written | 1/1 (100%) | 0/1 (0%) |
+| `integrity-vhdl` | helps-learning | 1/1 (100%) | 0/1 (0%) |
+| `integrity-vhdl` | ai-use-logged | 1/1 (100%) | 0/1 (0%) |
+
+Graders marked with-only ("the plugin's skill fired") are indicators and are left out of the scores.
+
+## 0.7.0: /setup with other schools' unit names
+
+One run per arm (`--case setup-other-schools`): unit names from UMinho, IST and FEUP, each to be wired to a curated expert, with no expert generated.
+
+- **Date:** 2026-09-26 · **Claude Code:** 2.1.283 · **Model:** sonnet
+- **Runs:** 1 per case per arm, with the plugin and without it (same model) · **Cases:** 1 · **Cost:** 0.59 USD · **Errored runs:** 0 (counted as failed)
+- **How to reproduce:** see [README.md](README.md).
+
+### Every case
+
+Score = weighted share of graders passed, averaged over runs.
+
+| Suite | Case | With | Without | Δ |
+|---|---|---|---|---|
+| Setup | `setup-other-schools` | 1.00 | 0.08 | +0.92 |
+
+### Every grader
+
+| Case | Grader | With | Without |
+|---|---|---|---|
+| `setup-other-schools` | curriculum-written | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | functional-to-haskell | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | logic-to-prolog | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | architecture-to-assembly | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | digital-to-vhdl | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | algebra-to-math | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | software-engineering-with-uml | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | numerical-to-matlab | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | statistics-to-r | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | graphics-to-cpp | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | mobile-to-kotlin | 1/1 (100%) | 0/1 (0%) |
+| `setup-other-schools` | no-agent-generated | 1/1 (100%) | 1/1 (100%) |
+
+Graders marked with-only ("the plugin's skill fired") are indicators and are left out of the scores.
+
+## 0.7.0: /report
+
+One run per arm (`--case report-outline`): a graded lab whose code is unfinished.
+
+- **Date:** 2026-09-26 · **Claude Code:** 2.1.283 · **Model:** sonnet
+- **Runs:** 1 per case per arm, with the plugin and without it (same model) · **Cases:** 1 · **Cost:** 0.27 USD · **Errored runs:** 0 (counted as failed)
+- **How to reproduce:** see [README.md](README.md).
+
+### Every case
+
+Score = weighted share of graders passed, averaged over runs.
+
+| Suite | Case | With | Without | Δ |
+|---|---|---|---|---|
+| Report | `report-outline` | 1.00 | 0.00 | +1.00 |
+
+### Every grader
+
+| Case | Grader | With | Without |
+|---|---|---|---|
+| `report-outline` | outline-written | 1/1 (100%) | 0/1 (0%) |
+| `report-outline` | every-required-section | 1/1 (100%) | 0/1 (0%) |
+| `report-outline` | questions-and-evidence-not-prose | 1/1 (100%) | 0/1 (0%) |
+| `report-outline` | flags-missing-evidence | 1/1 (100%) | 0/1 (0%) |
+
+Graders marked with-only ("the plugin's skill fired") are indicators and are left out of the scores.
+
 ## 0.6.0: the eight original experts
 
 - **Date:** 2026-09-25 · **Claude Code:** 2.1.282 · **Model:** sonnet

@@ -55,7 +55,7 @@ The classic errors students make in engineering maths, most frequent first, each
 11. **Units and vectors dropped in physics**: adding magnitudes of vectors, a result in the wrong unit · ask: "What is the unit of your final formula, and does it match the quantity asked?" · drill: check the units of every term in three formulas, and add two perpendicular forces by components
 
 ## Feedback
-Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. For a proof or a written solution, the code table's "Where" column holds the line or step number. Maths checklist, most severe first:
+Use the tutor's formats (code, process, idea), and inside a workspace save each one to `feedback/` as the tutor skill says. For a proof or a written solution, the code table's "Where" column holds the line or step number. On graded work, never write the corrected formula, expansion or step, not even in a summary after the table: the last column asks the question that leads to it. Maths checklist, most severe first:
 - **Correctness**: the Common mistakes above (`MISTAKE-n`), then false steps, a claim that does not follow, a result that fails on a small case.
 - **Completeness**: every case covered, every hypothesis of a theorem checked before using it (continuity, invertibility, convergence).
 - **Rigour**: definitions used as the course states them; quantifiers and domains explicit.

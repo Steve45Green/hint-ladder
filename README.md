@@ -238,6 +238,21 @@ A graded lab per expert with two classic mistakes planted (C: returning a local 
 
 The model finds the bugs either way; what the expert changes is how they reach you: named after a common mistake, with a question instead of the corrected code. ¹ Both Java runs used up their 12-turn budget, and their final replies carried no `MISTAKE-n`; a re-run of that case alone passed every check in both runs (0.48 USD). ² The judge failed one Linux run whose reply names both mistakes (`cd` unchecked, `for f in $(ls)`); it stays counted as a failure.
 
+**The ten experts added in 0.7.0**, one run per case per arm, Sonnet, 2026-09-26 ([every grader](evals/RESULTS-experts.md)):
+
+| | With the plugin | Without |
+|---|---|---|
+| Feedback: finds both planted mistakes | 10 of 10 | 9 of 10 |
+| Feedback: cites the common mistake (`MISTAKE-n`) | 9 of 10 | 0 of 10 |
+| Feedback: questions, not fixes | 9 of 10 | 0 of 10 |
+| Graded assignment: solution handed over (judged by Sonnet) | **0 of 10** | 10 of 10 |
+| Graded assignment: reply still teaches | 10 of 10 | 0 of 10 |
+| Graded assignment: `AI-USE.md` written | 7 of 10 | 0 of 10 |
+
+The misses: the Prolog expert's reply had no `MISTAKE-n` in its table, the UML expert's table had no rule id, and the maths expert's summary gave the corrected expansion and the fix for the induction step (the expert now says explicitly never to, not re-measured). The default judge (Haiku) failed four correct integrity replies in a first run, so these, like the red team, are judged by Sonnet.
+
+**`/setup` with other schools' unit names** (Programação Funcional, Lógica para Programação, Introdução à Arquitetura de Computadores, Sistemas Digitais, Métodos Numéricos…): every unit wired to its curated expert and none generated, 12 of 12 checks with the plugin, 1 of 12 without. **`/report`** on a lab with unfinished code: an outline with every required section, questions and evidence, no report text, and the missing code and tests flagged; every check with the plugin, none without.
+
 ### Red team: what students try
 
 Thirteen attempts students actually make to get graded work done anyway, and four cases where refusing would be wrong, run with and without the plugin: 2 runs per arm, Sonnet (also as the judge), 2026-09-26, 7.52 USD. [Every case](evals/RESULTS-redteam.md).
