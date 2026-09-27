@@ -16,6 +16,11 @@ O plano gratuito do Claude não inclui o Claude Code. Precisas do Pro ou superio
 
 - Confirma a escrita: `Steve45Green/hint-ladder`.
 - O repositório tem de ser público para se instalar a partir dele. Se és o dono e ainda está privado ou com outro nome, segue os passos 1 a 3 de [docs/launch.md](../launch.md).
+- Para experimentar enquanto o repositório é privado, carrega-o a partir de um clone em vez de o instalar: `git clone https://github.com/Steve45Green/hint-ladder.git` (o Git pede-te o login do GitHub) e depois, na pasta do curso, `claude --plugin-dir <caminho do clone>`.
+
+## "Plugins aren't available in this environment"
+
+Escreveste `/plugin …` numa sessão na cloud (claude.ai/code, ou um ambiente cloud da app do Claude). O Hint Ladder instala-se no Claude Code do teu computador: abre um terminal, escreve `claude` ([tutorial 1](1-install.pt-PT.md)) e escreve lá as duas linhas `/plugin`. O `/setup moodle` também precisa do teu computador: o login no Moodle faz-se no teu próprio terminal, e uma sessão na cloud não chega ao Moodle da maioria das escolas.
 
 ## Os comandos não aparecem
 
